@@ -78,20 +78,27 @@
             return $query;
 
         }
+        public static function getInventory($token){
+
+            $query = Database::queryAll("SELECT * FROM items WHERE token = ?", [$token]);
+
+            return $query;
+
+        }
 
         public static function getRarityColor($rarity){
 
             switch ($rarity) {
                 default:
-                    return "gray";
+                    return "#9d9d9d";
                     break;
 
                 case 2:
-                    return "white";
+                    return "#ffffff";
                     break;
 
                 case 3:
-                    return "green";
+                    return "#1eff00";
                     break;
 
                 case 4:
@@ -99,7 +106,7 @@
                     break;
 
                 case 5:
-                    return "purple";
+                    return "#a335ee";
                     break;
 
                 case 6:

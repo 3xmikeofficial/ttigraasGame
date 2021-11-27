@@ -52,6 +52,14 @@
 
         }
 
+        public static function random($min, $max){
+
+            $random = rand($min, $max);
+
+            return $random;
+
+        }
+
     }
 
 ?>

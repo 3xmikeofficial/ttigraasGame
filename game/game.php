@@ -100,9 +100,14 @@
 
                         <?php
 
+                        echo $page;
+
                     }
 
                 } else {
+
+                    
+
                 }
 
                 ?> </div> <?php

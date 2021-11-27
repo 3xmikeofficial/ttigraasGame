@@ -68,6 +68,19 @@ a:hover, a.active {
   opacity: 100%;
 }
 
+.progress {
+  height: 25px;
+  line-height: 25px;
+  background-color: #115c39;
+}
+.progress .progress-bar.bg-success span {
+  position: absolute;
+  display: block;
+  width: 100%;
+  color: white;
+  text-shadow: 1px 1px #000;
+}
+
 .nav-item:hover {
   background-color: #0a0c0d !important;
 }

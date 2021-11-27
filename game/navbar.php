@@ -8,6 +8,16 @@
         <?php echo $player->name(); ?>
       </li>
       <li class="nav-item mt-3 row mx-0 lh-lg px-3">
+        <div class="col-3 text-start">Level:</div>
+        <div class="col-9 fst-italic text-end"><strong><?php echo $player->level() == MAX_LEVEL ? "MAX" : $player->level(); ?></strong></div>
+      </li>
+      <?php if($player->level() != MAX_LEVEL){ ?>
+        <div class="col-12 text-center mt-4">Exp</div>
+        <div class="col-12 nav-item text-center px-3">
+          <strong><?php echo $player->exp(); ?></strong> / <strong><?php echo $player->expNeeded(); ?></strong>
+        </div>
+      <?php } ?>
+      <li class="nav-item mt-3 row mx-0 lh-lg px-3">
         <div class="col-3 text-start">Race:</div>
         <div class="col-9 fst-italic text-end"><strong><?php echo $player->race(); ?></strong></div>
       </li>
@@ -15,11 +25,19 @@
         <div class="col-3 text-start">Class:</div>
         <div class="col-9 fst-italic text-end"><strong><?php echo $player->class(); ?></strong></div>
       </li>
+      <div class="col-12 text-center mt-4">Stamina</div>
+      <div class="col-12 text-center px-3">
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: <?= ($player->stamina()/$player->max_stamina())*100 ?>%;">
+                <span><?= $player->stamina(); ?> / <?= $player->max_stamina(); ?></span>
+            </div>
+        </div>
+      </div>
       <li class="nav-item row mx-0 lh-lg mt-5">
-          <div class="col-6"><?php echo "Health<br><color class='text-success'>".$player->health(); ?></color></div>
-          <div class="col-6"><?php echo "Intelligence<br><color class='text-info'>".$player->int(); ?></color></div>
-          <div class="col-6 mt-4"><?php echo "Strenght<br><color class='text-danger'>".$player->strenght(); ?></color></div>
-          <div class="col-6 mt-4"><?php echo "Defense<br><color class='text-warning'>".$player->defense(); ?></color></div>
+          <div class="col-6"><?php echo "Health<br><color class='text-success'><strong>".$player->health(); ?></strong></color></div>
+          <div class="col-6"><?php echo "Speed<br><color class='text-info'><strong>".$player->speed(); ?></strong></color></div>
+          <div class="col-6 mt-4"><?php echo "Strenght<br><color class='text-danger'><strong>".$player->strenght(); ?></strong></color></div>
+          <div class="col-6 mt-4"><?php echo "Defense<br><color class='text-warning'><strong>".$player->defense(); ?></strong></color></div>
         </li>
         <li class="nav-item row mx-0 lh-lg mt-3 px-3">
           <div class="col-3 text-start">Magicules:</div>
@@ -85,7 +103,7 @@
         
     </ul>
       <div class="mt-5" style="width:100%">
-        <a href="?page=tavern" class="align-center d-block">
+        <a href="?page=free_guild" class="align-center d-block">
             Tavern
         </a>
         <a href="?page=shop" class="align-center d-block">

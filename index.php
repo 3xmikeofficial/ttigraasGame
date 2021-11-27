@@ -19,108 +19,117 @@
     <div class="forms">
 
         <?php 
+
+            if(!User::isLoggedIn()){
         
-            if(isset($_GET["page"]) && $_GET["page"] == "register"){ // Register
+                if(isset($_GET["page"]) && $_GET["page"] == "register"){ // Register
 
-                ?>
+                    ?>
 
-                    <form action="<?php $PHP_SELF; ?>" method="post">
-                        <h1 class="mb-5">Register</h1>
-                        <label for="username">
-                            Username
-                        </label>
-                        <input type="text" name="username" id="username" class="form-control" <?php if(isset($_POST["username"])){ echo 'value="'.$_POST["username"].'"'; } ?>>
-                        <label for="password" class="mt-3">
-                            Password
-                        </label>
-                        <input type="password" name="password" id="password" class="form-control">
-                        <label for="repassword" class="mt-3">
-                            Confirm password
-                        </label>
-                        <input type="password" name="repassword" id="repassword" class="form-control">
-                        <input type="submit" value="Register" name="register" class="form-control bg-success mt-3">
-                        <div class="mt-3 text-center">Already have account? <a href="?page=login">Login</a></div>
+                        <form action="<?php $PHP_SELF; ?>" method="post">
+                            <h1 class="mb-5">Register</h1>
+                            <label for="username">
+                                Username
+                            </label>
+                            <input type="text" name="username" id="username" class="form-control" <?php if(isset($_POST["username"])){ echo 'value="'.$_POST["username"].'"'; } ?>>
+                            <label for="password" class="mt-3">
+                                Password
+                            </label>
+                            <input type="password" name="password" id="password" class="form-control">
+                            <label for="repassword" class="mt-3">
+                                Confirm password
+                            </label>
+                            <input type="password" name="repassword" id="repassword" class="form-control">
+                            <input type="submit" value="Register" name="register" class="form-control bg-success mt-3">
+                            <div class="mt-3 text-center">Already have account? <a href="?page=login">Login</a></div>
 
-                        <?php
+                            <?php
 
 
-                        
-                            if(isset($_POST["register"])){
+                            
+                                if(isset($_POST["register"])){
 
-                                if(Core::check($_POST["username"]) && Core::check($_POST["password"]) && Core::check($_POST["repassword"])){
+                                    if(Core::check($_POST["username"]) && Core::check($_POST["password"]) && Core::check($_POST["repassword"])){
 
-                                    if($_POST["password"] == $_POST["repassword"]){
+                                        if($_POST["password"] == $_POST["repassword"]){
 
-                                        if(!User::userExist($_POST["username"])){
+                                            if(!User::userExist($_POST["username"])){
 
-                                            $username = Core::secureInput($_POST["username"]);
-                                            $password = $_POST["password"];
+                                                $username = Core::secureInput($_POST["username"]);
+                                                $password = $_POST["password"];
 
-                                            User::createUser($username, $password);
-                                            
+                                                User::createUser($username, $password);
+                                                
+                                            } else {
+
+                                                echo Core::alert("Username is already taken!", "danger");
+                                                
+                                            }
+
                                         } else {
 
-                                            echo Core::alert("Username is already taken!", "danger");
-                                            
+                                            echo Core::alert("Passwords does not match!", "danger");
+
                                         }
 
                                     } else {
 
-                                        echo Core::alert("Passwords does not match!", "danger");
+                                        echo Core::alert("You have to fill all required data!", "danger");
 
                                     }
-
-                                } else {
-
-                                    echo Core::alert("You have to fill all required data!", "danger");
-
+                
                                 }
-            
-                            }
 
-                        ?>
+                            ?>
 
-                    </form>
+                        </form>
 
-                <?php
+                    <?php
 
-            } else { // Login
+                } else { // Login
 
-                ?>
+                    ?>
 
-                    <form action="<?php $PHP_SELF; ?>" method="post">
-                        <h1 class="mb-5">Login</h1>
-                        <label for="username">
-                            Username
-                        </label>
-                        <input type="text" name="username" id="username" class="form-control" <?php if(isset($_POST["username"])){ echo 'value="'.$_POST["username"].'"'; } ?>>
-                        <label for="password" class="mt-3">
-                            Password
-                        </label>
-                        <input type="text" name="password" id="password" class="form-control">
-                        <input type="submit" value="Login" name="login" class="form-control bg-success mt-3">
+                        <form action="<?php $PHP_SELF; ?>" method="post">
+                            <h1 class="mb-5">Login</h1>
+                            <label for="username">
+                                Username
+                            </label>
+                            <input type="text" name="username" id="username" class="form-control" <?php if(isset($_POST["username"])){ echo 'value="'.$_POST["username"].'"'; } ?>>
+                            <label for="password" class="mt-3">
+                                Password
+                            </label>
+                            <input type="password" name="password" id="password" class="form-control">
+                            <input type="submit" value="Login" name="login" class="form-control bg-success mt-3">
 
-                            <?php 
-                            
-                                if(isset($_POST["login"])){
+                                <?php 
+                                
+                                    if(isset($_POST["login"])){
 
-                                    if(Core::check($_POST["username"]) && Core::check($_POST["password"])){
+                                        if(Core::check($_POST["username"]) && Core::check($_POST["password"])){
 
-                                        if(User::UserExist($_POST["username"])){
+                                            if(User::UserExist($_POST["username"])){
 
-                                            $username = $_POST["username"];
+                                                $username = $_POST["username"];
 
-                                            $password = $_POST["password"];
-                                            $query = Database::queryAlone("SELECT `password` FROM users WHERE username='$username'");
-                                            
+                                                $password = $_POST["password"];
+                                                $query = Database::queryAlone("SELECT `password` FROM users WHERE username='$username'");
+                                                
 
-                                            if(password_verify($password,$query["password"])){
+                                                if(password_verify($password,$query["password"])){
 
-                                                echo Core::alert("Login successfull!", "success");
+                                                    echo Core::alert("Login successfull!", "success");
 
-                                                $user = new User($username);
-                                                $_SESSION["user_token"] = $user->token();
-                                                echo Core::redirect(URL."game/game.php");
+                                                    $user = new User($username);
+                                                    $_SESSION["user_token"] = $user->token();
+                                                    echo Core::redirect(URL."game/game.php");
+
+                                                } else {
+
+                                                    echo Core::alert("Wrong username or password!", "danger");
+
+                                                }
+
 
                                             } else {
 
@@ -128,27 +137,26 @@
 
                                             }
 
-
                                         } else {
 
-                                            echo Core::alert("Wrong username or password!", "danger");
+                                            echo Core::alert("You have to fill all required fields!", "danger");
 
                                         }
 
-                                    } else {
-
-                                        echo Core::alert("You have to fill all required fields!", "danger");
-
                                     }
+                                
+                                ?>
 
-                                }
-                            
-                            ?>
+                            <div class="mt-3 text-center">Dont have account? <a href="?page=register">Register</a></div>
+                        </form>
 
-                        <div class="mt-3 text-center">Dont have account? <a href="?page=register">Register</a></div>
-                    </form>
+                    <?php
 
-                <?php
+                }
+
+            } else {
+
+                echo Core::redirect(GAME_URL);
 
             }
         
