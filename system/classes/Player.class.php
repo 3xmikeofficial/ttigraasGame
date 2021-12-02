@@ -2,10 +2,15 @@
 
     class Player extends Character {
 
+        protected $_id;
+        protected $_token;
+
         public function __construct($token){
 
             $query = Database::queryAlone("SELECT * FROM characters WHERE token='$token' ;");
 
+            $this->_id = $query["id"];
+            $this->_token = $query["token"];
             $this->_name = $query["name"];
             $this->_level = $query["level"];
             $this->_exp = $query["exp"];
@@ -22,6 +27,13 @@
             $this->_equip = Item::getEquip($token);
             $this->_inventory = Item::getInventory($token);
 
+        }
+
+        public function id(){
+            return $this->_id;
+        }
+        public function token(){
+            return $this->_token;
         }
 
         public static function doExist($token){

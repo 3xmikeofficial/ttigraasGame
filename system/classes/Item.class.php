@@ -106,14 +106,18 @@
                     break;
 
                 case 5:
-                    return "#a335ee";
+                    return "#00ccff";
                     break;
 
                 case 6:
-                    return "#e6cc80";
+                    return "#a335ee";
                     break;
 
                 case 7:
+                    return "#e6cc80";
+                    break;
+
+                case 8:
                     return "#ff8000";
                     break;
             }

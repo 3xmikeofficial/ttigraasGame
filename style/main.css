@@ -1,5 +1,7 @@
 body {
   background-color: #36393f;
+  background-image: url(../game/images/background.png);
+  background-position: center top;
   color: #fff;
   overflow: hidden;
 }
@@ -26,6 +28,7 @@ body {
   overflow-y: overlay;
   overflow-x: hidden;
   padding: 10px;
+  background-color: #36393f;
 }
 
 ::-webkit-scrollbar {
@@ -39,6 +42,7 @@ body {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  background-color: #36393f;
 }
 .forms h1 {
   text-align: center;
@@ -68,12 +72,23 @@ a:hover, a.active {
   opacity: 100%;
 }
 
+.city-bg {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+}
+
 .progress {
   height: 25px;
   line-height: 25px;
-  background-color: #115c39;
 }
-.progress .progress-bar.bg-success span {
+.progress.bg-success {
+  background-color: #115c39 !important;
+}
+.progress.bg-danger {
+  background-color: #bd2130 !important;
+}
+.progress .progress-bar span {
   position: absolute;
   display: block;
   width: 100%;

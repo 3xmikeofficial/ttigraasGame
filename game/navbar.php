@@ -2,7 +2,7 @@
     <a href="/" class="text-center text-decoration-none">
       <div class="fs-4 mb-5">Ttigraas</div>
     </a>
-    <img src="./images/race/<?php echo $player->race().".png"; ?> ?>" class="mx-auto" width="128" height="128">
+    <img src="./images/race/<?php echo $player->race().".png"; ?>" class="mx-auto" width="128" height="128">
     <ul class="nav nav-pills flex-column mt-3 lh-lg">
       <li class="nav-item mb-5">
         <?php echo $player->name(); ?>
@@ -13,8 +13,12 @@
       </li>
       <?php if($player->level() != MAX_LEVEL){ ?>
         <div class="col-12 text-center mt-4">Exp</div>
-        <div class="col-12 nav-item text-center px-3">
-          <strong><?php echo $player->exp(); ?></strong> / <strong><?php echo $player->expNeeded(); ?></strong>
+        <div class="col-12 text-center px-3">
+          <div class="progress bg-danger">
+              <div class="progress-bar bg-danger" role="progressbar" style="width: <?= ($player->exp()/$player->expNeeded())*100 ?>%;">
+                  <span><?= $player->exp(); ?> / <?= $player->expNeeded(); ?></span>
+              </div>
+          </div>
         </div>
       <?php } ?>
       <li class="nav-item mt-3 row mx-0 lh-lg px-3">
@@ -27,7 +31,7 @@
       </li>
       <div class="col-12 text-center mt-4">Stamina</div>
       <div class="col-12 text-center px-3">
-        <div class="progress">
+        <div class="progress bg-success">
             <div class="progress-bar bg-success" role="progressbar" style="width: <?= ($player->stamina()/$player->max_stamina())*100 ?>%;">
                 <span><?= $player->stamina(); ?> / <?= $player->max_stamina(); ?></span>
             </div>
@@ -111,6 +115,12 @@
         </a>
         <a href="?page=inventory" class="align-center d-block">
             Inventory
+        </a>
+        <a href="?page=town" class="align-center d-block">
+            Town
+        </a>
+        <a href="?page=labyrinth" class="align-center d-block">
+            Labyrinth
         </a>
         <a href="?page=guild" class="align-center d-block">
             Guild

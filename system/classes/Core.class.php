@@ -35,12 +35,80 @@
 
         }
 
+        public static function openRow(){
+
+            return "<div class='row'>";
+
+        }
+        public static function closeRow(){
+
+            return "</div>";
+
+        }
+
+        public static function addLabel($text = "", $name = "", $params = ""){
+
+            return "<label for='${name}' ".($params == "" ? "" : self::doParams($params)).">${text}</label>";
+
+        }
+
+        public static function addImage($src = "", $params = ""){
+
+            return "<img src='${src}' ".($params == "" ? "" : self::doParams($params))." />";
+
+        }
+
+        public static function doParams($params){
+
+            if(empty($params)){
+                return;
+            }
+
+            $query = "";
+
+            foreach($params as $key => $value){
+
+                $query .= $key."='${value}'";
+
+            }
+
+            return $query;
+
+        }
+
+        public static function addInput($type = "text", $name = "", $classes = "", $params = ""){
+
+            return "<input type='".$type."' name='${name}' id='${name}' class='${classes}' ".self::doParams($params)." />";
+
+        }
+
+        public static function openForm(){
+
+            return "<form method='post' action='".$_SERVER["REQUEST_URI"]."'>";
+
+        }
+        public static function closeForm(){
+
+            return "</form>";
+
+        }
+        public static function openDiv($params = ""){
+
+            return "<div ".self::doParams($params).">";
+
+        }
+        public static function closeDiv(){
+
+            return "</div>";
+
+        }
+
         public static function alert($alert, $type = "info", $align = "start"){
 
             return '
             
                 <div class="alert alert-'.$type.' mb-0 mt-3 text-'.$align.'" role="alert">
-                    <strong>'.ucfirst($type).'!</strong> '.$alert.'
+                    <strong>'.ucfirst(($type == "danger" ? "error" : $type)).'!</strong> '.$alert.'
                 </div>
             ';
 

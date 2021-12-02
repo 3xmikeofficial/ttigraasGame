@@ -5,6 +5,8 @@ $link_color: #c69856
 
 body
     background-color: $background
+    background-image: url(../game/images/background.png)
+    background-position: center top
     color: #fff
     overflow: hidden
 
@@ -29,6 +31,7 @@ body
     overflow-y: overlay
     overflow-x: hidden
     padding: 10px
+    background-color: $background
 
 ::-webkit-scrollbar 
     width: 0
@@ -39,6 +42,7 @@ body
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
+    background-color: $background
     h1
         text-align: center
     form
@@ -60,18 +64,25 @@ a
         color: $link_color
         opacity: 100%
 
+.city-bg
+    position: relative
+    width: 1280px
+    height: 720px
+
 .progress
     height: 25px
     line-height: 25px
-    background-color: darken(#198754, 10%)
+    &.bg-success 
+        background-color: darken(#198754, 10%)!important
+    &.bg-danger
+        background-color: darken(#dc3545, 10%)!important
     .progress-bar
-        &.bg-success
-            span
-                position: absolute
-                display: block
-                width: 100%
-                color: white
-                text-shadow: 1px 1px #000
+        span
+            position: absolute
+            display: block
+            width: 100%
+            color: white
+            text-shadow: 1px 1px #000
 
 .nav-item
     &:hover
