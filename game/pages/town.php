@@ -24,10 +24,74 @@
             } else {
 
                 if(Town::doExist($player->token())){
+                    
+                    echo Core::openDiv(["class" => "row"]);
 
-                    echo Core::openDiv(["class" => "city-bg"]);
+                        echo Core::openDiv(["class" => "col-10"]);
 
-                        echo Core::addImage("./images/Town.png", ["width" => "1280", "height" => "720"]);
+                            echo Core::openDiv(["class" => "city-bg float-left"]);
+                            
+                                echo Core::addImage("./images/Town.png");
+                            
+                            echo Core::closeDiv();
+
+                        echo Core::closeDiv();
+                        
+                        echo Core::openDiv(["class" => "col-2"]);
+
+                            echo Core::openDiv(["class" => "row"]);
+
+                                echo Core::openDiv(["class" => "col-12 mb-3 text-center"]);
+
+                                    echo "Resources";
+
+                                echo Core::closeDiv();
+
+                                    /* Wood - start */
+
+                                    echo Core::openDiv(["class" => "col-6 text-start"]);
+
+                                        echo "Wood";
+
+                                    echo Core::closeDiv();
+
+                                    echo Core::openDiv(["class" => "col-6 text-end"]);
+
+                                        echo "<strong><i>".$town->wood()."</i></strong>";
+
+                                    echo Core::closeDiv();
+
+                                    /* Stone - start */
+
+                                    echo Core::openDiv(["class" => "col-6 mt-3 text-start"]);
+
+                                        echo "Stone";
+
+                                    echo Core::closeDiv();
+
+                                    echo Core::openDiv(["class" => "col-6 mt-3 text-end"]);
+
+                                        echo "<strong><i>".$town->stone()."</i></strong>";
+
+                                    echo Core::closeDiv();
+
+                                    /* Magisteel - start */
+
+                                    echo Core::openDiv(["class" => "col-6 mt-3 text-start"]);
+
+                                        echo "Magisteel";
+
+                                    echo Core::closeDiv();
+
+                                    echo Core::openDiv(["class" => "col-6 mt-3 text-end"]);
+
+                                        echo "<strong><i>".$town->iron()."</i></strong>";
+
+                                    echo Core::closeDiv();
+
+                            echo Core::closeDiv();
+
+                        echo Core::closeDiv();
 
                     echo Core::closeDiv();
 

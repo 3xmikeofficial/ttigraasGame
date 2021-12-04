@@ -100,8 +100,6 @@
 
                         <?php
 
-                        echo $page;
-
                     }
 
                 } else {
