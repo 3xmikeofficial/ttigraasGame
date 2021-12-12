@@ -103,6 +103,23 @@
 
         }
 
+        public static function openCard($title, $params = ""){
+
+            return "<div class='card bg-dark'><div class='card-header' ".self::doParams($params).">${title}</div><div class='card-body'>";
+
+        }
+        public static function closeCard(){
+
+            return "</div></div>";
+
+        }
+
+        public static function minVal($value, $min = 1){
+
+            return $value >= $min ? $value : $min;
+
+        }
+
         public static function alert($alert, $type = "info", $align = "start"){
 
             return '

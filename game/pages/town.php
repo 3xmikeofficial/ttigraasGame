@@ -27,68 +27,93 @@
                     
                     echo Core::openDiv(["class" => "row"]);
 
-                        echo Core::openDiv(["class" => "col-10"]);
+                                /* Food - start */
+                                echo Core::openDiv(["class" => "nav-item col-3"]);
 
-                            echo Core::openDiv(["class" => "city-bg float-left"]);
-                            
-                                echo Core::addImage("./images/Town.png");
-                            
-                            echo Core::closeDiv();
+                                    echo Core::openDiv(["class" => "float-start text-start"]);
 
-                        echo Core::closeDiv();
-                        
-                        echo Core::openDiv(["class" => "col-2"]);
+                                        echo "Food";
 
-                            echo Core::openDiv(["class" => "row"]);
+                                    echo Core::closeDiv();
 
-                                echo Core::openDiv(["class" => "col-12 mb-3 text-center"]);
+                                    echo Core::openDiv(["class" => "text-end"]);
 
-                                    echo "Resources";
+                                        echo "<strong><i>".$town->food()." ( + ".((30*Core::minVal($town->farm(), 1)+(($town->farm()**2)))+($town->farm()**2)-(2*Core::minVal($town->farm(), 1)))." / h )</i></strong>";
 
+                                    echo Core::closeDiv();
                                 echo Core::closeDiv();
+                                /* Wood - start */
+                                echo Core::openDiv(["class" => "nav-item col-3"]);
 
-                                    /* Wood - start */
-
-                                    echo Core::openDiv(["class" => "col-6 text-start"]);
+                                    echo Core::openDiv(["class" => "float-start text-start"]);
 
                                         echo "Wood";
 
                                     echo Core::closeDiv();
 
-                                    echo Core::openDiv(["class" => "col-6 text-end"]);
+                                    echo Core::openDiv(["class" => "text-end"]);
 
-                                        echo "<strong><i>".$town->wood()."</i></strong>";
+                                        echo "<strong><i>".$town->wood()." ( + ".(8*Core::minVal($town->woodcutter(), 1))." / h )</i></strong>";
 
                                     echo Core::closeDiv();
+                                echo Core::closeDiv();
 
-                                    /* Stone - start */
+                                /* Stone - start */
 
-                                    echo Core::openDiv(["class" => "col-6 mt-3 text-start"]);
+                                echo Core::openDiv(["class" => "col-3 nav-item"]);
+                                    echo Core::openDiv(["class" => "float-start text-start"]);
 
                                         echo "Stone";
 
                                     echo Core::closeDiv();
 
-                                    echo Core::openDiv(["class" => "col-6 mt-3 text-end"]);
+                                    echo Core::openDiv(["class" => "text-end"]);
 
-                                        echo "<strong><i>".$town->stone()."</i></strong>";
+                                        echo "<strong><i>".$town->stone()." ( + ".(8*Core::minVal($town->quarry(), 1))." / h )</i></strong>";
 
                                     echo Core::closeDiv();
+                                echo Core::closeDiv();
 
-                                    /* Magisteel - start */
+                                /* Magisteel - start */
 
-                                    echo Core::openDiv(["class" => "col-6 mt-3 text-start"]);
+                                echo Core::openDiv(["class" => "col-3 nav-item"]);
+                                    echo Core::openDiv(["class" => "float-start text-start"]);
 
                                         echo "Magisteel";
 
                                     echo Core::closeDiv();
 
-                                    echo Core::openDiv(["class" => "col-6 mt-3 text-end"]);
+                                    echo Core::openDiv(["class" => "text-end"]);
 
-                                        echo "<strong><i>".$town->iron()."</i></strong>";
+                                        echo "<strong><i>".$town->iron()." ( + ".(8*Core::minVal($town->mine(), 1))." / h )</i></strong>";
 
                                     echo Core::closeDiv();
+                                echo Core::closeDiv();
 
+                        echo Core::openDiv(["class" => "col-12 mt-3"]);
+
+                            echo Core::openDiv(["class" => "city-bg float-left"]);
+                            
+                                echo Core::addImage("./images/Town.png", ["class" => "img-fluid"]);
+
+                                ?>
+
+                                    <div class="visual-building visual-building-main<?php echo Town::getStage($town->main()); ?>"></div>
+                                    <div class="visual-building visual-building-storage<?php echo Town::getStage($town->storage()); ?>"></div>
+                                    <div class="visual-building visual-building-farm<?php echo Town::getStage($town->farm()); ?>"></div>
+                                    <?php if($town->church()){ ?><div class="visual-building visual-building-church<?php echo Town::getStage($town->church()); ?>"></div><?php } ?>
+                                    <?php if($town->barracks()){ ?><div class="visual-building visual-building-barracks<?php echo Town::getStage($town->barracks()); ?>"></div><?php } ?>
+                                    <?php if($town->watchtower()){ ?><div class="visual-building visual-building-watchtower<?php echo Town::getStage($town->watchtower()); ?>"></div><?php } ?>
+                                    <?php if($town->market()){ ?><div class="visual-building visual-building-market<?php echo Town::getStage($town->market()); ?>"></div><?php } ?>
+                                    <?php if($town->stable()){ ?><div class="visual-building visual-building-stable<?php echo Town::getStage($town->stable()); ?>"></div><?php } ?>
+                                    <?php if($town->garage()){ ?><div class="visual-building visual-building-garage<?php echo Town::getStage($town->garage()); ?>"></div><?php } ?>
+                                    <?php if($town->wood()){ ?><div class="visual-building visual-building-wood<?php echo Town::getStage($town->wood()); ?>"></div><?php } ?>
+                                    <?php if($town->stone()){ ?><div class="visual-building visual-building-stone<?php echo Town::getStage($town->stone()); ?>"></div><?php } ?>
+                                    <?php if($town->iron()){ ?><div class="visual-building visual-building-iron<?php echo Town::getStage($town->iron()); ?>"></div><?php } ?>
+                                    <?php if($town->smith()){ ?><div class="visual-building visual-building-smith<?php echo Town::getStage($town->smith()); ?>"></div><?php } ?>
+
+                                <?php
+                            
                             echo Core::closeDiv();
 
                         echo Core::closeDiv();
@@ -138,3 +163,52 @@
         ?>
     </div>
 </div>
+
+<?php 
+
+    if(Town::doExist($player->token())){
+
+        echo Core::openCard("Buildings");
+
+            $buildings = ["main","storage","farm","church","barracks","watchtower","market","stable","garage","wood","stone","iron","smith"];
+            $building_names = ["main" => "Village Headquarters", "storage" => "Warehouse", "farm" => "Farm", "church" => "Church", "barracks" => "Barracks", "watchtower" => "Watchtower", "market" => "Market", "stable" => "Stable", "garage" => "Workshop", "wood" => "Timber camp", "stone" => "Quarry", "iron" => "Magisteel mine", "smith" => "Smithy"];
+
+
+                echo Core::opendiv(["class" => "row"]);
+            foreach ($buildings as $building) {
+                echo Core::openDiv(["class" => "nav-item col-12"]);
+                    echo Core::openDiv(["class" => "col-4 float-start text-start"]).$building_names[$building].($town->$building() > 0 ? " ( Lv.".$town->$building()." )" : "").Core::closeDiv();
+                    echo Core::openDiv(["class" => "col-4 float-start text-center"]);
+
+                        @$resource_list[$building] = unserialize(Town::getRecipe($building, $town->$building()));
+                        if($resource_list[$building]){
+
+                            foreach ($resource_list[$building] as $resource => $value) {
+                                echo ucfirst($resource).": ".$value."&nbsp;&nbsp;&nbsp;";
+                            }
+
+                        }
+
+                    echo Core::closeDiv();
+                    echo Core::openDiv(["class" => "col-4 float-end text-end"]);
+                    if($resource_list[$building]){
+                        echo "<a href='?page=town&action=upgrade_building&id=".$building."'>".($town->$building() == 0 ? "Build" : "Upgrade")."</a>";
+                    } else {
+                        echo "MAX";
+                    }
+                    echo Core::closeDiv();
+                echo Core::closeDiv();
+            }
+                echo Core::closediv();
+
+            if(isset($_GET["action"]) && $_GET["action"] == "upgrade_building" && isset($_GET["id"])){
+
+                Town::upgradeBuilding($_GET["id"], $player->token());
+
+            }
+
+        echo Core::closeCard();
+
+    }
+
+?>

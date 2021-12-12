@@ -3,6 +3,7 @@
     class Item{
 
         protected $_id;
+        protected $_vnum;
         protected $_name;
         protected $_type;
         protected $_subtype;
@@ -16,6 +17,7 @@
             $tooltip = self::Tooltip($item_vnum);
 
             $this->_id = $id;
+            $this->_vnum = $tooltip["id"];
             $this->_name = $tooltip["item_name"];
             $this->_type = $tooltip["item_type"];
             $this->_subtype = $tooltip["item_subtype"];
@@ -28,6 +30,9 @@
 
         public function id(){
             return $this->_id;
+        }
+        public function vnum(){
+            return $this->_vnum;
         }
         public function name(){
             return $this->_name;
@@ -90,35 +95,35 @@
 
             switch ($rarity) {
                 default:
-                    return "#9d9d9d";
+                    return "#9d9d9d"; // Common Grade
                     break;
 
                 case 2:
-                    return "#ffffff";
+                    return "#ffffff"; // Uncommon Grade
                     break;
 
                 case 3:
-                    return "#1eff00";
+                    return "#1eff00"; // Special Grade
                     break;
 
                 case 4:
-                    return "#0070dd";
+                    return "#0070dd"; // Rare Grade
                     break;
 
                 case 5:
-                    return "#00ccff";
+                    return "#00ccff"; // Unique Grade
                     break;
 
                 case 6:
-                    return "#a335ee";
+                    return "#a335ee"; // Legend Grade
                     break;
 
                 case 7:
-                    return "#e6cc80";
+                    return "#e6cc80"; // Mythical (Gods) Grade
                     break;
 
                 case 8:
-                    return "#ff8000";
+                    return "#ff8000"; // Genesis Class
                     break;
             }
 

@@ -23,9 +23,10 @@
     define('LOCALE', SYSTEM.DIRECTORY_SEPARATOR."locale");
     define('GAME', ROOT.DIRECTORY_SEPARATOR."game");
     define('PAGES', GAME.DIRECTORY_SEPARATOR."pages");
-    define('IMAGES', GAME.DIRECTORY_SEPARATOR."images");
+    define('IMAGES', URL."game/images");
 
-    define("MAX_LEVEL", 255);
+    define("MAX_PLAYER_LEVEL", 255);
+    define("MAX_BUILDING_LEVEL", 30);
 
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 'On');

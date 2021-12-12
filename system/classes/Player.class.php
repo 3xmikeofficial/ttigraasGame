@@ -55,7 +55,7 @@
         }
     
         public function addExp($exp){
-            if($this->_level != MAX_LEVEL){
+            if($this->_level != MAX_PLAYER_LEVEL){
                 $this->_exp += $exp;
                 while($this->_exp >= $this->expNeeded()){
                     $this->_exp -= $this->expNeeded();
@@ -67,7 +67,7 @@
         }
 
         public function levelUp(){
-            if($this->_level != MAX_LEVEL){
+            if($this->_level != MAX_PLAYER_LEVEL){
                 $this->_level += 1;
                 Database::queryAlone("UPDATE characters SET level = ? WHERE name = ?",[$this->_level, $this->_name]);
                 return $this->_level;
