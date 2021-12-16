@@ -77,6 +77,9 @@
         public function showDamage(){
             return $this->min_damage()." - ".$this->max_damage();
         }
+        public function showArmor(){
+            return self::getAvarageValue($this->min_damage(),$this->max_damage());
+        }
         public function price(){
             return $this->_price;
         }
