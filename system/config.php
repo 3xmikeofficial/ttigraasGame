@@ -24,6 +24,7 @@
     define('GAME', ROOT.DIRECTORY_SEPARATOR."game");
     define('PAGES', GAME.DIRECTORY_SEPARATOR."pages");
     define('IMAGES', URL."game/images");
+    define('IMAGESDIR', "../game/images");
 
     define("MAX_PLAYER_LEVEL", 255);
     define("MAX_BUILDING_LEVEL", 30);

@@ -382,6 +382,8 @@ label
             background-color: rgba(0, 0, 0, 0.75)
             padding: 10px 25px
             font-size: 13px
+            z-index: 1
+            transform: translate(-40%)
 
 .small-slot
     width: 36px
@@ -396,4 +398,15 @@ label
     height: 72px
     background-color: rgba(255,255,255,0.15)
     border: 1px solid rgba(0, 0, 0, 1)
+.large-slot
+    width: 36px
+    height: 108px
+    background-color: rgba(255,255,255,0.15)
+    border: 1px solid rgba(0, 0, 0, 1)
+.small-slot,.medium-slot,.large-slot
+    position: relative
+    img
+        position: absolute
+        top: 2px
+        left: 2px
     

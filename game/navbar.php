@@ -42,7 +42,7 @@
         $equip = $player->equip();
 
         foreach ($equip as $id => $item) {
-            $selected_item[$id] = new Item($item["item_vnum"], $item["rarity"], $id);
+            $selected_item[$id] = new Item($item["item_vnum"], $item["rarity"], $item["id"]);
 
             if($selected_item[$id]->type() == "ITEM_WEAPON"){
               $weapon = $selected_item[$id];
@@ -69,34 +69,71 @@
 
       <div class="equipment mt-5">
         <div class="helmet">
-          <div class="small-slot mx-auto"><?php if(isset($helmet)){ echo "<span style='color: ".Item::getRarityColor($helmet->rarity())."'>".Core::addImage(IMAGES."/items/".$helmet->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+          <div class="small-slot item mx-auto">
+          <?php 
+            if(isset($helmet)){ ?>
+              <div class="stats">
+                <?= $helmet->showTooltip(); ?>
+              </div>
+              <?php 
+            
+            }
+
+                if(isset($helmet)){ 
+                  echo $helmet->icon();
+                } else { 
+                  echo Item::notEquiped(); 
+                } 
+
+              ?>
+          </div>
         </div>
-        <div class="weapon float-start">
-          <div class="medium-slot mt-3"><?php if(isset($weapon)){ echo "<span style='color: ".Item::getRarityColor($weapon->rarity())."'>".Core::addImage(IMAGES."/items/".$weapon->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+        <div class="weapon item float-start">
+        <?php if(isset($weapon)){ ?>
+          <div class="stats">
+            <?= $weapon->showTooltip(); ?>
+          </div>
+        <?php } ?>
+        <div class="medium-slot mt-3"><?php if(isset($weapon)){ echo $weapon->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="armor float-start">
           <div class="medium-slot item mt-3">
-            <div class="stats"><?php echo "<span style='color: ".Item::getRarityColor($armor->rarity())."'>".$armor->name()."</span>"; ?><hr>Armor: <?= $armor->getAvarage($armor->min_value(), $armor->max_value()); ?><hr><?= $armor->price()." g"; ?></div>
-            <?php if(isset($armor)){ echo "<span style='color: ".Item::getRarityColor($armor->rarity())."'>".Core::addImage(IMAGES."/items/".$armor->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+          <?php if(isset($armor)){ ?><div class="stats"><?= $armor->showTooltip(); ?></div><?php } ?>
+            <?php if(isset($armor)){ echo $armor->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="shield float-start">
-          <div class="small-slot mt-3"><?php if(isset($shield)){ echo "<span style='color: ".Item::getRarityColor($shield->rarity())."'>".Core::addImage(IMAGES."/items/".$shield->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+          <div class="small-slot item mt-3">
+          <?php if(isset($shield)){ ?>
+            <div class="stats">
+              <?= $shield->showTooltip(); ?>
+            </div>
+          <?php } ?>
+          <?php if(isset($shield)){ echo $shield->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
-        <div class="earings float-start">
-          <div class="small-slot mt-3"><?php if(isset($earings)){ echo "<span style='color: ".Item::getRarityColor($earings->rarity())."'>".Core::addImage(IMAGES."/items/".$earings->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+        <div class="earings item float-start">
+          <?php if(isset($earings)){ ?>
+            <div class="stats">
+              <?= $earings->showTooltip(); ?>
+            </div>
+          <?php } ?>
+          <div class="small-slot mt-3"><?php if(isset($earings)){ echo $earings->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
-        <div class="bracelet float-start">
-          <div class="small-slot mt-3"><?php if(isset($bracelet)){ echo "<span style='color: ".Item::getRarityColor($bracelet->rarity())."'>".Core::addImage(IMAGES."/items/".$bracelet->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+        <div class="bracelet item float-start">
+        <?php if(isset($bracelet)){ ?><div class="stats"><?= $bracelet->showTooltip(); ?></div><?php } ?>
+          <div class="small-slot mt-3"><?php if(isset($bracelet)){ echo $bracelet->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
-        <div class="necklace float-start">
-          <div class="small-slot mt-3"><?php if(isset($necklace)){ echo "<span style='color: ".Item::getRarityColor($necklace->rarity())."'>".Core::addImage(IMAGES."/items/".$necklace->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+        <div class="necklace item float-start">
+        <?php if(isset($necklace)){ ?><div class="stats"><?= $necklace->showTooltip(); ?></div><?php } ?>
+          <div class="small-slot mt-3"><?php if(isset($necklace)){ echo $necklace->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="clearfix"></div>
-        <div class="belt">
-          <div class="small-slot mx-auto"><?php if(isset($belt)){ echo "<span style='color: ".Item::getRarityColor($belt->rarity())."'>".Core::addImage(IMAGES."/items/".$belt->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+        <div class="belt item">
+          <?php if(isset($belt)){ ?><div class="stats"><?= $belt->showTooltip(); ?></div><?php } ?>
+          <div class="small-slot mx-auto"><?php if(isset($belt)){ echo $belt->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
-        <div class="boots">
-          <div class="small-slot mx-auto"><?php if(isset($boots)){ echo "<span style='color: ".Item::getRarityColor($boots->rarity())."'>".Core::addImage(IMAGES."/items/".$boots->vnum().".png")."</span>"; } else { echo "<span class='text-danger'>Not equipped</span>"; } ?></div>
+        <div class="boots item">
+          <?php if(isset($boots)){ ?><div class="stats"><?= $boots->showTooltip(); ?></div><?php } ?>
+          <div class="small-slot mx-auto"><?php if(isset($boots)){ echo $boots->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
       </div>
 
@@ -106,12 +143,12 @@
           <div class="col-6 mt-4"><?php echo "Strenght<br><color class='text-danger'><strong>".$player->strenght(); ?></strong></color></div>
           <div class="col-6 mt-4"><?php echo "Defense<br><color class='text-warning'><strong>".$player->defense(); ?></strong></color></div>
         </li>
-        <li class="nav-item row mx-0 lh-lg mt-3 px-3">
-          <div class="col-3 text-start">Magicules:</div>
+        <li class="nav-item row mx-0 mt-5 lh-lg px-3">
+          <div class="col-3 text-start"><?= Core::addImage(IMAGESDIR."/magicule.png", "", "Gold coins"); ?></div>
           <div class="col-9 fst-italic text-end"><strong><?php echo $player->magicules(); ?></strong></div>
         </li>
-        <li class="nav-item row mx-0 lh-lg mt-3 mb-5 px-3">
-          <div class="col-3 text-start">Coins:</div>
+        <li class="nav-item row mx-0 lh-lg mt-3 px-3">
+          <div class="col-3 text-start"><?= Core::addImage(IMAGESDIR."/money.png", "", "Gold coins"); ?></div>
           <div class="col-9 fst-italic text-end"><strong><?php echo $player->gold(); ?></strong></div>
         </li>
         

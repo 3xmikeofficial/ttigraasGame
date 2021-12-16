@@ -460,6 +460,9 @@ label {
   background-color: rgba(0, 0, 0, 0.75);
   padding: 10px 25px;
   font-size: 13px;
+  z-index: 1;
+  -webkit-transform: translate(-40%);
+          transform: translate(-40%);
 }
 
 .small-slot {
@@ -478,4 +481,20 @@ label {
   height: 72px;
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid black;
+}
+
+.large-slot {
+  width: 36px;
+  height: 108px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid black;
+}
+
+.small-slot, .medium-slot, .large-slot {
+  position: relative;
+}
+.small-slot img, .medium-slot img, .large-slot img {
+  position: absolute;
+  top: 2px;
+  left: 2px;
 }
