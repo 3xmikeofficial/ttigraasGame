@@ -36,6 +36,13 @@
             return $this->_token;
         }
 
+        public function setStamina($value){
+
+            $this->_stamina = $this->_stamina + $value;
+            Database::queryAlone("UPDATE characters SET stamina = ? WHERE token = ?", [$this->_stamina, $this->_token]);
+
+        }
+
         public static function doExist($token){
 
             $query = Database::query("SELECT * FROM characters WHERE token = ? ",[$token]);

@@ -11,7 +11,7 @@
  Target Server Version : 100421
  File Encoding         : 65001
 
- Date: 04/12/2021 23:28:36
+ Date: 18/12/2021 14:24:37
 */
 
 SET NAMES utf8mb4;
@@ -50,13 +50,14 @@ CREATE TABLE `item_proto`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `item_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `item_type` enum('ITEM_WEAPON','ITEM_ARMOR','ITEM_POTION','ITEM_POISON','ITEM_MISC') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'ITEM_MISC',
-  `item_subtype` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `item_subtype` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `size` int NOT NULL DEFAULT 1,
   `stackable` tinyint(1) NOT NULL DEFAULT 0,
   `min_value` bigint NULL DEFAULT NULL,
   `max_value` bigint NULL DEFAULT NULL,
   `price` bigint NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 92 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for items
@@ -65,7 +66,9 @@ DROP TABLE IF EXISTS `items`;
 CREATE TABLE `items`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `item_vnum` int NOT NULL,
-  `quantity` int NOT NULL DEFAULT 1,
+  `item_type` enum('ITEM_WEAPON','ITEM_ARMOR','ITEM_POTION','ITEM_POISON','ITEM_MISC') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'ITEM_MISC',
+  `item_subtype` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `quantity` tinyint UNSIGNED NOT NULL DEFAULT 1,
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `rarity` int NOT NULL DEFAULT 1,
   `equipped` tinyint(1) NOT NULL DEFAULT 0,
@@ -74,7 +77,7 @@ CREATE TABLE `items`  (
   INDEX `owner`(`token`) USING BTREE,
   CONSTRAINT `owner` FOREIGN KEY (`token`) REFERENCES `characters` (`token`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `vnum` FOREIGN KEY (`item_vnum`) REFERENCES `item_proto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for labyrinth
@@ -103,6 +106,7 @@ CREATE TABLE `quests`  (
   `min_gold` int NOT NULL DEFAULT 5,
   `max_gold` int NOT NULL DEFAULT 10,
   `inventory` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `cost` int NOT NULL DEFAULT 5,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -129,6 +133,18 @@ CREATE TABLE `skills`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for town_upgrades
+-- ----------------------------
+DROP TABLE IF EXISTS `town_upgrades`;
+CREATE TABLE `town_upgrades`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `tier` int NOT NULL,
+  `resources` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 388 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for towns
 -- ----------------------------
 DROP TABLE IF EXISTS `towns`;
@@ -136,6 +152,20 @@ CREATE TABLE `towns`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `main` int NOT NULL DEFAULT 1,
+  `storage` int NOT NULL DEFAULT 1,
+  `farm` int NOT NULL DEFAULT 1,
+  `church` int NOT NULL DEFAULT 0,
+  `barracks` int NOT NULL DEFAULT 0,
+  `watchtower` int NOT NULL DEFAULT 0,
+  `market` int NOT NULL DEFAULT 0,
+  `stable` int NOT NULL DEFAULT 0,
+  `garage` int NOT NULL DEFAULT 0,
+  `smith` int NOT NULL DEFAULT 0,
+  `woodcutter` int NOT NULL DEFAULT 0,
+  `quarry` int NOT NULL DEFAULT 0,
+  `mine` int NOT NULL DEFAULT 0,
+  `food` int NOT NULL DEFAULT 0,
   `wood` int NOT NULL DEFAULT 0,
   `stone` int NOT NULL DEFAULT 0,
   `iron` int NOT NULL DEFAULT 0,

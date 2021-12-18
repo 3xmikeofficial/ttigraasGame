@@ -19,7 +19,9 @@
                                 $quests = Quests::getAll();
 
                                 foreach($quests as $quest){
-
+                                    if(isset($_POST["quest"]) && $quest["id"] == $_POST["quest"]){
+                                        echo "<option value='".$quest["id"]."' selected>".$quest["name"]."</option>";
+                                    }
                                     echo "<option value='".$quest["id"]."'>".$quest["name"]."</option>";
 
                                 }
@@ -35,7 +37,12 @@
 
                             $quest = Quests::getOne($_POST["quest"]);
 
-                            $monster = new Monster($quest["name"], [$quest["health"],$quest["speed"],$quest["strenght"],$quest["defense"]], Core::Random($quest["min_exp"], $quest["max_exp"]), Core::Random($quest["min_gold"], $quest["max_gold"]));
+                            if($player->stamina() < $quest["cost"]){
+                                echo Quests::alert("You dont have enough stamina!", "warning");
+                                return;
+                            }
+
+                            $monster = new Monster($quest["name"], [$quest["health"],$quest["speed"],$quest["strenght"],$quest["defense"]], Core::Random($quest["min_exp"], $quest["max_exp"]), Core::Random($quest["min_gold"], $quest["max_gold"]), $quest["inventory"], $quest["cost"]);
 
                             $turn = 0;
 
@@ -84,6 +91,8 @@
                                         } else {
                                             echo Quests::alert("Si slabý jak čaj!", "danger");
                                         }
+                                        
+                                        $player->setStamina(-$monster->_cost);
 
                                     }
 

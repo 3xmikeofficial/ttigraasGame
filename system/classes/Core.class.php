@@ -116,15 +116,32 @@
 
         public static function minVal($value, $min = 1){
 
-            return $value >= $min ? $value : $min;
+            return $value < $min ? $min : $value;
+
+        }
+        public static function maxVal($value, $max = 100){
+
+            return $value > $max ? $max : $value;
 
         }
 
-        public static function alert($alert, $type = "info", $align = "start"){
+        public static function minMaxVal($value, $min = 1, $max = 100){
+
+            if($value < $min){
+                $value = $min;
+            } elseif($value > $max){
+                $value = $max;
+            }
+
+            return $value;
+
+        }
+
+        public static function alert($alert, $type = "info", $align = "start", $classes = ""){
 
             return '
             
-                <div class="alert alert-'.$type.' mb-0 mt-3 text-'.$align.'" role="alert">
+                <div class="alert alert-'.$type.' mb-0 mt-3 text-'.$align.' '.$classes.'" role="alert">
                     <strong>'.ucfirst(($type == "danger" ? "error" : $type)).'!</strong> '.$alert.'
                 </div>
             ';
@@ -151,10 +168,10 @@
 
         }
 
-        public static function modalButton($id, $text = "info", $params = ""){
+        public static function modalButton($id, $text = "info", $params = "", $quantity = ""){
 
             return '<button type="button" class="'.$params.'" data-bs-toggle="modal" data-bs-target="#'.$id.'">
-            '.$text.'
+            '.$text.$quantity.'
           </button>';
 
         }

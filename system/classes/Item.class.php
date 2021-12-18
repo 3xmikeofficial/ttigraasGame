@@ -14,6 +14,7 @@
         protected $_rarity;
         protected $_icon;
         protected $_equipped = false;
+        protected $_quantity = 1;
 
         public function __construct($item_vnum, $rarity = 1, $id = ""){
 
@@ -21,6 +22,7 @@
             if(isset($id) and $id != ""){
                 $this->_id = $id;
                 $item = Database::queryAlone("SELECT * FROM items WHERE id = ?", [$id]);
+                $this->_quantity = $item["quantity"];
                 $this->_equipped = $item["equipped"];
             }
             $this->_vnum = $tooltip["id"];
@@ -68,17 +70,17 @@
         public function max_value(){
             return $this->_max_value;
         }
-        public function min_damage(){
+        public function min_rarityValue(){
             return $this->_min_value*$this->_rarity;
         }
-        public function max_damage(){
+        public function max_rarityValue(){
             return $this->_max_value*$this->_rarity;
         }
-        public function showDamage(){
-            return $this->min_damage()." - ".$this->max_damage();
+        public function showRarityValues(){
+            return $this->min_rarityValue()." - ".$this->max_rarityValue();
         }
-        public function showArmor(){
-            return self::getAvarageValue($this->min_damage(),$this->max_damage());
+        public function showAvarageRarityValue(){
+            return self::getAvarageValue($this->min_rarityValue(),$this->max_rarityValue());
         }
         public function price(){
             return $this->_price;
@@ -89,9 +91,22 @@
         public function rarity(){
             return $this->_rarity;
         }
+        public function quantity(){
+            return $this->_quantity;
+        }
         public function equipped(){
             return $this->_equipped;
         }
+
+        public function remove(){
+            Database::queryAlone("DELETE FROM items WHERE id = ?", [$this->_id]);
+        }
+
+        public function removeOne(){
+            $this->_quantity -= 1;
+            Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$this->_quantity, $this->_id]);
+        }
+
         public function icon(){
             $icon = IMAGESDIR."/items/".$this->_vnum.".png";
             if(file_exists($icon)){
@@ -129,13 +144,17 @@
                 $query .= "Damage: ".$this->_min_value*$this->_rarity." - ".$this->_max_value*$this->_rarity;
             } elseif($this->_type == "ITEM_ARMOR"){
                 $query .= "Armor: ".(self::getAvarageValue($this->_min_value, $this->_max_value)*$this->_rarity);
+            } elseif($this->_type == "ITEM_POTION"){
+                if($this->_subtype == "ITEM_STAMINA"){
+                    $query .= "Stamina: +".(self::getAvarageValue($this->_min_value, $this->_max_value)*$this->_rarity);
+                }
             } else {
 
             }
 
             $query .= "<hr>";
 
-            $query .= ($this->_price*$this->_rarity)." g";
+            $query .= ($this->_price*$this->_rarity)."g";
 
             return $query;
 

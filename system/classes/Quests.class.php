@@ -37,6 +37,15 @@
                     </div>
                 ';
 
+            } elseif($type == "warning"){
+
+                return '
+                
+                    <div class="alert alert-'.$type.' mb-0 mt-3 text-'.$align.'" role="alert">
+                        <strong>Warning!</strong> '.$alert.'
+                    </div>
+                ';
+
             } else {
 
                 return '

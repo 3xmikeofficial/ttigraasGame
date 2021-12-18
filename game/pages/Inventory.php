@@ -23,7 +23,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                        echo "Damage: ".$item[$id]->showDamage()."<br>";
+                                        echo "Damage: ".$item[$id]->showRarityValues()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -85,7 +85,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                    echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                    echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -147,7 +147,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                    echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                    echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -209,7 +209,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                    echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                    echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -271,7 +271,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                    echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                    echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -333,7 +333,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                        echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                        echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -395,7 +395,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                    echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                    echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -457,7 +457,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                    echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                    echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -519,7 +519,7 @@
                                         echo $item[$id]->icon();
                                     echo Core::closeDiv();
                                     echo Core::openDiv(["class" => "col-9 text-center"]);
-                                    echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                    echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
                                         echo "Price: ".$item[$id]->rarityPrice()." g";
     
                                         echo Core::openForm();
@@ -571,51 +571,111 @@
 
                         echo "<div class='equipment'>";
                             echo "<div class='item float-start'>";
-                            echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                            $test = "<span class='quantity'>".($item[$id]->quantity() == 1 ? "" : $item[$id]->quantity())."</span>";
+                            echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3", $test);
                             echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                         
                         echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                             echo Core::openDiv(["class" => "row"]);
-                                echo Core::openDiv(["class" => "col-3"]);
-                                    echo $item[$id]->icon();
+                                echo Core::openDiv(["class" => "col-3 text-center"]);
+                                    echo $item[$id]->icon()."<br>";
+                                    echo $item[$id]->quantity()."ks";
                                 echo Core::closeDiv();
                                 echo Core::openDiv(["class" => "col-9 text-center"]);
                                     if($item[$id]->type() == "ITEM_WEAPON"){
-                                        echo "Damage: ".$item[$id]->showDamage()."<br>";
-                                    } else {
-                                        echo "Armor: ".$item[$id]->showArmor()."<br>";
+                                        echo "Damage: ".$item[$id]->showRarityValues()."<br>";
+                                    } elseif($item[$id]->type() == "ITEM_ARMOR"){
+                                        echo "Armor: ".$item[$id]->showAvarageRarityValue()."<br>";
+                                    } elseif($item[$id]->type() == "ITEM_POTION"){
+                                        if($item[$id]->subtype() == "ITEM_STAMINA"){
+                                            echo "+ ".$item[$id]->showAvarageRarityValue()." Stamina<hr>";
+                                        }
                                     }
-                                    echo "Price: ".$item[$id]->rarityPrice()." g";
+                                    echo "Price: ".$item[$id]->rarityPrice().Core::addImage(IMAGESDIR."/money.png");
 
                                     echo Core::openForm();
 
                                         echo "<input type='hidden' name='item_id' value='".$item[$id]->id()."' />";
-                                        if(!$item[$id]->equipped()){
-                                            echo Core::addInput("submit", "Equip", "form-control btn bg-success mt-3 btn-success");
-                                        } else {
-                                            echo Core::addInput("submit", "Un-equip", "form-control btn bg-danger mt-3 btn-danger");
-                                        }
-                                        if(isset($_POST["Equip"])){
+                                        if($item[$id]->type() == "ITEM_WEAPON" || $item[$id]->type() == "ITEM_ARMOR"){
+                                            if(!$item[$id]->equipped()){
+                                                echo Core::addInput("submit", "Equip", "form-control btn bg-success mt-3 btn-success");
+                                            } else {
+                                                echo Core::addInput("submit", "Un-equip", "form-control btn bg-danger mt-3 btn-danger");
+                                            }
+                                            if(isset($_POST["Equip"])){
 
-                                            $item = Item::getItem($_POST["item_id"]);
+                                                $item = Item::getItem($_POST["item_id"]);
 
-                                            if($item["token"] == $player->token()){
+                                                if($item["token"] == $player->token()){
 
-                                                Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
-                                                Database::queryAlone("UPDATE items SET equipped=1 WHERE id = ?", [$item["id"]]);
-                                                echo Core::refresh();
+                                                    Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
+                                                    Database::queryAlone("UPDATE items SET equipped=1 WHERE id = ?", [$item["id"]]);
+                                                    echo Core::refresh();
+
+                                                }
+
+                                            } elseif(isset($_POST["Un-equip"])){
+
+                                                $item = Item::getItem($_POST["item_id"]);
+
+                                                if($item["token"] == $player->token()){
+
+                                                    Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
+                                                    echo Core::refresh();
+
+                                                }
 
                                             }
+                                        } elseif($item[$id]->type() == "ITEM_POTION"){
 
-                                        } elseif(isset($_POST["Un-equip"])){
+                                            echo Core::addInput("submit", "Use", "form-control btn bg-success mt-3 btn-success");
 
-                                            $item = Item::getItem($_POST["item_id"]);
+                                            if(isset($_POST["Use"])){
 
-                                            if($item["token"] == $player->token()){
+                                                if($item[$id]->subtype() == "ITEM_STAMINA"){
 
-                                                Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
-                                                echo Core::refresh();
+                                                    $get_item = Item::getItem($_POST["item_id"]);
 
+                                                    if($get_item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+
+                                                        if($get_item["quantity"] == 1){
+
+                                                            if($player->stamina() < $player->max_stamina()){
+
+                                                                $item[$id]->remove();
+                                                                $stamina = Core::maxVal($item[$id]->showAvarageRarityValue(), ($player->max_stamina()-$player->stamina()));
+                                                                $player->setStamina($stamina);
+                                                                $_SESSION["stamina_message"] = "You have recovered ${stamina} stamina!";
+                                                                echo Core::refresh();
+
+                                                            } else {
+            
+                                                                $_SESSION["warning"] = "Potion wasn't use because you already have max stamina!";
+            
+                                                            }
+
+                                                        } else {
+
+                                                            if($player->stamina() < $player->max_stamina()){
+
+                                                                $item[$id]->removeOne();
+                                                                $stamina = Core::maxVal($item[$id]->showAvarageRarityValue(), ($player->max_stamina()-$player->stamina()));
+                                                                $player->setStamina($stamina);
+                                                                $_SESSION["stamina_message"] = "You have recovered ${stamina} stamina!";
+                                                                echo Core::refresh();
+
+                                                            } else {
+            
+                                                                $_SESSION["warning"] = "Potion wasn't use because you already have max stamina!";
+            
+                                                            }
+
+                                                        }
+
+                                                    }
+
+                                                }
+                                                    
                                             }
 
                                         }
@@ -628,6 +688,13 @@
                     break;
             }
         
+        ?>
+
+        <?php
+            
+            if(isset($_SESSION["error"])){ echo Core::alert($_SESSION["error"], "danger", "start", "float-start col-12"); unset($_SESSION["error"]);}
+            if(isset($_SESSION["warning"])){ echo Core::alert($_SESSION["warning"], "warning", "start", "float-start col-12"); unset($_SESSION["warning"]);}
+
         ?>
 
     </div>

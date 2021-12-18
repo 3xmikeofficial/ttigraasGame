@@ -38,7 +38,7 @@
 
                                     echo Core::openDiv(["class" => "text-end"]);
 
-                                        echo "<strong><i>".$town->food()." ( + ".((30*Core::minVal($town->farm(), 1)+(($town->farm()**2)))+($town->farm()**2)-(2*Core::minVal($town->farm(), 1)))." / h )</i></strong>";
+                                        echo "<strong><i>".$town->food()." ( + ".((30*Core::maxVal($town->farm(), 1)+(($town->farm()**2)))+($town->farm()**2)-(2*Core::maxVal($town->farm(), 1)))." / h )</i></strong>";
 
                                     echo Core::closeDiv();
                                 echo Core::closeDiv();
@@ -53,7 +53,7 @@
 
                                     echo Core::openDiv(["class" => "text-end"]);
 
-                                        echo "<strong><i>".$town->wood()." ( + ".(8*Core::minVal($town->woodcutter(), 1))." / h )</i></strong>";
+                                        echo "<strong><i>".$town->wood()." ( + ".(8*Core::maxVal($town->woodcutter(), 1))." / h )</i></strong>";
 
                                     echo Core::closeDiv();
                                 echo Core::closeDiv();
@@ -69,7 +69,7 @@
 
                                     echo Core::openDiv(["class" => "text-end"]);
 
-                                        echo "<strong><i>".$town->stone()." ( + ".(8*Core::minVal($town->quarry(), 1))." / h )</i></strong>";
+                                        echo "<strong><i>".$town->stone()." ( + ".(8*Core::maxVal($town->quarry(), 1))." / h )</i></strong>";
 
                                     echo Core::closeDiv();
                                 echo Core::closeDiv();
@@ -85,7 +85,7 @@
 
                                     echo Core::openDiv(["class" => "text-end"]);
 
-                                        echo "<strong><i>".$town->iron()." ( + ".(8*Core::minVal($town->mine(), 1))." / h )</i></strong>";
+                                        echo "<strong><i>".$town->iron()." ( + ".(8*Core::maxVal($town->mine(), 1))." / h )</i></strong>";
 
                                     echo Core::closeDiv();
                                 echo Core::closeDiv();

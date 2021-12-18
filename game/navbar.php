@@ -36,6 +36,7 @@
                 <span><?= $player->stamina(); ?> / <?= $player->max_stamina(); ?></span>
             </div>
         </div>
+        <?php if(isset($_SESSION["stamina_message"])){ echo Core::alert($_SESSION["stamina_message"], "success"); unset($_SESSION["stamina_message"]); } ?>
       </div>
       <?php 
           
@@ -159,6 +160,9 @@
         </a>
         <a href="?page=shop" class="align-center d-block">
             Market
+        </a>
+        <a href="?page=stables" class="align-center d-block">
+            Stables
         </a>
         <a href="?page=inventory" class="align-center d-block">
             Inventory
