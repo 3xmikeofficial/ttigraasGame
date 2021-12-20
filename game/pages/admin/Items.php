@@ -31,8 +31,8 @@
                 ?>
             </select>
 
-            <input type="number" name="quantity" class="form-control mt-3" value="1" />
-            <input type="number" name="rarity" class="form-control mt-3" value="1" max=8 />
+            <input type="number" name="quantity" class="form-control mt-3" value="1" min="1" max="<?= STACK_LIMIT; ?>"/>
+            <input type="number" name="rarity" class="form-control mt-3" value="1" min="1" max="<?= MAX_RARITY; ?>" />
 
             <input type="submit" value="Add Item" name="add_item" class="form-control bg-success mt-3">
 
@@ -40,12 +40,22 @@
             
                 if(isset($_POST["add_item"])){
 
-                    $item = new Item($_POST["item"]);
+                    if(isset($_POST["item"]) && isset($_POST["character"])){
 
-                    $char = new Player($_POST["character"]);
+                        $item = new Item($_POST["item"]);
 
-                    $char->addItem($item->vnum(), $_POST["quantity"], $_POST["rarity"]);
-                    echo Core::alert($_POST["quantity"]."x ".$item->name()." was successfully added!", "success");
+                        $quantity = $_POST["quantity"];
+
+                        if($item->type() == "ITEM_WEAPON" || $item->type() == "ITEM_ARMOR"){
+                            $quantity = 1;
+                        }
+
+                        $char = new Player((int) $_POST["character"]);
+
+                        $char->addItem($item->vnum(), $quantity, $_POST["rarity"]);
+                        echo Core::alert(Item::checkStackLimit($quantity)."x ".$item->name()." ( Tier: ".Item::checkMaxRarity($_POST["rarity"])." ) was successfully added!", "success");
+
+                    }
                     
                 }
             

@@ -129,6 +129,20 @@
 
         }
 
+        public static function checkMaxRarity($value){
+            if($value > MAX_RARITY){
+                $value = MAX_RARITY;
+            }
+            return $value;
+        }
+
+        public static function checkStackLimit($value){
+            if($value > STACK_LIMIT){
+                $value = STACK_LIMIT;
+            }
+            return $value;
+        }
+
         public static function stackExist($vnum, $token, $rarity){
             $query = Database::query("SELECT * FROM items WHERE item_vnum = ? and quantity < ? and token = ? and rarity = ?", [$vnum, STACK_LIMIT, $token, $rarity]);
             return $query > 0 ? true : false;
@@ -181,7 +195,7 @@
             $type = Item::getType($vnum);
             $subtype = Item::getSubtype($vnum);
 
-            Database::queryAlone("INSERT INTO items SET item_vnum = ?, item_type = ?, item_subtype = ?, token = ?, quantity = ?, rarity = ?", [$vnum, $type, $subtype, $token, $quantity, $rarity]);
+            Database::queryAlone("INSERT INTO items SET item_vnum = ?, item_type = ?, item_subtype = ?, token = ?, quantity = ?, rarity = ?", [$vnum, $type, $subtype, $token, self::checkStackLimit($quantity), self::checkMaxRarity($rarity)]);
 
         }
 
@@ -207,7 +221,7 @@
 
         public static function getItems($token){
 
-            $query = Database::queryAll("SELECT * FROM items WHERE token = ?", $token);
+            $query = Database::queryAll("SELECT * FROM items WHERE token = ?", [$token]);
 
             return $query;
 

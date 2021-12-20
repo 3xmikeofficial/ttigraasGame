@@ -30,6 +30,7 @@
     define("MAX_PLAYER_LEVEL", 255);
     define("MAX_BUILDING_LEVEL", 30);
     define("STACK_LIMIT", 255);
+    define("MAX_RARITY", 8);
 
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 'On');

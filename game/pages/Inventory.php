@@ -579,7 +579,9 @@
                             echo Core::openDiv(["class" => "row"]);
                                 echo Core::openDiv(["class" => "col-3 text-center"]);
                                     echo $item[$id]->icon()."<br>";
-                                    echo $item[$id]->quantity()."ks";
+                                    if($item[$id]->quantity() > 1){
+                                        echo $item[$id]->quantity()."ks";
+                                    }
                                 echo Core::closeDiv();
                                 echo Core::openDiv(["class" => "col-9 text-center"]);
                                     if($item[$id]->type() == "ITEM_WEAPON"){
