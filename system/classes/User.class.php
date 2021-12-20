@@ -8,9 +8,17 @@
         protected $_rank;
         protected $_blocked;
 
-        public function __construct($nameortoken){
+        public function __construct($value){
 
-            $query = Database::queryAlone("SELECT * FROM users WHERE username = ? or token = ?  ", [$nameortoken, $nameortoken]);
+            if(gettype($value) == "string"){
+            
+                $query = Database::queryAlone("SELECT * FROM users WHERE username or token = ?  ", [$value]);
+                
+            } else {
+
+                $query = Database::queryAlone("SELECT * FROM users WHERE id = ?  ", [$value]);
+
+            }
 
             $this->_username = $query["username"];
             $this->_password = $query["password"];

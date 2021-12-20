@@ -5,9 +5,17 @@
         protected $_id;
         protected $_token;
 
-        public function __construct($idortoken){
+        public function __construct($value){
 
-            $query = Database::queryAlone("SELECT * FROM characters WHERE id = ? or token = ? ", [$idortoken, $idortoken]);
+            if(gettype($value) == "string"){
+
+                $query = Database::queryAlone("SELECT * FROM characters WHERE token = ?", [$value]);
+
+            } else {
+
+                $query = Database::queryAlone("SELECT * FROM characters WHERE id = ?", [$value]);
+
+            }
 
             $this->_id = $query["id"];
             $this->_token = $query["token"];
