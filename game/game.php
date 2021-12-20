@@ -44,7 +44,7 @@
 
                                     if(Core::check($_POST["race"])){
 
-                                        $name = User::getDataAlone("username", "token", $_SESSION["user_token"]);
+                                        $name = User::getDataAlone("username", $_SESSION["user_token"]);
                                         $race = $_POST["race"];
                         
                                         Player::createChar($name, $race, $_SESSION["user_token"]);

@@ -59,11 +59,15 @@
 
         }
 
-        public static function getDataAlone($data, $var, $val){
+        public static function getDataAlone($var, $value){
 
-            $query = Database::queryAlone("SELECT $data FROM users WHERE $var='$val' ;");
+            if(gettype($value) == "string"){
+                $query = Database::queryAlone("SELECT * FROM users WHERE token = ?", [$value]);
+            } else {
+                $query = Database::queryAlone("SELECT * FROM users WHERE id = ?", [$value]);
+            }
 
-            return $query[$data];
+            return $query[$var];
 
         }
 
@@ -73,7 +77,7 @@
 
             $token = self::createToken();
 
-            Database::queryAlone("INSERT INTO users SET username='$username', password='$password', token='$token' ;");
+            Database::queryAlone("INSERT INTO users SET username = ?, password = ?, token = ?", [$username, $password,$token]);
 
             echo Core::alert("Account successfully created!", "success");
 
@@ -81,7 +85,7 @@
 
         public static function userExist($username){
 
-            $query = Database::query("SELECT * FROM users WHERE username='$username' ;");
+            $query = Database::query("SELECT * FROM users WHERE username = ?", [$username]);
 
             return $query;
 
@@ -114,7 +118,7 @@
 
         public static function existToken($token){
 
-            return Database::query("SELECT * FROM users WHERE token='$token' ;");
+            return Database::query("SELECT * FROM users WHERE token = ?", [$token]);
 
         }
 

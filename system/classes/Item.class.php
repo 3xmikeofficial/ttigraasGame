@@ -207,7 +207,7 @@
 
         public static function getItems($token){
 
-            $query = Database::queryAll("SELECT * FROM items WHERE token='$token' ;");
+            $query = Database::queryAll("SELECT * FROM items WHERE token = ?", $token);
 
             return $query;
 
@@ -240,7 +240,7 @@
 
         public static function getItem($id){
 
-            $query = Database::queryAlone("SELECT * FROM items WHERE id='$id' ;");
+            $query = Database::queryAlone("SELECT * FROM items WHERE id = ?", [$id]);
 
             return $query;
 
@@ -248,7 +248,7 @@
 
         public static function getProto($id){
 
-            $query = Database::queryAlone("SELECT * FROM item_proto WHERE id='$id' ;");
+            $query = Database::queryAlone("SELECT * FROM item_proto WHERE id = ?", [$id]);
 
             return $query;
 
