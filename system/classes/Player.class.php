@@ -5,9 +5,9 @@
         protected $_id;
         protected $_token;
 
-        public function __construct($token){
+        public function __construct($idortoken){
 
-            $query = Database::queryAlone("SELECT * FROM characters WHERE token='$token' ;");
+            $query = Database::queryAlone("SELECT * FROM characters WHERE id = ? or token = ? ", [$idortoken, $idortoken]);
 
             $this->_id = $query["id"];
             $this->_token = $query["token"];
@@ -24,8 +24,8 @@
             $this->_defense = $query["defense"];
             $this->_magicules = $query["magicules"];
             $this->_gold = $query["gold"];
-            $this->_equip = Item::getEquip($token);
-            $this->_inventory = Item::getInventory($token);
+            $this->_equip = Item::getEquip($this->_token);
+            $this->_inventory = Item::getInventory($this->_token);
 
         }
 
@@ -34,6 +34,20 @@
         }
         public function token(){
             return $this->_token;
+        }
+
+        public function addItem($vnum, $type, $subtype, $token, $quantity = 1, $rarity = 1){
+
+            if(Item::isWeapon($vnum) || Item::isArmor($vnum)){
+
+                Item::createItem($vnum, $type, $subtype, $token, 1, $rarity);
+                
+            } else {
+
+                Item::addItem($vnum, $type, $subtype, $token, $quantity, $rarity);
+
+            }
+
         }
 
         public function setStamina($value){

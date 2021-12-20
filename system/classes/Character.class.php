@@ -82,6 +82,14 @@
             return $this->_inventory;
         }
 
+        public static function getAll(){
+
+            $query = Database::queryAll("SELECT * FROM characters");
+
+            return $query;
+
+        }
+
         public static function getClass($race, $class){
 
             switch ($race) {

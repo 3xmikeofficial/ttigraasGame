@@ -14,10 +14,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -76,10 +76,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -138,10 +138,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -200,10 +200,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -262,10 +262,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -324,10 +324,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -386,10 +386,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -448,10 +448,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -510,10 +510,10 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
+                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3");
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3"]);
                                         echo $item[$id]->icon();
@@ -572,10 +572,10 @@
                         echo "<div class='equipment'>";
                             echo "<div class='item float-start'>";
                             $test = "<span class='quantity'>".($item[$id]->quantity() == 1 ? "" : $item[$id]->quantity())."</span>";
-                            echo Core::modalButton(Core::numberText($item[$id]->vnum()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3", $test);
+                            echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3", $test);
                             echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                         
-                        echo Core::openModal(Core::numberText($item[$id]->vnum()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                        echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
                             echo Core::openDiv(["class" => "row"]);
                                 echo Core::openDiv(["class" => "col-3 text-center"]);
                                     echo $item[$id]->icon()."<br>";

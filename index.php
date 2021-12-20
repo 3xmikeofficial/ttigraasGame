@@ -113,15 +113,14 @@
                                                 $username = $_POST["username"];
 
                                                 $password = $_POST["password"];
-                                                $query = Database::queryAlone("SELECT `password` FROM users WHERE username='$username'");
+                                                $query = Database::queryAlone("SELECT * FROM users WHERE username = ?", [$username]);
                                                 
 
                                                 if(password_verify($password,$query["password"])){
 
                                                     echo Core::alert("Login successfull!", "success");
 
-                                                    $user = new User($username);
-                                                    $_SESSION["user_token"] = $user->token();
+                                                    $_SESSION["user_token"] = $query["token"];
                                                     echo Core::redirect(URL."game/game.php");
 
                                                 } else {

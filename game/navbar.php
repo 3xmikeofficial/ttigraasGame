@@ -176,6 +176,13 @@
         <a href="?page=guild" class="align-center d-block">
             Guild
         </a>
+        <?php 
+          $user = new User($_SESSION["user_token"]);
+        if($user->isAdmin()){ ?>
+          <a href="?page=admin" class="align-center d-block">
+            Administration
+          </a>
+        <?php } ?>
         <a href="?page=logout" class="mb-3 align-center d-block">
             Logout
         </a>

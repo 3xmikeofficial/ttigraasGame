@@ -49,6 +49,16 @@
         public function type(){
             return $this->_type;
         }
+        public static function getType($id){
+            $query = Database::queryAlone("SELECT * FROM item_proto WHERE id = ?", [$id]);
+            return $query["item_type"];
+        }
+        public static function isWeapon($id){
+            return self::getType($id) == "ITEM_WEAPON" ? true : false;
+        }
+        public static function isArmor($id){
+            return self::getType($id) == "ITEM_ARMOR" ? true : false;
+        }
         public function subtype(){
             return $this->_subtype;
         }
@@ -105,6 +115,67 @@
         public function removeOne(){
             $this->_quantity -= 1;
             Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$this->_quantity, $this->_id]);
+        }
+
+        public static function getAll(){
+
+            $query = Database::queryAll("SELECT * FROM item_proto");
+
+            return $query;
+
+        }
+
+        public static function stackExist($vnum, $token, $rarity){
+            $query = Database::query("SELECT * FROM items WHERE item_vnum = ? and quantity < ? and token = ? and rarity = ?", [$vnum, STACK_LIMIT, $token, $rarity]);
+            return $query > 0 ? true : false;
+        }
+
+        public static function updateStack($id, $quantity){
+
+            Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$quantity, $id]);
+
+        }
+
+        public static function addItem($vnum, $type, $subtype, $token, $quantity, $rarity){
+            $remaining = $quantity;
+
+            while($remaining > 0){
+
+                if(self::stackExist($vnum, $token, $rarity)){
+
+                    $stack_row = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and token = ? and quantity < ? and rarity = ? LIMIT 1", [$vnum, $token, STACK_LIMIT, $rarity]);
+                    $update_quantity = $stack_row["quantity"]+$remaining;
+                    if($update_quantity >= STACK_LIMIT){
+                        $remaining = $update_quantity-STACK_LIMIT;
+                        $update_quantity = STACK_LIMIT;
+                        self::updateStack($stack_row["id"], $update_quantity);
+                    } else {
+    
+                        self::updateStack($stack_row["id"], $update_quantity);
+                        $remaining = 0;
+
+                    }
+    
+                } else {
+
+                    if($remaining > STACK_LIMIT){
+
+                        self::createItem($vnum,$type, $subtype, $token, STACK_LIMIT, $rarity);
+                        $remaining = $remaining-STACK_LIMIT;
+
+                    } else {
+                        self::createItem($vnum,$type, $subtype, $token, $remaining, $rarity);
+                        $remaining = 0;
+                    }
+                }
+
+            }
+        }
+
+        public static function createItem($vnum, $type, $subtype, $token, $quantity = 1, $rarity = 1){
+
+            Database::queryAlone("INSERT INTO items SET item_vnum = ?, item_type = ?, item_subtype = ?, token = ?, quantity = ?, rarity = ?", [$vnum, $type, $subtype, $token, $quantity, $rarity]);
+
         }
 
         public function icon(){

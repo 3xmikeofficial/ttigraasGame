@@ -5,15 +5,17 @@
         protected $_username;
         protected $_password;
         protected $_token;
+        protected $_rank;
         protected $_blocked;
 
-        public function __construct($username){
+        public function __construct($nameortoken){
 
-            $query = Database::queryAlone("SELECT * FROM users WHERE username='$username' ;");
+            $query = Database::queryAlone("SELECT * FROM users WHERE username = ? or token = ?  ", [$nameortoken, $nameortoken]);
 
             $this->_username = $query["username"];
             $this->_password = $query["password"];
             $this->_token = $query["token"];
+            $this->_rank = $query["rank"];
             $this->_blocked = $query["blocked"];
             
         }
@@ -22,6 +24,17 @@
 
             return $this->_token;
 
+        }
+        public function rank(){
+
+            return $this->_rank;
+
+        }
+
+        public function isAdmin(){
+            if($this->_rank == 777){
+                return true;
+            }
         }
 
         public static function isLoggedIn(){

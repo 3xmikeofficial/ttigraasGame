@@ -221,7 +221,7 @@
             for ($i = 0; $i < count($num_levels); $i++) {
                 $levels--;
                 $hundreds = (int) ($num_levels[$i] / 100);
-                $hundreds = ($hundreds ? '_' . $list1[$hundreds] . ' hundred' . '_' : '');
+                $hundreds = ($hundreds ? '_' . $list1[$hundreds] . '_hundred' . '_' : '');
                 $tens = (int) ($num_levels[$i] % 100);
                 $singles = '';
                 if ( $tens < 20 ) {
@@ -232,7 +232,7 @@
                     $singles = (int) ($num_levels[$i] % 10);
                     $singles = '_' . $list1[$singles] . '_';
                 }
-                $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+                $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? '_' . $list3[$levels] . '_' : '' );
             } //end for loop
             $commas = count($words);
             if ($commas > 1) {
