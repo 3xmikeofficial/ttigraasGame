@@ -416,6 +416,9 @@ label {
   background-color: #282a2e;
   color: #bfbfbf;
 }
+.form-control.selectmultiple {
+  height: 145px !important;
+}
 
 .equipment .weapon {
   margin-left: 25px !important;

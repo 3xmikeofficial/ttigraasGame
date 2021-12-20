@@ -5,8 +5,8 @@
 
         <form action="<?php $PHP_SELF; ?>" method="post">
         
-            <select name="character" class="form-control">
-                <option selected disabled>---> Choose a character <---</option>
+            <select name="character" class="form-control selectmultiple" size="1" multiple="multiple">
+                <option disabled>Choose player:</option>
                 <?php 
 
                     $characters = Character::getAll();
@@ -18,8 +18,8 @@
                 ?>
             </select>
 
-            <select name="item" class="form-control mt-3">
-                <option selected disabled>---> Choose item <---</option>
+            <select name="item" class="form-control selectmultiple mt-3" size="1" multiple="multiple">
+                <option disabled>Choose item:</option>
                 <?php 
 
                     $items = Item::getAll();
