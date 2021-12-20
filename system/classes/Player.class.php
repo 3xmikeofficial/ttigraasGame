@@ -36,15 +36,15 @@
             return $this->_token;
         }
 
-        public function addItem($vnum, $type, $subtype, $token, $quantity = 1, $rarity = 1){
+        public function addItem($vnum, $quantity = 1, $rarity = 1){
 
             if(Item::isWeapon($vnum) || Item::isArmor($vnum)){
 
-                Item::createItem($vnum, $type, $subtype, $token, 1, $rarity);
+                Item::createItem($vnum, $this->_token, 1, $rarity);
                 
             } else {
 
-                Item::addItem($vnum, $type, $subtype, $token, $quantity, $rarity);
+                Item::addItem($vnum, $this->_token, $quantity, $rarity);
 
             }
 

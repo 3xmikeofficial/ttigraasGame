@@ -44,7 +44,7 @@
 
                     $char = new Player($_POST["character"]);
 
-                    $char->addItem($item->vnum(), $item->type(), $item->subtype(), $char->token(), $_POST["quantity"], $_POST["rarity"]);
+                    $char->addItem($item->vnum(), $_POST["quantity"], $_POST["rarity"]);
                     echo Core::alert($_POST["quantity"]."x ".$item->name()." was successfully added!", "success");
                     
                 }

@@ -156,7 +156,7 @@
     </ul>
       <div class="mt-5" style="width:100%">
         <a href="?page=free_guild" class="align-center d-block">
-            Tavern
+            Free Guild
         </a>
         <a href="?page=shop" class="align-center d-block">
             Market

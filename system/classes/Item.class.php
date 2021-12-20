@@ -53,6 +53,10 @@
             $query = Database::queryAlone("SELECT * FROM item_proto WHERE id = ?", [$id]);
             return $query["item_type"];
         }
+        public static function getSubtype($id){
+            $query = Database::queryAlone("SELECT * FROM item_proto WHERE id = ?", [$id]);
+            return $query["item_subtype"];
+        }
         public static function isWeapon($id){
             return self::getType($id) == "ITEM_WEAPON" ? true : false;
         }
@@ -136,7 +140,7 @@
 
         }
 
-        public static function addItem($vnum, $type, $subtype, $token, $quantity, $rarity){
+        public static function addItem($vnum, $token, $quantity, $rarity){
             $remaining = $quantity;
 
             while($remaining > 0){
@@ -160,11 +164,11 @@
 
                     if($remaining > STACK_LIMIT){
 
-                        self::createItem($vnum,$type, $subtype, $token, STACK_LIMIT, $rarity);
+                        self::createItem($vnum, $token, STACK_LIMIT, $rarity);
                         $remaining = $remaining-STACK_LIMIT;
 
                     } else {
-                        self::createItem($vnum,$type, $subtype, $token, $remaining, $rarity);
+                        self::createItem($vnum, $token, $remaining, $rarity);
                         $remaining = 0;
                     }
                 }
@@ -172,7 +176,10 @@
             }
         }
 
-        public static function createItem($vnum, $type, $subtype, $token, $quantity = 1, $rarity = 1){
+        public static function createItem($vnum, $token, $quantity = 1, $rarity = 1){
+
+            $type = Item::getType($vnum);
+            $subtype = Item::getSubtype($vnum);
 
             Database::queryAlone("INSERT INTO items SET item_vnum = ?, item_type = ?, item_subtype = ?, token = ?, quantity = ?, rarity = ?", [$vnum, $type, $subtype, $token, $quantity, $rarity]);
 
