@@ -1,6 +1,6 @@
 <div class="card bg-dark">
 
-    <div class="card-header">Item section</div>
+    <div class="card-header">Item creator</div>
     <div class="card-body">
 
         <form action="<?php $PHP_SELF; ?>" method="post">
@@ -65,4 +65,48 @@
 
     </div>
 
+</div>
+<div class="card bg-dark mb-5">
+    <div class="card-header bg-dark">Loot creator</div>
+    <div class="card-body bg-dark">
+        <form action="<?php $PHP_SELF; ?>" method="post">
+            <select name="items[]" class="form-control selectmultiple mt-3" multiple="multiple">
+                <option disabled>Choose items:</option>
+                <?php 
+
+                    $items = Item::getAll();
+
+                    foreach ($items as $item) {
+                        echo "<option value='".$item['id']."'>".$item['item_name']."</option>";
+                    }
+                
+                ?>
+            </select>
+
+            <input type="submit" value="Generate loot" name="generate_loot" class="form-control bg-success mt-3">
+
+            <?php 
+            
+                if(isset($_POST["generate_loot"])){
+                    
+                    
+
+                    if(isset($_POST["items"])){
+
+                        $loot = array();
+                        foreach ($_POST["items"] as $item) {
+                            array_push($loot, array("vnum" => $item, "quantity" => 1, "rarity" => 1));
+                        }
+                        
+
+                    }
+                echo "<textarea readonly='readonly' class='form-control mt-3'>".serialize($loot)."</textarea>";
+                echo "<textarea readonly='readonly' class='form-control mt-3'>".var_dump($loot)."</textarea>";
+                    
+                }
+            
+            ?>
+
+        </form>
+    </div>
 </div>

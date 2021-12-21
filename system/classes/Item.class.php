@@ -105,8 +105,14 @@
         public function rarity(){
             return $this->_rarity;
         }
+        public function setRarity($rarity){
+            $this->_rarity = $rarity;
+        }
         public function quantity(){
             return $this->_quantity;
+        }
+        public function setQuantity($quantity){
+            $this->_quantity = $quantity;
         }
         public function equipped(){
             return $this->_equipped;

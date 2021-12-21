@@ -420,6 +420,21 @@ label {
   height: 145px !important;
 }
 
+.nav-pills .nav-link.active, .nav-pills .nav-link.hover {
+  background-color: #31373d;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .equipment .weapon {
   margin-left: 25px !important;
   margin-top: 18px;

@@ -32,7 +32,7 @@
 
                 return '
                 
-                    <div class="alert alert-'.$type.' mb-0 mt-3 text-'.$align.'" role="alert">
+                    <div class="alert alert-'.$type.' mb-0 text-'.$align.'" role="alert">
                         <strong>Victory!</strong> '.$alert.'
                     </div>
                 ';
@@ -41,7 +41,7 @@
 
                 return '
                 
-                    <div class="alert alert-'.$type.' mb-0 mt-3 text-'.$align.'" role="alert">
+                    <div class="alert alert-'.$type.' mb-0 text-'.$align.'" role="alert">
                         <strong>Warning!</strong> '.$alert.'
                     </div>
                 ';
@@ -50,7 +50,7 @@
 
                 return '
                 
-                    <div class="alert alert-'.$type.' mb-0 mt-3 text-'.$align.'" role="alert">
+                    <div class="alert alert-'.$type.' mb-0 text-'.$align.'" role="alert">
                         <strong>Lost!</strong> '.$alert.'
                     </div>
                 ';
