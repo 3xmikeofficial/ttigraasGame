@@ -33,6 +33,7 @@
             $this->_min_value = $tooltip["min_value"];
             $this->_max_value = $tooltip["max_value"];
             $this->_price = $tooltip["price"];
+            $this->_salvage = $tooltip["salvage"];
             $this->_rarity = $rarity;
 
         }
@@ -107,6 +108,9 @@
         }
         public function setRarity($rarity){
             $this->_rarity = $rarity;
+        }
+        public function salvage(){
+            return $this->_salvage;
         }
         public function quantity(){
             return $this->_quantity;
@@ -247,7 +251,7 @@
                     $query .= "Stamina: +".(self::getAvarageValue($this->_min_value, $this->_max_value)*$this->_rarity);
                 }
             } else {
-
+                $query .= "Crafting material";
             }
 
             $query .= "<hr>";

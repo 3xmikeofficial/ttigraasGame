@@ -32,6 +32,8 @@
     define("STACK_LIMIT", 255);
     define("MAX_RARITY", 8);
 
+    define("LOOT_CHANCE_MULTIPLIER", 100);
+
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 'On');
     ini_set('log_errors', 'On');

@@ -140,7 +140,7 @@ if(!isset($_GET["section"])){
                 
                                         if($player->stamina() > $quest["cost"]){
                                 
-                                            $monster = new Monster($quest["name"], [$quest["health"],$quest["speed"],$quest["strenght"],$quest["defense"]], Core::Random($quest["min_exp"], $quest["max_exp"]), Core::Random($quest["min_gold"], $quest["max_gold"]), $quest["inventory"], $quest["cost"]);
+                                            $monster = new Monster($quest["name"], [$quest["health"],$quest["speed"],$quest["strenght"],$quest["defense"]], Core::Random($quest["min_exp"], $quest["max_exp"]), Core::Random($quest["min_gold"], $quest["max_gold"]),Core::Random($quest["min_magicules"], $quest["max_magicules"]), $quest["inventory"], $quest["cost"]);
                                     
                                             $turn = 0;
                                             $gameover = false;
@@ -218,6 +218,9 @@ if(!isset($_GET["section"])){
                                                 if($player->health() >= $monster->health()){
                                                     $player->addExp($monster->exp());
                                                     $player->addGold($monster->gold());
+                                                    $exp = $monster->exp();
+                                                    $gold = $monster->gold();
+                                                    $magicules = $monster->magicules();
                                                     $battle_status = "win";
                                                     echo Quests::alert("You earned <strong>".$monster->exp()."</strong> exp and <strong>".$monster->gold()."</strong> gold.", "success");
                                                 } else {
@@ -268,25 +271,33 @@ if(!isset($_GET["section"])){
                                         if(isset($quest["inventory"]) && $quest["inventory"] != ""){
                                             $loot = unserialize($quest["inventory"]);
                                             echo '<div class="equipment">';
-                                                foreach ($loot as $loot_item) {
-                                                    $player->addItem($loot_item["vnum"], $loot_item["quantity"], $loot_item["rarity"]);
-                                                    $selected_item = new Item($loot_item["vnum"]);
-                                                    $selected_item->setQuantity($loot_item["quantity"]);
-                                                    $selected_item->setRarity($loot_item["rarity"]);
-                                                    echo '
-                                                        <div class="item float-start">
-                                                            <div class="'.$selected_item->sizeText().'-slot m-3">
-                                                                '.$selected_item->icon().'
-                                                                <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>
+                                                foreach ($loot as $id => $loot_item) {
+                                                    $loot_chances[$id] = $loot_item["chance"]*LOOT_CHANCE_MULTIPLIER;
+                                                    $random_numbers[$id] = Quests::randomLootNumber();
+                                                    if($loot_chances[$id] >= $random_numbers[$id]){
+                                                        $player->addItem($loot_item["vnum"], $loot_item["quantity"], $loot_item["rarity"]);
+                                                        $selected_item = new Item($loot_item["vnum"]);
+                                                        $selected_item->setQuantity($loot_item["quantity"]);
+                                                        $selected_item->setRarity($loot_item["rarity"]);
+                                                        echo '
+                                                            <div class="item float-start">
+                                                                <div class="'.$selected_item->sizeText().'-slot '.Item::getRarityClass($selected_item->rarity()).' m-3">
+                                                                    '.$selected_item->icon().'
+                                                                    <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>
+                                                                </div>
+                                                                <div class="stats text-center">
+                                                                    '.$selected_item->showToolTip().'
+                                                                </div>
                                                             </div>
-                                                            <div class="stats text-center">
-                                                                '.$selected_item->showToolTip().'
-                                                            </div>
-                                                        </div>
-                                                    ';
+                                                        ';
+                                                    }
                                                     
                                                 }
-                                            echo "</div>";
+                                                echo "</div>";
+                                                echo '<hr class="col-12 float-start">';
+                                                echo '<div class="col-6 float-start text-start">Gold: </div><div class="col-6 float-start text-end"><strong><i>'.$gold.'</i></strong></div>';
+                                                echo '<div class="col-6 float-start text-start">Exp: </div><div class="col-6 float-start text-end"><strong><i>'.$exp.'</i></strong></div>';                                                                            
+                                                echo '<div class="col-6 float-start text-start">Magicules: </div><div class="col-6 float-start text-end"><strong><i>'.$magicules.'</i></strong></div>';                                                                            
                                         } else {
                                             echo "You didnt get loot this time!";
                                         }

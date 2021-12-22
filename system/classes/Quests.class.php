@@ -20,6 +20,10 @@
 
         }
 
+        public static function randomLootNumber(){
+            return rand(1,10000);
+        }
+
         public static function getOne($id){
 
             $query = Database::queryAlone("SELECT * FROM quests WHERE id = ?", [$id]);
