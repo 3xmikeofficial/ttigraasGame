@@ -2,11 +2,21 @@
 
     class Quests{
 
-        public static function getAll(){
+        public static function getAll($section = ""){
 
-            $query = Database::queryAll("SELECT * FROM quests");
+            if(!empty($section)){
 
-            return $query;
+                $query = Database::queryAll("SELECT * FROM quests WHERE section = ?", [$section]);
+
+                return $query;
+
+            } else {
+
+                $query = Database::queryAll("SELECT * FROM quests");
+
+                return $query;
+
+            }
 
         }
 

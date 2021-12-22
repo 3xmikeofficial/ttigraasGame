@@ -525,3 +525,27 @@ input[type=number] {
   top: 2px;
   left: 2px;
 }
+.small-slot.common, .medium-slot.common, .large-slot.common {
+  border: 1px solid #666666 !important;
+}
+.small-slot.uncommon, .medium-slot.uncommon, .large-slot.uncommon {
+  border: 1px solid #ffffff !important;
+}
+.small-slot.special, .medium-slot.special, .large-slot.special {
+  border: 1px solid #1eff00 !important;
+}
+.small-slot.rare, .medium-slot.rare, .large-slot.rare {
+  border: 1px solid #0070dd !important;
+}
+.small-slot.unique, .medium-slot.unique, .large-slot.unique {
+  border: 1px solid #00ccff !important;
+}
+.small-slot.legend, .medium-slot.legend, .large-slot.legend {
+  border: 1px solid #a335ee !important;
+}
+.small-slot.mythical, .medium-slot.mythical, .large-slot.mythical {
+  border: 1px solid #e6cc80 !important;
+}
+.small-slot.genesis, .medium-slot.genesis, .large-slot.genesis {
+  border: 1px solid #ff8000 !important;
+}

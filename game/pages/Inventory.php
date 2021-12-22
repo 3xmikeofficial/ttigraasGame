@@ -572,7 +572,7 @@
                         echo "<div class='equipment'>";
                             echo "<div class='item float-start'>";
                             $test = "<span class='quantity'>".($item[$id]->quantity() == 1 ? "" : $item[$id]->quantity())."</span>";
-                            echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot m-3", $test);
+                            echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot ".Item::getRarityClass($item[$id]->rarity())." m-3", $test);
                             echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                         
                         echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));

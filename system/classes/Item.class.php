@@ -294,46 +294,50 @@
         }
 
         public static function getRarityColorText($rarity, $text){
+            $rarity = self::getRarityColor($rarity);
+            return "<span style='color: ${rarity}'>${text}</span>";
+        }
+        public static function getRarityClass($rarity){
             switch ($rarity) {
                 default:
-                    $rarity = "#9d9d9d"; // Common Grade
+                    $query = "common"; // Common Grade
                     break;
 
                 case 2:
-                    $rarity = "#ffffff"; // Uncommon Grade
+                    $query = "uncommon"; // Uncommon Grade
                     break;
 
                 case 3:
-                    $rarity = "#1eff00"; // Special Grade
+                    $query = "special"; // Special Grade
                     break;
 
                 case 4:
-                    $rarity = "#0070dd"; // Rare Grade
+                    $query = "rare"; // Rare Grade
                     break;
 
                 case 5:
-                    $rarity = "#00ccff"; // Unique Grade
+                    $query = "unique"; // Unique Grade
                     break;
 
                 case 6:
-                    $rarity = "#a335ee"; // Legend Grade
+                    $query = "legend"; // Legend Grade
                     break;
 
                 case 7:
-                    $rarity = "#e6cc80"; // Mythical (Gods) Grade
+                    $query = "mythical"; // Mythical (Gods) Grade
                     break;
 
                 case 8:
-                    $rarity = "#ff8000"; // Genesis Class
+                    $query = "genesis"; // Genesis Class
                     break;
             }
-            return "<span style='color: ${rarity}'>${text}</span>";
+            return $query;
         }
         public static function getRarityColor($rarity){
 
             switch ($rarity) {
                 default:
-                    return "#9d9d9d"; // Common Grade
+                    return "#666666"; // Common Grade
                     break;
 
                 case 2:
