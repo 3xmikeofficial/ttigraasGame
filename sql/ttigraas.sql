@@ -11,7 +11,7 @@
  Target Server Version : 100421
  File Encoding         : 65001
 
- Date: 18/12/2021 14:24:37
+ Date: 22/12/2021 15:59:05
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `characters`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `token`(`token`) USING BTREE,
   CONSTRAINT `token` FOREIGN KEY (`token`) REFERENCES `users` (`token`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for item_proto
@@ -53,11 +53,12 @@ CREATE TABLE `item_proto`  (
   `item_subtype` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `size` int NOT NULL DEFAULT 1,
   `stackable` tinyint(1) NOT NULL DEFAULT 0,
-  `min_value` bigint NULL DEFAULT NULL,
-  `max_value` bigint NULL DEFAULT NULL,
+  `min_value` bigint NOT NULL DEFAULT 0,
+  `max_value` bigint NOT NULL DEFAULT 0,
   `price` bigint NULL DEFAULT NULL,
+  `salvage` varchar(9999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 105 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for items
@@ -68,16 +69,14 @@ CREATE TABLE `items`  (
   `item_vnum` int NOT NULL,
   `item_type` enum('ITEM_WEAPON','ITEM_ARMOR','ITEM_POTION','ITEM_POISON','ITEM_MISC') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'ITEM_MISC',
   `item_subtype` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `quantity` tinyint UNSIGNED NOT NULL DEFAULT 1,
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `quantity` tinyint UNSIGNED NOT NULL DEFAULT 1,
   `rarity` int NOT NULL DEFAULT 1,
   `equipped` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `vnum`(`item_vnum`) USING BTREE,
-  INDEX `owner`(`token`) USING BTREE,
-  CONSTRAINT `owner` FOREIGN KEY (`token`) REFERENCES `characters` (`token`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `vnum` FOREIGN KEY (`item_vnum`) REFERENCES `item_proto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  INDEX `owner`(`token`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for labyrinth
@@ -103,10 +102,14 @@ CREATE TABLE `quests`  (
   `defense` int NOT NULL DEFAULT 0,
   `min_exp` int NOT NULL DEFAULT 5,
   `max_exp` int NOT NULL DEFAULT 10,
-  `min_gold` int NOT NULL DEFAULT 5,
-  `max_gold` int NOT NULL DEFAULT 10,
-  `inventory` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `cost` int NOT NULL DEFAULT 5,
+  `min_gold` int NOT NULL DEFAULT 10,
+  `max_gold` int NOT NULL DEFAULT 20,
+  `min_magicules` int NOT NULL DEFAULT 0,
+  `max_magicules` int NOT NULL DEFAULT 0,
+  `inventory` varchar(9999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `section` enum('NONE','Beginner','Intermediate','Expert','Master','Levels','Golds','Magicules','Conquest','Events') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'NONE',
+  `time` int NOT NULL,
+  `cost` int NOT NULL DEFAULT 60,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -181,9 +184,10 @@ CREATE TABLE `users`  (
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `rank` int NOT NULL DEFAULT 0,
   `blocked` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
