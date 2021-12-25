@@ -183,9 +183,9 @@
                                                             if($salvage["chance"]*LOOT_CHANCE_MULTIPLIER >= Item::randomSalvageNumber()){
                                                                 array_push($salvage_result, array("vnum" => $salvage_item["vnum"], "quantity" => $salvage_item["quantity"], "rarity" => $salvage_item["rarity"]));
                                                                 $player->addItem($salvage_item["vnum"],$salvage_item["quantity"],$salvage_item["rarity"]);
-                                                                $item[$id]->remove();
                                                             }
                                                         }
+                                                        $item[$id]->remove();
 
                                                         $_SESSION["salvage"] = $salvage_result;
 

@@ -274,9 +274,15 @@ if(!isset($_GET["section"])){
                                             $loot = @$quest_rewards[$quest["name"]];
                                             echo '<div class="equipment">';
                                                 foreach ($loot as $id => $loot_item) {
-                                                    $loot_chances[$id] = $loot_item["chance"]*LOOT_CHANCE_MULTIPLIER;
+                                                    if(isset($loot_item["chance"])){
+                                                        $loot_chances[$id] = $loot_item["chance"]*LOOT_CHANCE_MULTIPLIER;
+                                                    } else {
+                                                        $loot_chances[$id] = 0;
+                                                    }
                                                     $random_numbers[$id] = Quests::randomLootNumber();
+                                                    $reward = false;
                                                     if($loot_chances[$id] >= $random_numbers[$id]){
+                                                        $reward = true;
                                                         $player->addItem($loot_item["vnum"], $loot_item["quantity"], $loot_item["rarity"]);
                                                         $selected_item = new Item($loot_item["vnum"]);
                                                         $selected_item->setQuantity($loot_item["quantity"]);
@@ -292,6 +298,9 @@ if(!isset($_GET["section"])){
                                                                 </div>
                                                             </div>
                                                         ';
+                                                    }
+                                                    if($reward == false){
+                                                        echo "You didn't get reward this time!";
                                                     }
                                                     
                                                 }
