@@ -75,7 +75,52 @@
 
         public static function createChar($name, $race, $token){
 
-            Database::queryAlone("INSERT INTO characters SET name= ?, race= ?, token= ? ",[$name,$race,$token]);
+            switch ($race) {
+                case 'Slime':
+                    $health = 100;
+                    $speed = 10;
+                    $strenght = 20;
+                    $defense = 0;
+                    break;
+                case 'Human':
+                    $health = 100;
+                    $speed = 10;
+                    $strenght = 20;
+                    $defense = 0;
+                    break;
+                case 'Demon':
+                    $health = 100;
+                    $speed = 10;
+                    $strenght = 20;
+                    $defense = 0;
+                    break;
+                case 'Angel':
+                    $health = 100;
+                    $speed = 10;
+                    $strenght = 20;
+                    $defense = 0;
+                    break;
+                case 'Goblin':
+                    $health = 100;
+                    $speed = 10;
+                    $strenght = 20;
+                    $defense = 0;
+                    break;
+                case 'Lizardman':
+                    $health = 100;
+                    $speed = 10;
+                    $strenght = 20;
+                    $defense = 0;
+                    break;
+                case 'Orc':
+                    $health = 100;
+                    $speed = 10;
+                    $strenght = 20;
+                    $defense = 0;
+                    break;
+            }
+
+            Database::queryAlone("INSERT INTO characters SET name = ?, token = ?, race = ?, health = ?, speed = ?, strenght = ?, defense = ? ",[$name,$token,$race,$health,$speed,$strenght,$defense]);
 
         }
 

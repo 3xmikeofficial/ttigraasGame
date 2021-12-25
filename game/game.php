@@ -104,7 +104,7 @@
 
                 } else {
 
-                    
+                    include_once(PAGES.DIRECTORY_SEPARATOR."news.php");
 
                 }
 

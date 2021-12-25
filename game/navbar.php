@@ -43,7 +43,7 @@
         $equip = $player->equip();
 
         foreach ($equip as $id => $item) {
-            $selected_item[$id] = new Item($item["item_vnum"], $item["rarity"], $item["id"]);
+            $selected_item[$id] = new Item($item["item_vnum"], $item["quantity"], $item["rarity"], "", $item["id"]);
 
             if($selected_item[$id]->type() == "ITEM_WEAPON"){
               $weapon = $selected_item[$id];
@@ -70,7 +70,7 @@
 
       <div class="equipment mt-5">
         <div class="helmet">
-          <div class="small-slot item mx-auto">
+          <div class="small-slot <?php if(isset($helmet)){ echo Item::getRarityClass($helmet->rarity()); } ?> item mx-auto">
           <?php 
             if(isset($helmet)){ ?>
               <div class="stats">
@@ -95,15 +95,18 @@
             <?= $weapon->showTooltip(); ?>
           </div>
         <?php } ?>
-        <div class="medium-slot mt-3"><?php if(isset($weapon)){ echo $weapon->icon(); } else { echo Item::notEquiped(); } ?></div>
+        <div class="medium-slot <?php if(isset($weapon)){ echo Item::getRarityClass($weapon->rarity()); } ?> mt-3"><?php if(isset($weapon)){ echo $weapon->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
-        <div class="armor float-start">
-          <div class="medium-slot item mt-3">
-          <?php if(isset($armor)){ ?><div class="stats"><?= $armor->showTooltip(); ?></div><?php } ?>
-            <?php if(isset($armor)){ echo $armor->icon(); } else { echo Item::notEquiped(); } ?></div>
+        <div class="armor item float-start">
+        <?php if(isset($armor)){ ?>
+          <div class="stats">
+            <?= $armor->showTooltip(); ?>
+          </div>
+        <?php } ?>
+        <div class="medium-slot <?php if(isset($armor)){ echo Item::getRarityClass($armor->rarity()); } ?> mt-3"><?php if(isset($armor)){ echo $armor->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="shield float-start">
-          <div class="small-slot item mt-3">
+          <div class="small-slot <?php if(isset($shield)){ echo Item::getRarityClass($shield->rarity()); } ?> item mt-3">
           <?php if(isset($shield)){ ?>
             <div class="stats">
               <?= $shield->showTooltip(); ?>
@@ -117,26 +120,29 @@
               <?= $earings->showTooltip(); ?>
             </div>
           <?php } ?>
-          <div class="small-slot mt-3"><?php if(isset($earings)){ echo $earings->icon(); } else { echo Item::notEquiped(); } ?></div>
+          <div class="small-slot <?php if(isset($earings)){ echo Item::getRarityClass($earings->rarity()); } ?> mt-3"><?php if(isset($earings)){ echo $earings->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="bracelet item float-start">
         <?php if(isset($bracelet)){ ?><div class="stats"><?= $bracelet->showTooltip(); ?></div><?php } ?>
-          <div class="small-slot mt-3"><?php if(isset($bracelet)){ echo $bracelet->icon(); } else { echo Item::notEquiped(); } ?></div>
+          <div class="small-slot <?php if(isset($bracelet)){ echo Item::getRarityClass($bracelet->rarity()); } ?> mt-3"><?php if(isset($bracelet)){ echo $bracelet->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="necklace item float-start">
         <?php if(isset($necklace)){ ?><div class="stats"><?= $necklace->showTooltip(); ?></div><?php } ?>
-          <div class="small-slot mt-3"><?php if(isset($necklace)){ echo $necklace->icon(); } else { echo Item::notEquiped(); } ?></div>
+          <div class="small-slot <?php if(isset($necklace)){ echo Item::getRarityClass($necklace->rarity()); } ?> mt-3"><?php if(isset($necklace)){ echo $necklace->icon(); } else { echo Item::notEquiped(); } ?></div>
+        </div>
+        <div class="col-12 float-start">
+          <div class="belt item">
+            <?php if(isset($belt)){ ?><div class="stats"><?= $belt->showTooltip(); ?></div><?php } ?>
+            <div class="small-slot <?php if(isset($belt)){ echo Item::getRarityClass($belt->rarity()); } ?> mt-3"><?php if(isset($belt)){ echo $belt->icon(); } else { echo Item::notEquiped(); } ?></div>
+          </div>
+        </div>
+        <div class="col-12 float-start">
+          <div class="boots item">
+            <?php if(isset($boots)){ ?><div class="stats"><?= $boots->showTooltip(); ?></div><?php } ?>
+            <div class="small-slot <?php if(isset($boots)){ echo Item::getRarityClass($boots->rarity()); } ?> mt-3"><?php if(isset($boots)){ echo $boots->icon(); } else { echo Item::notEquiped(); } ?></div>
+          </div>
         </div>
         <div class="clearfix"></div>
-        <div class="belt item">
-          <?php if(isset($belt)){ ?><div class="stats"><?= $belt->showTooltip(); ?></div><?php } ?>
-          <div class="small-slot mx-auto"><?php if(isset($belt)){ echo $belt->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-        <div class="boots item">
-          <?php if(isset($boots)){ ?><div class="stats"><?= $boots->showTooltip(); ?></div><?php } ?>
-          <div class="small-slot mx-auto"><?php if(isset($boots)){ echo $boots->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-      </div>
 
       <li class="nav-item row mx-0 lh-lg mt-5">
           <div class="col-6"><?php echo "Health<br><color class='text-success'><strong>".$player->health(); ?></strong></color></div>

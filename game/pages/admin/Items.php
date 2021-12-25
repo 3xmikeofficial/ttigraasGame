@@ -18,7 +18,7 @@
                 ?>
             </select>
 
-            <select name="item" class="form-control selectmultiple mt-3" size="1" multiple="multiple">
+            <select name="item[]" class="form-control selectmultiple mt-3" size="1" multiple="multiple">
                 <option disabled>Choose item:</option>
                 <?php 
 
@@ -42,18 +42,21 @@
 
                     if(isset($_POST["item"]) && isset($_POST["character"])){
 
-                        $item = new Item($_POST["item"]);
+                        foreach ($_POST["item"] as $id => $pitem) {
+                            $item[$id] = new Item($pitem);
 
-                        $quantity = $_POST["quantity"];
-
-                        if($item->type() == "ITEM_WEAPON" || $item->type() == "ITEM_ARMOR"){
-                            $quantity = 1;
+                            $item[$id]->setQuantity($_POST["quantity"]);
+                            $item[$id]->setRarity($_POST["rarity"]);
+    
+                            if($item[$id]->type() == "ITEM_WEAPON" || $item[$id]->type() == "ITEM_ARMOR"){
+                                $item[$id]->setQuantity(1);
+                            }
+    
+                            $char = new Player((int) $_POST["character"]);
+    
+                            $char->addItem($item[$id]->vnum(), $item[$id]->quantity(), $item[$id]->rarity());
+                            echo Item::checkStackLimit($item[$id]->quantity())."x ".$item[$id]->name()." ( Tier: ".Item::checkMaxRarity($item[$id]->rarity())." ) was successfully added!<br>";    
                         }
-
-                        $char = new Player((int) $_POST["character"]);
-
-                        $char->addItem($item->vnum(), $quantity, $_POST["rarity"]);
-                        echo Core::alert(Item::checkStackLimit($quantity)."x ".$item->name()." ( Tier: ".Item::checkMaxRarity($_POST["rarity"])." ) was successfully added!", "success");
 
                     }
                     
@@ -178,9 +181,14 @@
                     $sitem = new Item($item["vnum"]);
                     echo $item["quantity"]."x ".Item::getRarityColorText($item["rarity"], $sitem->name())." ( Tier: ".$item["rarity"]." ) with ".$item["chance"]."% chance to drop<br>";
                 }
-                $serialized_loot = serialize($_SESSION["updated_loot"]);
+                $serialized_loot = $_SESSION["updated_loot"];
                 echo '<div class="mt-5 col-12">Serialized array</div>';
-                echo '<textarea class="form-control float-start mt-3" readonly="readonly">'.$serialized_loot.'</textarea>';
+                echo '<div class="col-12"><pre class="form-control"><code>';
+                foreach ($serialized_loot as $reward) {
+                    $sreward = new Item($reward["vnum"]);
+                    echo '            array("vnum" => '.$reward["vnum"].', "quantity" => '.$reward["quantity"].', "rarity" => '.$reward["rarity"].', "chance" => '.$reward["chance"].'), // '.$sreward->name().'<br>';
+                }
+                echo '</code></pre></div>';
             }
             if(isset($_POST["discard_loot"])){
 

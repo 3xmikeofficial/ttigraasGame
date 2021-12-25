@@ -82,9 +82,21 @@
             return $this->_inventory;
         }
 
-        public static function getAll(){
+        public static function getAll($sorting = "", $way = "DESC", $limit = 10){
 
-            $query = Database::queryAll("SELECT * FROM characters");
+            if(empty($sorting)){
+
+                $query = Database::queryAll("SELECT * FROM characters");
+
+            } else {
+
+                if($way == "DESC"){
+                    $query = Database::queryAll("SELECT * FROM characters ORDER BY ? DESC LIMIT ?", [$sorting, $limit]);
+                } else {
+                    $query = Database::queryAll("SELECT * FROM characters ORDER BY ? ASC LIMIT ?", [$sorting, $limit]);
+                }
+
+            }
 
             return $query;
 

@@ -15,8 +15,9 @@
         protected $_icon;
         protected $_equipped = false;
         protected $_quantity = 1;
+        protected $_chance;
 
-        public function __construct($item_vnum, $rarity = 1, $id = ""){
+        public function __construct($item_vnum, $quantity = "", $rarity = 1, $chance = "", $id = ""){
 
             $tooltip = self::getProto($item_vnum);
             if(isset($id) and $id != ""){
@@ -35,6 +36,7 @@
             $this->_price = $tooltip["price"];
             $this->_salvage = $tooltip["salvage"];
             $this->_rarity = $rarity;
+            $this->_chance = $chance;
 
         }
 
@@ -42,7 +44,7 @@
             return $this->_id;
         }
         public function vnum(){
-            return $this->_vnum;
+            return @$this->_vnum;
         }
         public function name(){
             return $this->_name;
@@ -109,26 +111,40 @@
         public function setRarity($rarity){
             $this->_rarity = $rarity;
         }
-        public function salvage(){
-            return $this->_salvage;
-        }
         public function quantity(){
             return $this->_quantity;
         }
         public function setQuantity($quantity){
             $this->_quantity = $quantity;
         }
+        public function chance(){
+            return $this->_chance;
+        }
+        public function salvage(){
+            return $this->_salvage;
+        }
         public function equipped(){
             return $this->_equipped;
         }
 
         public function remove(){
-            Database::queryAlone("DELETE FROM items WHERE id = ?", [$this->_id]);
+            $query = Database::queryAlone("SELECT * FROM items WHERE id = ?", [$this->_id]);
+            if(isset($query["quantity"]) && $query["quantity"] == 1){
+                Database::queryAlone("DELETE FROM items WHERE id = ?", [$this->_id]);
+            } else {
+                $this->_quantity -= 1;
+                Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$this->_quantity, $this->_id]);
+            }
         }
 
         public function removeOne(){
-            $this->_quantity -= 1;
-            Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$this->_quantity, $this->_id]);
+            $query = Database::queryAlone("SELECT * FROM items WHERE id = ?", [$this->_id]);
+            if($query["quantity"] == 1){
+                Database::queryAlone("DELETE FROM items WHERE id = ?", [$this->_id]);
+            } else {
+                $this->_quantity -= 1;
+                Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$this->_quantity, $this->_id]);
+            }
         }
 
         public static function getAll(){
@@ -237,6 +253,31 @@
 
         }
 
+        public static function alert($type, $text){
+            switch ($type) {
+                case 'primary':
+                    $info = "Salvage";
+                    break;
+            }
+
+            $alert = "";
+            $alert .= '<div class="alert alert-'.$type.' mb-0 mt-3 text-start" role="alert">
+            <strong>'.ucfirst($info).'</strong> ( Result )<hr>';
+
+                foreach ($text as $item) {
+                    $actual_item = new Item($item["vnum"]);
+                    $alert .= $item["quantity"]."x ".Item::getRarityColorText($item["rarity"], $actual_item->name())."<br>";
+                }
+
+            $alert .= '</div>';
+
+            return $alert;
+        }
+
+        public static function randomSalvageNumber(){
+            return rand(1,10000);
+        }
+
         public function showTooltip(){
 
             $query = "<span style='color: ".self::getRarityColor($this->_rarity)."'>".$this->_name."</span>";
@@ -254,11 +295,37 @@
                 $query .= "Crafting material";
             }
 
+            
             $query .= "<hr>";
-
+            
             $query .= ($this->_price*$this->_rarity)."g";
 
+            if(isset($this->_chance) && !empty($this->_chance)){
+                $query .= "<hr>";
+                $query .= "Drop chance: ".$this->_chance."%";
+            }
+
+            if(isset($_SESSION["user_token"]) && User::getDataAlone("rank", $_SESSION["user_token"]) == 777){
+                $query .= "<hr>ID: ".$this->_vnum;
+            }
+
             return $query;
+
+        }
+
+        public static function showItem($vnum, $quantity = "", $rarity = "", $chance = ""){
+            $item = "";
+            $actual_item = new Item($vnum, $quantity, $rarity, $chance);
+
+            $item .= '<div class="item">';
+                $item .= '<div class="'.$actual_item->sizeText().'-slot">';
+                    $item .= $actual_item->icon();
+                    $item .= '<div class="quantity">'.$quantity.'</div>';
+                $item .= '</div>';
+                    $item .= '<div class="stats text-center">'.$actual_item->showTooltip().'</div>';
+            $item .= '</div>';
+
+            return $item;
 
         }
 

@@ -461,10 +461,12 @@ input[type=number] {
   margin-top: 18px !important;
 }
 .equipment .belt {
-  margin-top: 18px !important;
+  display: inline-block;
+  margin: 0px auto;
 }
 .equipment .boots {
-  margin-top: 18px !important;
+  display: inline-block;
+  margin: 0 auto;
 }
 .equipment .item {
   position: relative;
@@ -481,6 +483,24 @@ input[type=number] {
   z-index: 1;
   -webkit-transform: translate(-40%);
           transform: translate(-40%);
+}
+
+.item {
+  position: relative;
+}
+.item:hover > .stats {
+  display: block;
+}
+.item .stats {
+  display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 10px 25px;
+  font-size: 13px;
+  z-index: 1;
+  -webkit-transform: translate(-40%);
+          transform: translate(-40%);
+  min-width: 175px;
 }
 
 .small-slot {

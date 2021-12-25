@@ -3,10 +3,12 @@
     <div class="card-header d-flex justify-content-center"><a href="<?php echo GAME_URL; ?>?page=inventory" class="mx-3 <?php if(!isset($_GET["section"])){ echo "active"; } ?>">All</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Weapons" class="mx-3 <?php if(isset($_GET["section"]) && $_GET["section"] == "Weapons"){ echo "active"; } ?>">Weapons</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Helmets" class="mx-3 <?php if(isset($_GET["section"]) && $_GET["section"] == "Helmets"){ echo "active"; } ?>">Helmets</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Armors" class="mx-3 <?php if(isset($_GET["section"]) && $_GET["section"] == "Armors"){ echo "active"; } ?>">Armors</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Shields" class="mx-3 <?php if(isset($_GET["section"]) && $_GET["section"] == "Shields"){ echo "active"; } ?>">Shields</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Earings" class="mx-3 <?php if(isset($_GET["section"]) && $_GET["section"] == "Earings"){ echo "active"; } ?>">Earings</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Bracelets" class="mx-3 <?php if(isset($_GET["section"]) && $_GET["section"] == "Bracelets"){ echo "active"; } ?>">Bracelets</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Necklaces" class="mx-3  <?php if(isset($_GET["section"]) && $_GET["section"] == "Necklaces"){ echo "active"; } ?>">Necklaces</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Belts" class="mx-3  <?php if(isset($_GET["section"]) && $_GET["section"] == "Belts"){ echo "active"; } ?>">Belts</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Boots" class="mx-3  <?php if(isset($_GET["section"]) && $_GET["section"] == "Boots"){ echo "active"; } ?>">Boots</a><a href="<?php echo GAME_URL; ?>?page=inventory&section=Misc" class="mx-3  <?php if(isset($_GET["section"]) && $_GET["section"] == "Misc"){ echo "active"; } ?>">Misc</a></div>
     <div class="card-body">
         <?php
+
+            include_once(GAME.DIRECTORY_SEPARATOR."addons".DIRECTORY_SEPARATOR."salvages.php");
             
                     $inv = Item::getItems($_SESSION["user_token"]);
                     foreach ($inv as $id => $item) {
-                        $item[$id] = new Item($item["item_vnum"], $item["rarity"], $item["id"]);
+                        $item[$id] = new Item($item["item_vnum"], $item["quantity"], $item["rarity"], 0, $item["id"]);
                         if(isset($_GET["section"])){
                             switch ($_GET["section"]) {
                                 case 'Weapons':
@@ -80,9 +82,9 @@
                                                 }
                                                 if(isset($_POST["Equip"])){
 
-                                                    $item = Item::getItem($_POST["item_id"]);
+                                                    $sitem = Item::getItem($_POST["item_id"]);
 
-                                                    if($item["token"] == $player->token()){
+                                                    if($sitem["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
 
                                                         Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
                                                         Database::queryAlone("UPDATE items SET equipped=1 WHERE id = ?", [$item["id"]]);
@@ -92,9 +94,9 @@
 
                                                 } elseif(isset($_POST["Un-equip"])){
 
-                                                    $item = Item::getItem($_POST["item_id"]);
+                                                    $sitem = Item::getItem($_POST["item_id"]);
 
-                                                    if($item["token"] == $player->token()){
+                                                    if($item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
 
                                                         Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
                                                         echo Core::refresh();
@@ -156,9 +158,40 @@
 
                                             }
 
-                                            if(!empty($item[$id]->salvage())){
-                                                echo "salvage rewards";
+                                            if(!empty($salvages[$item[$id]->vnum()])){
+                                                echo '<div class="mt-3 col-12">';
+                                                    echo '<div class="d-flex flex-row flex-wrap justify-content-center">';
+                                                    foreach($salvages[$item[$id]->vnum()] as $salvage){
+                                                        echo '<div class="m-1">';
+                                                            echo Item::showItem($salvage["vnum"], $salvage["quantity"], $salvage["rarity"], $salvage["chance"]);
+                                                        echo '</div>';
+                                                    }
+                                                    echo '</div>';
+                                                echo '</div>';
                                                 echo Core::addInput("submit", "Salvage", "form-control btn bg-primary mt-3 btn-success");
+                                                if(isset($_POST["Salvage"])){
+
+                                                    if(isset($_POST["item_id"])){
+                                                        $get_item = Item::getItem($_POST["item_id"]);
+                                                    }
+
+                                                    if(isset($get_item["token"]) && $get_item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+
+                                                        $salvage_result = array();
+
+                                                        foreach($salvages[$item[$id]->vnum()] as $salvage_item){
+                                                            if($salvage["chance"]*LOOT_CHANCE_MULTIPLIER >= Item::randomSalvageNumber()){
+                                                                array_push($salvage_result, array("vnum" => $salvage_item["vnum"], "quantity" => $salvage_item["quantity"], "rarity" => $salvage_item["rarity"]));
+                                                                $player->addItem($salvage_item["vnum"],$salvage_item["quantity"],$salvage_item["rarity"]);
+                                                                $item[$id]->remove();
+                                                            }
+                                                        }
+
+                                                        $_SESSION["salvage"] = $salvage_result;
+
+                                                    }
+
+                                                }
                                             }
 
 
@@ -173,10 +206,19 @@
         
         ?>
 
+        <div class="clearfix"></div>
+
         <?php
             
             if(isset($_SESSION["error"])){ echo Core::alert($_SESSION["error"], "danger", "start", "float-start col-12"); unset($_SESSION["error"]);}
             if(isset($_SESSION["warning"])){ echo Core::alert($_SESSION["warning"], "warning", "start", "float-start col-12"); unset($_SESSION["warning"]);}
+
+            if(isset($_SESSION["salvage"])){
+
+                echo Item::alert("primary", $_SESSION["salvage"]);
+                unset($_SESSION["salvage"]);
+    
+            }
 
         ?>
 

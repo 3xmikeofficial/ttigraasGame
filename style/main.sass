@@ -385,9 +385,11 @@ input[type=number]
         margin-left: 15px!important
         margin-top: 18px!important
     .belt
-        margin-top: 18px!important
+        display: inline-block
+        margin: 0px auto
     .boots
-        margin-top: 18px!important
+        display: inline-block
+        margin: 0 auto
     .item
         position: relative
         &:hover > .stats
@@ -400,6 +402,20 @@ input[type=number]
             font-size: 13px
             z-index: 1
             transform: translate(-40%)
+
+.item
+    position: relative
+    &:hover > .stats
+        display: block
+    .stats
+        display: none
+        position: absolute
+        background-color: rgba(0, 0, 0, 0.75)
+        padding: 10px 25px
+        font-size: 13px
+        z-index: 1
+        transform: translate(-40%)
+        min-width: 175px
 
 .small-slot
     width: 36px

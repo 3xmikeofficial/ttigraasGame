@@ -18,6 +18,8 @@
 <div class="row">
 <?php 
 
+include_once(GAME.DIRECTORY_SEPARATOR."addons".DIRECTORY_SEPARATOR."quest_rewards.php");
+
 if(!isset($_GET["section"])){ 
         
 ?>
@@ -140,7 +142,7 @@ if(!isset($_GET["section"])){
                 
                                         if($player->stamina() > $quest["cost"]){
                                 
-                                            $monster = new Monster($quest["name"], [$quest["health"],$quest["speed"],$quest["strenght"],$quest["defense"]], Core::Random($quest["min_exp"], $quest["max_exp"]), Core::Random($quest["min_gold"], $quest["max_gold"]),Core::Random($quest["min_magicules"], $quest["max_magicules"]), $quest["inventory"], $quest["cost"]);
+                                            $monster = new Monster($quest["name"], [$quest["health"],$quest["speed"],$quest["strenght"],$quest["defense"]], Core::Random($quest["min_exp"], $quest["max_exp"]), Core::Random($quest["min_gold"], $quest["max_gold"]),Core::Random($quest["min_magicules"], $quest["max_magicules"]), @$quest_rewards[$quest["name"]], $quest["cost"]);
                                     
                                             $turn = 0;
                                             $gameover = false;
@@ -268,8 +270,8 @@ if(!isset($_GET["section"])){
 
                                 if(isset($gameover)){ 
                                     if(isset($battle_status) && $battle_status == "win"){
-                                        if(isset($quest["inventory"]) && $quest["inventory"] != ""){
-                                            $loot = unserialize($quest["inventory"]);
+                                        if(!empty(@$quest_rewards[$quest["name"]])){
+                                            $loot = @$quest_rewards[$quest["name"]];
                                             echo '<div class="equipment">';
                                                 foreach ($loot as $id => $loot_item) {
                                                     $loot_chances[$id] = $loot_item["chance"]*LOOT_CHANCE_MULTIPLIER;
@@ -310,8 +312,8 @@ if(!isset($_GET["section"])){
 
                             } else {
 
-                                if(isset($quest["inventory"]) && $quest["inventory"] != ""){
-                                    $loot = unserialize($quest["inventory"]);
+                                if(!empty(@$quest_rewards[$quest["name"]])){
+                                    $loot = @$quest_rewards[$quest["name"]];
                                     echo '<div class="equipment">';
                                         if(!isset($_GET["drop"])){
                                             $item_vnums = array();
