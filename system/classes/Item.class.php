@@ -111,6 +111,10 @@
         public function setRarity($rarity){
             $this->_rarity = $rarity;
         }
+        public function upgradeRarity(){
+            $this->_rarity += 1;
+            Database::QueryAlone("UPDATE items SET rarity = ? WHERE id = ?", [$this->_rarity, $this->_id]);
+        }
         public function quantity(){
             return $this->_quantity;
         }
@@ -125,6 +129,20 @@
         }
         public function equipped(){
             return $this->_equipped;
+        }
+
+        public static function removeItems($vnum, $token, $quantity, $rarity){
+
+            $remaining = $quantity;
+
+            while($remaining > 0){
+
+                $find_item = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and token = ? and quantity = ? and token = ?", [$vnum, $token, $quantity, $rarity]);
+                $remaining -= $find_item["quantity"];
+                Database::queryAlone("DELETE FROM items WHERE id = ?", [$find_item["id"]]);
+
+            }
+
         }
 
         public function remove(){
@@ -145,6 +163,23 @@
                 $this->_quantity -= 1;
                 Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$this->_quantity, $this->_id]);
             }
+        }
+
+        public static function ownQuantity($vnum, $token, $rarity){
+
+            $query = Database::queryAll("SELECT * FROM items WHERE item_vnum = ? and token = ? and rarity = ?", [$vnum, $token,$rarity]);
+
+            $quantity = 0;
+            foreach ($query as $item) {
+                $quantity += $item["quantity"];
+            }
+
+            if($quantity > STACK_LIMIT){
+                $quantity = STACK_LIMIT;
+            }
+
+            return $quantity;
+
         }
 
         public static function getAll(){
@@ -320,7 +355,7 @@
             $item .= '<div class="item">';
                 $item .= '<div class="'.$actual_item->sizeText().'-slot">';
                     $item .= $actual_item->icon();
-                    $item .= '<div class="quantity">'.$quantity.'</div>';
+                    $item .= '<div class="quantity text-center">'.$quantity.'</div>';
                 $item .= '</div>';
                     $item .= '<div class="stats text-center">'.$actual_item->showTooltip().'</div>';
             $item .= '</div>';

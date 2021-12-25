@@ -4,6 +4,7 @@
     <div class="card-body">
         <?php
 
+            include_once(GAME.DIRECTORY_SEPARATOR."addons".DIRECTORY_SEPARATOR."refine_proto.php");
             include_once(GAME.DIRECTORY_SEPARATOR."addons".DIRECTORY_SEPARATOR."salvages.php");
             
                     $inv = Item::getItems($_SESSION["user_token"]);
@@ -76,7 +77,7 @@
                                             echo "<input type='hidden' name='item_id' value='".$item[$id]->id()."' />";
                                             if($item[$id]->type() == "ITEM_WEAPON" || $item[$id]->type() == "ITEM_ARMOR"){
                                                 if(!$item[$id]->equipped()){
-                                                    echo Core::addInput("submit", "Equip", "form-control btn bg-success mt-3 btn-success");
+                                                    echo Core::addInput("submit", "Equip", "form-control btn bg-dark text-light mt-3 btn-dark");
                                                 } else {
                                                     echo Core::addInput("submit", "Un-equip", "form-control btn bg-danger mt-3 btn-danger");
                                                 }
@@ -106,7 +107,7 @@
                                                 }
                                             } elseif($item[$id]->type() == "ITEM_POTION"){
 
-                                                echo Core::addInput("submit", "Use", "form-control btn bg-success mt-3 btn-success");
+                                                echo Core::addInput("submit", "Use", "form-control btn text-light bg-dark mt-3 btn-dark");
 
                                                 if(isset($_POST["Use"])){
 
@@ -158,7 +159,37 @@
 
                                             }
 
+                                            if(!empty($refine_sets[$item[$id]->vnum()][$item[$id]->rarity()])){
+                                                echo '<div class="col-12 mt-5">Item Upgrade</div><hr>';
+                                                echo '<div class="mt-3 col-12">';
+                                                    echo '<div class="d-flex flex-row flex-wrap justify-content-center">';
+                                                    foreach($refine_sets[$item[$id]->vnum()][$item[$id]->rarity()] as $refine_set){
+                                                        echo '<div class="m-1">';
+                                                            echo Item::showItem($refine_set["vnum"], Item::ownQuantity($refine_set["vnum"], $player->token(), $refine_set["rarity"])." / ".$refine_set["quantity"], $refine_set["rarity"]);
+                                                            ;
+                                                        echo '</div>';
+                                                    }
+                                                    echo '</div>';
+                                                echo '</div>';
+                                                echo Core::addInput("submit", "Upgrade", "form-control btn bg-success mt-3 btn-success");
+                                                if(isset($_POST["Salvage"])){
+
+                                                    if(isset($_POST["item_id"])){
+                                                        $get_item = Item::getItem($_POST["item_id"]);
+                                                    }
+                                                    
+                                                    $upgrade = false;
+                                                    if(isset($get_item["token"]) && $get_item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+
+                                                        $_SESSION["upgrade"] = "ok";
+
+                                                    }
+
+                                                }
+                                            }
+
                                             if(!empty($salvages[$item[$id]->vnum()])){
+                                                echo '<div class="col-12 mt-5">Salvage</div><hr>';
                                                 echo '<div class="mt-3 col-12">';
                                                     echo '<div class="d-flex flex-row flex-wrap justify-content-center">';
                                                     foreach($salvages[$item[$id]->vnum()] as $salvage){
@@ -180,7 +211,7 @@
                                                         $salvage_result = array();
 
                                                         foreach($salvages[$item[$id]->vnum()] as $salvage_item){
-                                                            if($salvage["chance"]*LOOT_CHANCE_MULTIPLIER >= Item::randomSalvageNumber()){
+                                                            if($salvage_item["chance"]*LOOT_CHANCE_MULTIPLIER >= Item::randomSalvageNumber()){
                                                                 array_push($salvage_result, array("vnum" => $salvage_item["vnum"], "quantity" => $salvage_item["quantity"], "rarity" => $salvage_item["rarity"]));
                                                                 $player->addItem($salvage_item["vnum"],$salvage_item["quantity"],$salvage_item["rarity"]);
                                                             }
@@ -217,6 +248,12 @@
 
                 echo Item::alert("primary", $_SESSION["salvage"]);
                 unset($_SESSION["salvage"]);
+    
+            }
+            if(isset($_SESSION["upgrade"])){
+
+                echo Item::alert("primary", $_SESSION["upgrade"]);
+                unset($_SESSION["upgrade"]);
     
             }
 
