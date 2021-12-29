@@ -20,6 +20,9 @@
         public function __construct($item_vnum, $quantity = "", $rarity = 1, $chance = "", $id = ""){
 
             $tooltip = self::getProto($item_vnum);
+            if(isset($quantity)){
+                $this->_quantity = $quantity;
+            }
             if(isset($id) and $id != ""){
                 $this->_id = $id;
                 $item = Database::queryAlone("SELECT * FROM items WHERE id = ?", [$id]);
@@ -137,9 +140,15 @@
 
             while($remaining > 0){
 
-                $find_item = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and token = ? and quantity = ? and token = ?", [$vnum, $token, $quantity, $rarity]);
-                $remaining -= $find_item["quantity"];
-                Database::queryAlone("DELETE FROM items WHERE id = ?", [$find_item["id"]]);
+                $find_item = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and token = ? and rarity = ?", [$vnum, $token, $rarity]);
+                if($remaining >= $find_item["quantity"]){
+                        Database::queryAlone("DELETE FROM items WHERE id = ?", [$find_item["id"]]);
+                        $remaining -= $find_item["quantity"];
+                } else {
+                    $update_quantity = $find_item["quantity"]-$remaining;
+                    Database::queryAlone("UPDATE items SET quantity = ? WHERE id = ?", [$update_quantity, $find_item["id"]]);
+                    $remaining = 0;
+                }
 
             }
 
@@ -293,15 +302,22 @@
                 case 'primary':
                     $info = "Salvage";
                     break;
+                case 'dark':
+                    $info = "Upgrade";
+                    break;
             }
 
             $alert = "";
-            $alert .= '<div class="alert alert-'.$type.' mb-0 mt-3 text-start" role="alert">
+            $alert .= '<div class="alert alert-'.$type.' bg-dark text-light mb-0 mt-3 text-start" role="alert">
             <strong>'.ucfirst($info).'</strong> ( Result )<hr>';
 
-                foreach ($text as $item) {
-                    $actual_item = new Item($item["vnum"]);
-                    $alert .= $item["quantity"]."x ".Item::getRarityColorText($item["rarity"], $actual_item->name())."<br>";
+                if(gettype($text) == "string"){
+                    $alert .= $text;
+                } else {
+                    foreach($text as $item) {
+                        $actual_item = new Item($item["vnum"]);
+                        $alert .= $item["quantity"]."x ".Item::getRarityColorText($item["rarity"], $actual_item->name())."<br>";
+                    }
                 }
 
             $alert .= '</div>';
@@ -315,7 +331,7 @@
 
         public function showTooltip(){
 
-            $query = "<span style='color: ".self::getRarityColor($this->_rarity)."'>".$this->_name."</span>";
+            $query = "<span style='color: ".self::getRarityColor($this->_rarity)."'>".$this->_name." [".self::getRarityTier($this->rarity())."]</span>";
             $query .= "<hr>";
 
             if($this->_type == "ITEM_WEAPON"){
@@ -333,7 +349,7 @@
             
             $query .= "<hr>";
             
-            $query .= ($this->_price*$this->_rarity)."g";
+            $query .= "Price: ".($this->_price*$this->_rarity)."g";
 
             if(isset($this->_chance) && !empty($this->_chance)){
                 $query .= "<hr>";
@@ -350,17 +366,19 @@
 
         public static function showItem($vnum, $quantity = "", $rarity = "", $chance = ""){
             $item = "";
-            $actual_item = new Item($vnum, $quantity, $rarity, $chance);
+            if(isset($vnum)){
+                $actual_item = new Item($vnum, $quantity, $rarity, $chance);
 
-            $item .= '<div class="item">';
-                $item .= '<div class="'.$actual_item->sizeText().'-slot">';
-                    $item .= $actual_item->icon();
-                    $item .= '<div class="quantity text-center">'.$quantity.'</div>';
+                $item .= '<div class="item">';
+                    $item .= '<div class="'.$actual_item->sizeText().'-slot '.Item::getRarityClass($actual_item->rarity()).'">';
+                        $item .= $actual_item->icon();
+                        $item .= '<div class="quantity text-center">'.$quantity.'</div>';
+                    $item .= '</div>';
+                        $item .= '<div class="stats text-center">'.$actual_item->showTooltip().'</div>';
                 $item .= '</div>';
-                    $item .= '<div class="stats text-center">'.$actual_item->showTooltip().'</div>';
-            $item .= '</div>';
 
-            return $item;
+                return $item;
+            }
 
         }
 
@@ -439,6 +457,42 @@
             }
             return $query;
         }
+        public static function getRarityTier($rarity){
+            switch ($rarity) {
+                default:
+                    $query = "I"; // Common Grade
+                    break;
+
+                case 2:
+                    $query = "II"; // Uncommon Grade
+                    break;
+
+                case 3:
+                    $query = "III"; // Special Grade
+                    break;
+
+                case 4:
+                    $query = "IV"; // Rare Grade
+                    break;
+
+                case 5:
+                    $query = "V"; // Unique Grade
+                    break;
+
+                case 6:
+                    $query = "VI"; // Legend Grade
+                    break;
+
+                case 7:
+                    $query = "VII"; // Mythical (Gods) Grade
+                    break;
+
+                case 8:
+                    $query = "VIII"; // Genesis Class
+                    break;
+            }
+            return $query;
+        }
         public static function getRarityColor($rarity){
 
             switch ($rarity) {
@@ -472,6 +526,43 @@
 
                 case 8:
                     return "#ff8000"; // Genesis Class
+                    break;
+            }
+
+        }
+        public static function getRarityName($rarity){
+
+            switch ($rarity) {
+                default:
+                    return "Common"; // Common Grade
+                    break;
+
+                case 2:
+                    return "Uncommon"; // Uncommon Grade
+                    break;
+
+                case 3:
+                    return "Special"; // Special Grade
+                    break;
+
+                case 4:
+                    return "Rare"; // Rare Grade
+                    break;
+
+                case 5:
+                    return "Unique"; // Unique Grade
+                    break;
+
+                case 6:
+                    return "Legendary"; // Legend Grade
+                    break;
+
+                case 7:
+                    return "Mythical"; // Mythical (Gods) Grade
+                    break;
+
+                case 8:
+                    return "Genesis"; // Genesis Class
                     break;
             }
 

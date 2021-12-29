@@ -52,7 +52,7 @@
                                 echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot ".Item::getRarityClass($item[$id]->rarity())." m-3", $test);
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
-                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()));
+                            echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()." [".Item::getRarityTier($item[$id]->rarity())."]"));
                                 echo Core::openDiv(["class" => "row"]);
                                     echo Core::openDiv(["class" => "col-3 text-center"]);
                                         echo $item[$id]->icon()."<br>";
@@ -160,10 +160,48 @@
                                             }
 
                                             if(!empty($refine_sets[$item[$id]->vnum()][$item[$id]->rarity()])){
+                                                // Start of grouping items by vnum and rarity
+                                                $srefsets = $refine_sets[$item[$id]->vnum()][$item[$id]->rarity()];
+                                                $urefsets = array();
+                                                $sref_count = 0;
+                                                foreach ($srefsets as $srefset) {
+                                                    $sref_count++;
+                                                }
+                                                for($i = 0; $i < $sref_count; $i++){
+                                                    $uref_count = 0;
+                                                    foreach ($urefsets as $urefset) {
+                                                        $uref_count++;
+                                                    }
+                                                    if($uref_count == 0){
+                                                        if(isset($srefsets[$i]["vnum"]) && isset($srefsets[$i]["quantity"]) && isset($srefsets[$i]["rarity"])){
+                                                            array_push($urefsets, array("vnum" => $srefsets[$i]["vnum"],"quantity" => $srefsets[$i]["quantity"],"rarity" => $srefsets[$i]["rarity"]));
+                                                            unset($srefsets[$i]);
+                                                        }
+                                                    } else {
+                                                        for($u = 0; $u < $uref_count; $u++){
+                                                            
+                                                            if(isset($srefsets[$i]["vnum"]) && isset($srefsets[$i]["quantity"]) && isset($srefsets[$i]["rarity"]) && isset($urefsets[$u]["vnum"]) && isset($urefsets[$u]["quantity"]) && isset($urefsets[$u]["rarity"])){
+                                                                if($srefsets[$i]["vnum"] == $urefsets[$u]["vnum"]){
+                                                                    if($srefsets[$i]["rarity"] == $urefsets[$u]["rarity"]){
+                                                                        $urefsets[$u]["quantity"] += $srefsets[$i]["quantity"];
+                                                                        unset($srefsets[$i]);
+                                                                    } else {
+                                                                        array_push($urefsets, array("vnum" => $srefsets[$i]["vnum"],"quantity" => $srefsets[$i]["quantity"],"rarity" => $srefsets[$i]["rarity"]));
+                                                                        unset($srefsets[$i]);
+                                                                    }
+                                                                } else {
+                                                                    array_push($urefsets, array("vnum" => $srefsets[$i]["vnum"],"quantity" => $srefsets[$i]["quantity"],"rarity" => $srefsets[$i]["rarity"]));
+                                                                    unset($srefsets[$i]);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // end of grouping items by vnum and rarity
                                                 echo '<div class="col-12 mt-5">Item Upgrade</div><hr>';
                                                 echo '<div class="mt-3 col-12">';
                                                     echo '<div class="d-flex flex-row flex-wrap justify-content-center">';
-                                                    foreach($refine_sets[$item[$id]->vnum()][$item[$id]->rarity()] as $refine_set){
+                                                    foreach($urefsets as $refine_set){
                                                         echo '<div class="m-1">';
                                                             echo Item::showItem($refine_set["vnum"], Item::ownQuantity($refine_set["vnum"], $player->token(), $refine_set["rarity"])." / ".$refine_set["quantity"], $refine_set["rarity"]);
                                                             ;
@@ -172,17 +210,38 @@
                                                     echo '</div>';
                                                 echo '</div>';
                                                 echo Core::addInput("submit", "Upgrade", "form-control btn bg-success mt-3 btn-success");
-                                                if(isset($_POST["Salvage"])){
+                                                if(isset($_POST["Upgrade"])){
 
                                                     if(isset($_POST["item_id"])){
                                                         $get_item = Item::getItem($_POST["item_id"]);
+                                                    }
+
+                                                    if($item[$id]->rarity() == 8){
+                                                        return;
                                                     }
                                                     
                                                     $upgrade = false;
                                                     if(isset($get_item["token"]) && $get_item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
 
-                                                        $_SESSION["upgrade"] = "ok";
+                                                        foreach($urefsets as $refine_set){
+                                                            if(Item::ownQuantity($refine_set["vnum"], $player->token(), $refine_set["rarity"]) >= $refine_set["quantity"]){
 
+                                                                $upgrade = true;
+                                                                Item::removeItems($refine_set["vnum"], $player->token(), $refine_set["quantity"], $refine_set["rarity"]);
+                                                                
+                                                            }
+                                                            
+                                                        }
+
+                                                        if($upgrade == true){
+                                                            
+                                                            $item[$id]->upgradeRarity();
+                                                            $_SESSION["upgrade"] = Item::getRarityColorText(Core::minVal(($item[$id]->rarity()-1),1), $item[$id]->name())." was successfully upgraded!";
+                                                                
+                                                        } else {
+                                                            $_SESSION["upgrade"] = "Not enough resources!";
+                                                        }
+                                                        
                                                     }
 
                                                 }
@@ -194,7 +253,7 @@
                                                     echo '<div class="d-flex flex-row flex-wrap justify-content-center">';
                                                     foreach($salvages[$item[$id]->vnum()] as $salvage){
                                                         echo '<div class="m-1">';
-                                                            echo Item::showItem($salvage["vnum"], $salvage["quantity"], $salvage["rarity"], $salvage["chance"]);
+                                                            echo Item::showItem($salvage["vnum"], (Core::minVal(($salvage["quantity"]*($item[$id]->rarity()-1)), $salvage["quantity"])/2), $salvage["rarity"], $salvage["chance"]);
                                                         echo '</div>';
                                                     }
                                                     echo '</div>';
@@ -212,8 +271,8 @@
 
                                                         foreach($salvages[$item[$id]->vnum()] as $salvage_item){
                                                             if($salvage_item["chance"]*LOOT_CHANCE_MULTIPLIER >= Item::randomSalvageNumber()){
-                                                                array_push($salvage_result, array("vnum" => $salvage_item["vnum"], "quantity" => $salvage_item["quantity"], "rarity" => $salvage_item["rarity"]));
-                                                                $player->addItem($salvage_item["vnum"],$salvage_item["quantity"],$salvage_item["rarity"]);
+                                                                array_push($salvage_result, array("vnum" => $salvage_item["vnum"], "quantity" => (Core::minVal(($salvage["quantity"]*($item[$id]->rarity()-1)), $salvage["quantity"])/2), "rarity" => $salvage_item["rarity"]));
+                                                                $player->addItem($salvage_item["vnum"],(Core::minVal(($salvage["quantity"]*($item[$id]->rarity()-1)), $salvage["quantity"])/2),$salvage_item["rarity"]);
                                                             }
                                                         }
                                                         $item[$id]->remove();
@@ -252,7 +311,7 @@
             }
             if(isset($_SESSION["upgrade"])){
 
-                echo Item::alert("primary", $_SESSION["upgrade"]);
+                echo Item::alert("dark", $_SESSION["upgrade"]);
                 unset($_SESSION["upgrade"]);
     
             }

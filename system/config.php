@@ -37,7 +37,7 @@
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 'On');
     ini_set('log_errors', 'On');
-    ini_set('error_log', SYSTEM.'/errors.log');
+    ini_set('error_log', SYSTEM.'/errors.txt');
 
     spl_autoload_register(
         function ($class)

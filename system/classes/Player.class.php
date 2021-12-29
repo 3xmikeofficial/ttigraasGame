@@ -28,8 +28,22 @@
             $this->_stamina = $query["stamina"];
             $this->_max_stamina = $query["max_stamina"];
             $this->_speed = $query["speed"];
-            $this->_strenght = $query["strenght"];
-            $this->_defense = $query["defense"];
+            $strenght = 0;
+            $str_item = Database::queryAlone("SELECT * FROM items WHERE item_type = ? and token = ? and equipped = 1", ["ITEM_WEAPON", $this->_token]);
+            if(!empty($str_item)){
+            $selected_str_item = new Item($str_item["item_vnum"], $str_item["quantity"], $str_item["rarity"]);
+            $strenght += $selected_str_item->ShowAvarageRarityValue();
+            }
+            $this->_strenght = $query["strenght"]+$strenght;
+            $defense = 0;
+            $defense_items = Database::queryAll("SELECT * FROM items WHERE item_type = ? and token = ? and equipped = 1", ["ITEM_ARMOR", $this->_token]);
+            if(!empty($defense_items)){
+                foreach ($defense_items as $id => $def_item) {
+                    $selected_def_item[$id] = new Item($def_item["item_vnum"], $def_item["quantity"], $def_item["rarity"]);
+                    $defense += $selected_def_item[$id]->ShowAvarageRarityValue();
+                }
+            }
+            $this->_defense = $query["defense"]+$defense;
             $this->_magicules = $query["magicules"];
             $this->_gold = $query["gold"];
             $this->_equip = Item::getEquip($this->_token);
