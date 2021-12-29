@@ -12,7 +12,7 @@ body
 
 #sidebar
     position: absolute
-    max-width: 255px
+    max-width: 420px
     height: 100vh
     max-height: 100vh
     overflow-y: overlay
@@ -22,10 +22,10 @@ body
 
 #content
     position: absolute
-    left: 255px
+    left: 420px
     top: 0
-    width: calc( 100vw - 255px )
-    max-width: calc( 100vw - 255px )
+    width: calc( 100vw - 420px )
+    max-width: calc( 100vw - 420px )
     height: 100vh
     max-height: 100vh
     overflow-y: overlay
@@ -372,7 +372,7 @@ input[type=number]
     .helmet
         margin: 0 auto
     .armor
-        margin-left: 50px!important
+        margin-left: 89px!important
         margin-top: 18px
     .shield
         margin-left: 15px!important
@@ -380,10 +380,8 @@ input[type=number]
         margin-left: 15px!important
     .bracelet
         margin-left: 15px!important
-        margin-top: 18px!important
     .necklace
         margin-left: 15px!important
-        margin-top: 18px!important
     .belt
         display: inline-block
         margin: 0px auto
@@ -417,8 +415,6 @@ input[type=number]
         min-width: 175px
 
 .small-slot
-    width: 36px
-    height: 36px
     background-color: rgba(255,255,255,0.15)
     border: 1px solid rgba(0, 0, 0, 1)
     box-sizing: border-box
@@ -430,24 +426,23 @@ input[type=number]
         bottom: 0px
         right: 0px
         background-color: rgba(0, 0, 0, 0.25)
-        font-size: 11px
+        font-size: 13px
         color: white
 .medium-slot
-    width: 36px
-    height: 72px
     background-color: rgba(255,255,255,0.15)
     border: 1px solid rgba(0, 0, 0, 1)
 .large-slot
-    width: 36px
-    height: 108px
     background-color: rgba(255,255,255,0.15)
     border: 1px solid rgba(0, 0, 0, 1)
 .small-slot,.medium-slot,.large-slot
     position: relative
+    width: 64px
+    height: 64px
     img
         position: absolute
-        top: 2px
-        left: 2px
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
     &.common
         border: 1px solid #666666!important
     &.uncommon

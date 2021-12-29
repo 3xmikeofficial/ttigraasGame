@@ -106,7 +106,7 @@
         <div class="medium-slot <?php if(isset($armor)){ echo Item::getRarityClass($armor->rarity()); } ?> mt-3"><?php if(isset($armor)){ echo $armor->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="shield float-start">
-          <div class="small-slot <?php if(isset($shield)){ echo Item::getRarityClass($shield->rarity()); } ?> item mt-3">
+          <div class="small-slot <?php if(isset($shield)){ echo Item::getRarityClass($shield->rarity()); } ?> item">
           <?php if(isset($shield)){ ?>
             <div class="stats">
               <?= $shield->showTooltip(); ?>
@@ -120,7 +120,7 @@
               <?= $earings->showTooltip(); ?>
             </div>
           <?php } ?>
-          <div class="small-slot <?php if(isset($earings)){ echo Item::getRarityClass($earings->rarity()); } ?> mt-3"><?php if(isset($earings)){ echo $earings->icon(); } else { echo Item::notEquiped(); } ?></div>
+          <div class="small-slot <?php if(isset($earings)){ echo Item::getRarityClass($earings->rarity()); } ?>"><?php if(isset($earings)){ echo $earings->icon(); } else { echo Item::notEquiped(); } ?></div>
         </div>
         <div class="bracelet item float-start">
         <?php if(isset($bracelet)){ ?><div class="stats"><?= $bracelet->showTooltip(); ?></div><?php } ?>

@@ -48,7 +48,7 @@
 
                             echo "<div class='equipment'>";
                                 echo "<div class='item float-start'>";
-                                $test = "<span class='quantity'>".($item[$id]->quantity() == 1 ? "" : $item[$id]->quantity())."</span>";
+                                $test = "<span class='quantity ".($item[$id]->quantity() == 1 ? "" : "p-1")."'>".($item[$id]->quantity() == 1 ? "" : $item[$id]->quantity())."</span>";
                                 echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot ".Item::getRarityClass($item[$id]->rarity())." m-3", $test);
                                 echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
                             
@@ -248,10 +248,48 @@
                                             }
 
                                             if(!empty($salvages[$item[$id]->vnum()])){
+                                                // start of grouping salvageses
+                                                $ssalvageses = $salvages[$item[$id]->vnum()];
+                                                $usalvageses = array();
+                                                $ssalvage_count = 0;
+                                                foreach ($ssalvageses as $srefset) {
+                                                    $ssalvage_count++;
+                                                }
+                                                for($i = 0; $i < $ssalvage_count; $i++){
+                                                    $usalvage_count = 0;
+                                                    foreach ($usalvageses as $usalvage) {
+                                                        $usalvage_count++;
+                                                    }
+                                                    if($usalvage_count == 0){
+                                                        if(isset($ssalvageses[$i]["vnum"]) && isset($ssalvageses[$i]["quantity"]) && isset($ssalvageses[$i]["rarity"])){
+                                                            array_push($usalvageses, array("vnum" => $ssalvageses[$i]["vnum"],"quantity" => $ssalvageses[$i]["quantity"],"rarity" => $ssalvageses[$i]["rarity"],"chance" => $ssalvageses[$i]["chance"]));
+                                                            unset($ssalvageses[$i]);
+                                                        }
+                                                    } else {
+                                                        for($u = 0; $u < $usalvage_count; $u++){
+                                                            
+                                                            if(isset($ssalvageses[$i]["vnum"]) && isset($ssalvageses[$i]["quantity"]) && isset($ssalvageses[$i]["rarity"]) && isset($usalvageses[$u]["vnum"]) && isset($usalvageses[$u]["quantity"]) && isset($usalvageses[$u]["rarity"])){
+                                                                if($ssalvageses[$i]["vnum"] == $usalvageses[$u]["vnum"]){
+                                                                    if($ssalvageses[$i]["rarity"] == $usalvageses[$u]["rarity"]){
+                                                                        $usalvageses[$u]["quantity"] += $ssalvageses[$i]["quantity"];
+                                                                        unset($ssalvageses[$i]);
+                                                                    } else {
+                                                                        array_push($usalvageses, array("vnum" => $ssalvageses[$i]["vnum"],"quantity" => $ssalvageses[$i]["quantity"],"rarity" => $ssalvageses[$i]["rarity"],"chance" => $ssalvageses[$i]["chance"]));
+                                                                        unset($ssalvageses[$i]);
+                                                                    }
+                                                                } else {
+                                                                    array_push($usalvageses, array("vnum" => $ssalvageses[$i]["vnum"],"quantity" => $ssalvageses[$i]["quantity"],"rarity" => $ssalvageses[$i]["rarity"],"chance" => $ssalvageses[$i]["chance"]));
+                                                                    unset($ssalvageses[$i]);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // end of grouping salvageses
                                                 echo '<div class="col-12 mt-5">Salvage</div><hr>';
                                                 echo '<div class="mt-3 col-12">';
                                                     echo '<div class="d-flex flex-row flex-wrap justify-content-center">';
-                                                    foreach($salvages[$item[$id]->vnum()] as $salvage){
+                                                    foreach($usalvageses as $salvage){
                                                         echo '<div class="m-1">';
                                                             echo Item::showItem($salvage["vnum"], (Core::minVal(($salvage["quantity"]*($item[$id]->rarity()-1)), $salvage["quantity"])/2), $salvage["rarity"], $salvage["chance"]);
                                                         echo '</div>';
@@ -269,7 +307,7 @@
 
                                                         $salvage_result = array();
 
-                                                        foreach($salvages[$item[$id]->vnum()] as $salvage_item){
+                                                        foreach($usalvageses as $salvage_item){
                                                             if($salvage_item["chance"]*LOOT_CHANCE_MULTIPLIER >= Item::randomSalvageNumber()){
                                                                 array_push($salvage_result, array("vnum" => $salvage_item["vnum"], "quantity" => (Core::minVal(($salvage["quantity"]*($item[$id]->rarity()-1)), $salvage["quantity"])/2), "rarity" => $salvage_item["rarity"]));
                                                                 $player->addItem($salvage_item["vnum"],(Core::minVal(($salvage["quantity"]*($item[$id]->rarity()-1)), $salvage["quantity"])/2),$salvage_item["rarity"]);

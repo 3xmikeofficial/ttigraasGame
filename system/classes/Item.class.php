@@ -372,7 +372,7 @@
                 $item .= '<div class="item">';
                     $item .= '<div class="'.$actual_item->sizeText().'-slot '.Item::getRarityClass($actual_item->rarity()).'">';
                         $item .= $actual_item->icon();
-                        $item .= '<div class="quantity text-center">'.$quantity.'</div>';
+                        $item .= '<div class="quantity text-center p-1">'.$quantity.'</div>';
                     $item .= '</div>';
                         $item .= '<div class="stats text-center">'.$actual_item->showTooltip().'</div>';
                 $item .= '</div>';
