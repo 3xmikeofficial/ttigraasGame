@@ -168,11 +168,11 @@
 
         }
 
-        public static function modalButton($id, $text = "info", $params = "", $quantity = ""){
+        public static function modalButton($id, $text = "info", $params = ""){
 
-            return '<button type="button" class="'.$params.'" data-bs-toggle="modal" data-bs-target="#'.$id.'">
-            '.$text.$quantity.'
-          </button>';
+            return '<a type="button" class="'.$params.'" data-bs-toggle="modal" data-bs-target="#'.$id.'">
+            '.$text.'
+          </a>';
 
         }
 

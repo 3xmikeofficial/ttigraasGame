@@ -497,7 +497,13 @@ input[type=number] {
   z-index: 1;
   -webkit-transform: translate(-40%);
           transform: translate(-40%);
-  min-width: 175px;
+  min-width: 185px;
+}
+.item .stats .stone {
+  background-color: #000;
+  border-radius: 50%;
+  display: inline-block;
+  padding: 3px;
 }
 
 .small-slot {
@@ -516,6 +522,12 @@ input[type=number] {
   background-color: rgba(0, 0, 0, 0.25);
   font-size: 13px;
   color: white;
+}
+.small-slot .stones {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 .medium-slot {
@@ -539,6 +551,14 @@ input[type=number] {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+.small-slot .quantity, .medium-slot .quantity, .large-slot .quantity {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background-color: rgba(0, 0, 0, 0.25);
+  font-size: 13px;
+  color: white;
 }
 .small-slot.common, .medium-slot.common, .large-slot.common {
   border: 1px solid #666666 !important;

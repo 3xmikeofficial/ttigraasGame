@@ -46,11 +46,7 @@
                         }
                         if(!isset($_GET["section"]) or (isset($section) && ($item[$id]->type() == $section || $item[$id]->subtype() == $section))){
 
-                            echo "<div class='equipment'>";
-                                echo "<div class='item float-start'>";
-                                $test = "<span class='quantity ".($item[$id]->quantity() == 1 ? "" : "p-1")."'>".($item[$id]->quantity() == 1 ? "" : $item[$id]->quantity())."</span>";
-                                echo Core::modalButton(Core::numberText($item[$id]->id()), $item[$id]->icon(), $item[$id]->sizeText()."-slot ".Item::getRarityClass($item[$id]->rarity())." m-3", $test);
-                                echo "<div class='stats text-center'>".$item[$id]->showTooltip()."</div></div></div>";
+                            echo Core::modalButton(Core::numberText($item[$id]->id()), Item::showItem($item[$id]->vnum(), $item[$id]->quantity(), $item[$id]->rarity(), 0, $item[$id]->id()), Item::getRarityClass($item[$id]->rarity())." m-3 float-start");
                             
                             echo Core::openModal(Core::numberText($item[$id]->id()), Item::getRarityColorText($item[$id]->rarity(), $item[$id]->name()." [".Item::getRarityTier($item[$id]->rarity())."]"));
                                 echo Core::openDiv(["class" => "row"]);
@@ -70,6 +66,16 @@
                                                 echo "+ ".$item[$id]->showAvarageRarityValue()." Stamina<hr>";
                                             }
                                         }
+                                        if($item[$id]->hasStone()){
+                                            foreach ($item[$id]->stones() as $stone) {
+                                                echo Item::showStone($stone);
+                                            }
+                                        }
+                                        if($item[$id]->hasSocket()){
+                                            echo Core::modalButton(Core::numberText($item[$id]->id())."_stone", "Add stone");
+                                        }
+
+                                        echo "<hr>";
                                         echo "Price: ".$item[$id]->rarityPrice().Core::addImage(IMAGESDIR."/money.png");
 
                                         echo Core::openForm();
@@ -327,6 +333,12 @@
 
                                     echo Core::closeDiv();
                                 echo Core::closeDiv();
+                            echo Core::closeModal();
+                            echo Core::openModal(Core::numberText($item[$id]->id())."_stone", "Add stone");
+                                echo '<div class="row">
+                                    <div class="col-4">'.Item::showItem($item[$id]->vnum(),$item[$id]->quantity(), $item[$id]->rarity(), 0, $item[$id]->id()).'</div>
+                                    <div class="col-8">Stones list</div>
+                                </div>';
                             echo Core::closeModal();
 
                         }

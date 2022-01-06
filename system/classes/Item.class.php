@@ -16,6 +16,9 @@
         protected $_equipped = false;
         protected $_quantity = 1;
         protected $_chance;
+        protected $_stones = array();
+        protected $_stones_count;
+        protected $_sockets = 0;
 
         public function __construct($item_vnum, $quantity = "", $rarity = 1, $chance = "", $id = ""){
 
@@ -28,6 +31,34 @@
                 $item = Database::queryAlone("SELECT * FROM items WHERE id = ?", [$id]);
                 $this->_quantity = $item["quantity"];
                 $this->_equipped = $item["equipped"];
+                if($item["stone0"] != 0){
+                    $this->_stones[0] = $item["stone0"];
+                }
+                if($item["stone1"] != 0){
+                    $this->_stones[1] = $item["stone1"];
+                }
+                if($item["stone2"] != 0){
+                    $this->_stones[2] = $item["stone2"];
+                }
+                $stones = 0;
+                $sockets = 0;
+                if(isset($item["stone0"]) && $item["stone0"] != 0){
+                    $stones++;
+                } elseif(isset($item["stone0"]) && $item["stone0"] == 0) {
+                    $sockets++;
+                }
+                if(isset($item["stone1"]) && $item["stone1"] != 0){
+                    $stones++;
+                } elseif(isset($item["stone1"]) && $item["stone1"] == 0) {
+                    $sockets++;
+                }
+                if(isset($item["stone2"]) && $item["stone2"] != 0){
+                    $stones++;
+                } elseif(isset($item["stone2"]) && $item["stone2"] == 0) {
+                    $sockets++;
+                }
+                $this->_stones_count = $stones;
+                $this->_sockets = $sockets;
             }
             $this->_vnum = $tooltip["id"];
             $this->_name = $tooltip["item_name"];
@@ -132,6 +163,24 @@
         }
         public function equipped(){
             return $this->_equipped;
+        }
+        public function stones(){
+            return $this->_stones;
+        }
+        public function stones_count(){
+            return $this->_stones_count;
+        }
+        public function hasSocket(){
+            if($this->_sockets >= 1){
+                return true;
+            }
+            return false;
+        }
+        public function hasStone(){
+            if($this->_stones_count >= 1){
+                return true;
+            }
+            return false;
         }
 
         public static function removeItems($vnum, $token, $quantity, $rarity){
@@ -351,6 +400,15 @@
             
             $query .= "Price: ".($this->_price*$this->_rarity)."g";
 
+            if($this->_stones_count){
+                $query .= "<hr>";
+                foreach ($this->_stones as $stone) {
+                    if($stone){
+                        $query .= self::showStone($stone);
+                    }
+                }
+            }
+
             if(isset($this->_chance) && !empty($this->_chance)){
                 $query .= "<hr>";
                 $query .= "Drop chance: ".$this->_chance."%";
@@ -364,17 +422,34 @@
 
         }
 
-        public static function showItem($vnum, $quantity = "", $rarity = "", $chance = ""){
+        public static function showStone($vnum = 90){
+            $stone = new Item($vnum);
+            $query = '<div class="row">
+                <div class="col-3">'.$stone->icon().'</div>
+                <div class="col-9 pt-1">
+                    '.$stone->name().'
+                </div>
+            </div>';
+            return $query;
+        }
+
+        public static function showItem($vnum, $quantity = "", $rarity = "", $chance = "", $id = ""){
             $item = "";
             if(isset($vnum)){
-                $actual_item = new Item($vnum, $quantity, $rarity, $chance);
+                if($id != ""){
+                    $actual_item = new Item($vnum, $quantity, $rarity, $chance, $id);
+                } else {
+                    $actual_item = new Item($vnum, $quantity, $rarity, $chance);
+                }
 
                 $item .= '<div class="item">';
                     $item .= '<div class="'.$actual_item->sizeText().'-slot '.Item::getRarityClass($actual_item->rarity()).'">';
-                        $item .= $actual_item->icon();
-                        $item .= '<div class="quantity text-center p-1">'.$quantity.'</div>';
-                    $item .= '</div>';
-                        $item .= '<div class="stats text-center">'.$actual_item->showTooltip().'</div>';
+                    $item .= $actual_item->icon();
+                        if($quantity > 1){
+                            $item .= '<div class="quantity text-center p-1">'.$quantity.'</div>';
+                        }
+                        $item .= '</div>';
+                        $item .= '<div class="stats text-center p-3">'.$actual_item->showTooltip().'</div>';
                 $item .= '</div>';
 
                 return $item;
