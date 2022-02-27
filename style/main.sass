@@ -12,20 +12,41 @@ body
 
 #sidebar
     position: absolute
-    max-width: 420px
+    width: 60px
+    max-width: 60px
     height: 100vh
     max-height: 100vh
     overflow-y: overlay
     overflow-x: hidden
     top: 0
     left: 0
+    #sidebar_full
+        display: none
+    #sidebar_small
+        height: 100vh!important
+        display: flex
+        .logo
+            background-image: url(../favicon.ico)
+            width: 16px
+            height: 16px
+            margin: 0 auto
+    &:hover
+        width: 420px
+        max-width: 420px
+        #sidebar_full
+            display: block
+            transition: opacity 1s ease-out
+        &~#content
+            left: 420px
+            width: calc( 100vw - 420px )
+            max-width: calc( 100vw - 420px )
 
 #content
     position: absolute
-    left: 420px
+    left: 60px
     top: 0
-    width: calc( 100vw - 420px )
-    max-width: calc( 100vw - 420px )
+    width: calc( 100vw - 60px )
+    max-width: calc( 100vw - 60px )
     height: 100vh
     max-height: 100vh
     overflow-y: overlay

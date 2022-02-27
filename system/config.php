@@ -15,9 +15,9 @@
     // Defines
 
     define('ROOT', dirname(dirname(__FILE__)));
-    define('URL', "http://".$_SERVER["SERVER_NAME"]."/");
-    define('ACTUAL_URL', "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]);
-    define('GAME_URL', "http://".$_SERVER["SERVER_NAME"]."/game/game.php");
+    define('URL', "http://".$_SERVER["SERVER_NAME"].":8848");
+    define('ACTUAL_URL', URL.$_SERVER["REQUEST_URI"]);
+    define('GAME_URL', URL."/ttigraas/game/game.php");
     define('SYSTEM', ROOT.DIRECTORY_SEPARATOR."system");
     define('CLASSES', SYSTEM.DIRECTORY_SEPARATOR."classes");
     define('LOCALE', SYSTEM.DIRECTORY_SEPARATOR."locale");

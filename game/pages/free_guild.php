@@ -114,7 +114,7 @@ if(!isset($_GET["section"])){
                         <div class="card bg-dark">
                             <div class="card-header bg-dark">'.$quest["name"].'</div>
                             <div class="card-body bg-dark">
-                                <div class="col-3 float-start text-center">
+                                <div class="col-4 float-start text-center">
                                     '.Core::addImage(IMAGESDIR."/quests/".str_replace(" ", "_", $quest["name"]).".png", ["width" => "200px", "height" => "115px"], $quest["name"]).'
                                     <div class="col-12 float-start text-center mt-3"><strong>Stats</strong></div>
                                     <div class="col-6 float-start text-start">Health</div>
@@ -134,7 +134,7 @@ if(!isset($_GET["section"])){
                                     <div class="col-6 float-start text-start">Difficulty</div>
                                     <div class="col-6 float-start text-end"><strong><i>'.$quest["section"].'</i></strong></div>
                                 </div>
-                                <div class="col-9 float-start text-center">';
+                                <div class="col-8 float-start text-center">';
 
                                     if(isset($_POST["quest_begin"])){
                     
@@ -323,7 +323,7 @@ if(!isset($_GET["section"])){
 
                                 if(!empty(@$quest_rewards[$quest["name"]])){
                                     $loot = @$quest_rewards[$quest["name"]];
-                                    echo '<div class="equipment">';
+                                    echo '<div class="equipment m-0 p-0 row">';
                                         if(!isset($_GET["drop"])){
                                             $item_vnums = array();
                                             $grouped_items = array();
@@ -342,7 +342,7 @@ if(!isset($_GET["section"])){
                                                 $selected_item->setQuantity($group_item["quantity"]);
                                                 $selected_item->setRarity($group_item["rarity"]);
                                                 echo '
-                                                    <div class="item float-start">
+                                                    <div class="item col-4 m-0 p-0 float-start">
                                                         <div class="'.$selected_item->sizeText().'-slot m-3">
                                                             '.$selected_item->icon().'
                                                             <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>
@@ -359,7 +359,7 @@ if(!isset($_GET["section"])){
                                                 $selected_item->setQuantity($litem["quantity"]);
                                                 $selected_item->setRarity($litem["rarity"]);
                                                 echo '
-                                                    <div class="item float-start">
+                                                    <div class="item col-4 m-0 p-0 float-start">
                                                         <div class="'.$selected_item->sizeText().'-slot '.Item::getRarityClass($selected_item->rarity()).' m-3">
                                                             '.$selected_item->icon().'
                                                             <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>

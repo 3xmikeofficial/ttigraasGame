@@ -121,7 +121,7 @@
                                                     echo Core::alert("Login successfull!", "success");
 
                                                     $_SESSION["user_token"] = $query["token"];
-                                                    echo Core::redirect(URL."game/game.php");
+                                                    echo Core::redirect(GAME_URL);
 
                                                 } else {
 

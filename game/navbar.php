@@ -1,5 +1,6 @@
 <div class="text-center text-white bg-dark" id="sidebar" style="height:100vh">
-    <a href="/" class="text-center text-decoration-none">
+  <div id="sidebar_full">
+    <a href="<?= URL; ?>" class="text-center text-decoration-none">
       <div class="fs-4 mb-5">Ttigraas</div>
     </a>
     <img src="./images/race/<?php echo $player->race().".png"; ?>" class="mx-auto" width="128" height="128">
@@ -193,4 +194,8 @@
             Logout
         </a>
       </div>
+    </div>
+    <div id="sidebar_small" class="align-items-center">
+      <div class="logo"></div>
+    </div>
 </div>

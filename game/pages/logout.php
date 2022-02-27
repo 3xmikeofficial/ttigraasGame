@@ -1,6 +1,6 @@
 <?php 
 
     session_destroy();
-    echo Core::redirect(URL);
+    echo Core::redirect(URL."/ttigraas/");
 
 ?>
