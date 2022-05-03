@@ -4,10 +4,7 @@
     session_start();
 
     // Database settings
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "ttigraas";
+    include_once("./db_config.php");
 
     // Password hash
     $hash = "ttigraasultimatehashbycielsenpai";

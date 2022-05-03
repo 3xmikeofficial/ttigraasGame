@@ -1,1 +1,2 @@
-./system/errors.log
+./system/errors.txt
+./system/db_config.php
