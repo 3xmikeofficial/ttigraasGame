@@ -6,6 +6,32 @@ body {
   overflow: hidden;
 }
 
+@media (min-width: 992px) {
+  #sidebar {
+    display: block !important;
+  }
+  #sidebar:hover {
+    width: 420px;
+    max-width: 420px;
+  }
+  #sidebar:hover #sidebar_full {
+    display: block;
+    -webkit-transition: opacity 1s ease-out;
+    transition: opacity 1s ease-out;
+  }
+  #sidebar:hover ~ #content {
+    left: 420px !important;
+    width: calc( 100vw - 420px );
+    max-width: calc( 100vw - 420px );
+  }
+
+  #content {
+    position: absolute !important;
+    left: 60px !important;
+    width: calc( 100vw - 60px );
+    max-width: calc( 100vw - 60px );
+  }
+}
 #sidebar {
   position: absolute;
   width: 60px;
@@ -16,6 +42,7 @@ body {
   overflow-x: hidden;
   top: 0;
   left: 0;
+  display: none;
 }
 #sidebar #sidebar_full {
   display: none;
@@ -46,15 +73,20 @@ body {
   width: calc( 100vw - 420px );
   max-width: calc( 100vw - 420px );
 }
+#sidebar:hover #sidebar_small {
+  display: none;
+}
+#sidebar:hover #sidebar_small .logo {
+  display: none;
+}
 
 #content {
-  position: absolute;
-  left: 60px;
+  position: relative;
+  left: 0px;
   top: 0;
-  width: calc( 100vw - 60px );
-  max-width: calc( 100vw - 60px );
   height: 100vh;
   max-height: 100vh;
+  width: 100vw;
   overflow-y: overlay;
   overflow-x: hidden;
   padding: 10px;
@@ -401,16 +433,30 @@ a:hover, a.active {
 .progress.bg-danger {
   background-color: #bd2130 !important;
 }
+.progress .progress-bar {
+  min-width: 100px;
+}
 .progress .progress-bar span {
-  position: absolute;
   display: block;
   width: 100%;
   color: white;
   text-shadow: 1px 1px #000;
 }
+@media (min-width: 992px) {
+  .progress .progress-bar span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: white;
+    text-shadow: 1px 1px #000;
+  }
+}
 
+.nav-item {
+  padding-left: 10px;
+}
 .nav-item:hover {
-  background-color: #0a0c0d !important;
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 .btn {
@@ -525,9 +571,14 @@ input[type=number] {
   background-color: rgba(0, 0, 0, 0.75);
   font-size: 13px;
   z-index: 1;
-  -webkit-transform: translate(-40%);
-          transform: translate(-40%);
+  -webkit-transform: translate(-35%);
+          transform: translate(-35%);
   min-width: 185px;
+  text-align: center;
+}
+.item .stats hr {
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .item .stats .stone {
   background-color: #000;

@@ -1,166 +1,68 @@
-<div class="text-center text-white bg-dark" id="sidebar" style="height:100vh">
+<!-- Patchnotes -->
+<div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="stats" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Stats</h5>
+          <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+          <div class="row mb-5">
+            <?php include("pages/stats.php"); ?>
+          </div>
+      </div>
+  </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand d-xs-block d-lg-none" href="#">Ttigraas</a>
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mt-3 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="?page=free_guild">Free Guild</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?page=free_guild">Market</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?page=stables">Stables</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?page=inventory">Inventory</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?page=labyrinth">Labyrinth</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?page=guild">Guild</a>
+        </li>
+        <?php 
+          $user = new User($_SESSION["user_token"]);
+          if($user->isAdmin()){ 
+        ?>
+          <li class="nav-item">
+            <a class="nav-link" href="?page=admin">Administration</a>
+          </li>
+        <?php } ?>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#stats" aria-controls="offcanvasRight" href="#">Stats <span class="badge rounded-pill bg-danger" style="font-size: 12px">!</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?page=logout">Logout</a>
+        </li>
+    </div>
+  </div>
+</nav>
+<div class="text-center text-white bg-dark " id="sidebar" style="height:100vh">
   <div id="sidebar_full">
     <a href="<?= URL; ?>" class="text-center text-decoration-none">
       <div class="fs-4 mb-5">Ttigraas</div>
     </a>
-    <img src="./images/race/<?php echo $player->race().".png"; ?>" class="mx-auto" width="128" height="128">
-    <ul class="nav nav-pills flex-column mt-3 lh-lg">
-      <li class="nav-item mb-5">
-        <?php echo $player->name(); ?>
-      </li>
-      <li class="nav-item mt-3 row mx-0 lh-lg px-3">
-        <div class="col-3 text-start">Level:</div>
-        <div class="col-9 fst-italic text-end"><strong><?php echo $player->level() == MAX_PLAYER_LEVEL ? "MAX" : $player->level(); ?></strong></div>
-      </li>
-      <?php if($player->level() != MAX_PLAYER_LEVEL){ ?>
-        <div class="col-12 text-center mt-4">Exp</div>
-        <div class="col-12 text-center px-3">
-          <div class="progress bg-danger">
-              <div class="progress-bar bg-danger" role="progressbar" style="width: <?= ($player->exp()/$player->expNeeded())*100 ?>%;">
-                  <span><?= $player->exp(); ?> / <?= $player->expNeeded(); ?></span>
-              </div>
-          </div>
-        </div>
-      <?php } ?>
-      <li class="nav-item mt-3 row mx-0 lh-lg px-3">
-        <div class="col-3 text-start">Race:</div>
-        <div class="col-9 fst-italic text-end"><strong><?php echo $player->race(); ?></strong></div>
-      </li>
-      <li class="nav-item row mx-0 lh-lg px-3">
-        <div class="col-3 text-start">Class:</div>
-        <div class="col-9 fst-italic text-end"><strong><?php echo $player->class(); ?></strong></div>
-      </li>
-      <div class="col-12 text-center mt-4">Stamina</div>
-      <div class="col-12 text-center px-3">
-        <div class="progress bg-success">
-            <div class="progress-bar bg-success" role="progressbar" style="width: <?= ($player->stamina()/$player->max_stamina())*100 ?>%;">
-                <span><?= $player->stamina(); ?> / <?= $player->max_stamina(); ?></span>
-            </div>
-        </div>
-        <?php if(isset($_SESSION["stamina_message"])){ echo Core::alert($_SESSION["stamina_message"], "success"); unset($_SESSION["stamina_message"]); } ?>
-      </div>
       <?php 
-          
-        $equip = $player->equip();
-
-        foreach ($equip as $id => $item) {
-            $selected_item[$id] = new Item($item["item_vnum"], $item["quantity"], $item["rarity"], "", $item["id"]);
-
-            if($selected_item[$id]->type() == "ITEM_WEAPON"){
-              $weapon = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_HELMET"){
-              $helmet = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_BODY"){
-              $armor = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_SHIELD"){
-              $shield = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_EARINGS"){
-              $earings = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_BRACELET"){
-              $bracelet = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_NECKLACE"){
-              $necklace = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_BELT"){
-              $belt = $selected_item[$id];
-            } elseif($selected_item[$id]->subtype() == "ITEM_BOOTS"){
-              $boots = $selected_item[$id];
-            }
-        }
+      
+            include("./pages/stats.php");
       
       ?>
-
-      <div class="equipment mt-5">
-        <div class="helmet">
-          <div class="small-slot <?php if(isset($helmet)){ echo Item::getRarityClass($helmet->rarity()); } ?> item mx-auto">
-          <?php 
-            if(isset($helmet)){ ?>
-              <div class="stats">
-                <?= $helmet->showTooltip(); ?>
-              </div>
-              <?php 
-            
-            }
-
-                if(isset($helmet)){ 
-                  echo $helmet->icon();
-                } else { 
-                  echo Item::notEquiped(); 
-                } 
-
-              ?>
-          </div>
-        </div>
-        <div class="weapon item float-start">
-        <?php if(isset($weapon)){ ?>
-          <div class="stats">
-            <?= $weapon->showTooltip(); ?>
-          </div>
-        <?php } ?>
-        <div class="medium-slot <?php if(isset($weapon)){ echo Item::getRarityClass($weapon->rarity()); } ?> mt-3"><?php if(isset($weapon)){ echo $weapon->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-        <div class="armor item float-start">
-        <?php if(isset($armor)){ ?>
-          <div class="stats">
-            <?= $armor->showTooltip(); ?>
-          </div>
-        <?php } ?>
-        <div class="medium-slot <?php if(isset($armor)){ echo Item::getRarityClass($armor->rarity()); } ?> mt-3"><?php if(isset($armor)){ echo $armor->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-        <div class="shield float-start">
-          <div class="small-slot <?php if(isset($shield)){ echo Item::getRarityClass($shield->rarity()); } ?> item">
-          <?php if(isset($shield)){ ?>
-            <div class="stats">
-              <?= $shield->showTooltip(); ?>
-            </div>
-          <?php } ?>
-          <?php if(isset($shield)){ echo $shield->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-        <div class="earings item float-start">
-          <?php if(isset($earings)){ ?>
-            <div class="stats">
-              <?= $earings->showTooltip(); ?>
-            </div>
-          <?php } ?>
-          <div class="small-slot <?php if(isset($earings)){ echo Item::getRarityClass($earings->rarity()); } ?>"><?php if(isset($earings)){ echo $earings->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-        <div class="bracelet item float-start">
-        <?php if(isset($bracelet)){ ?><div class="stats"><?= $bracelet->showTooltip(); ?></div><?php } ?>
-          <div class="small-slot <?php if(isset($bracelet)){ echo Item::getRarityClass($bracelet->rarity()); } ?> mt-3"><?php if(isset($bracelet)){ echo $bracelet->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-        <div class="necklace item float-start">
-        <?php if(isset($necklace)){ ?><div class="stats"><?= $necklace->showTooltip(); ?></div><?php } ?>
-          <div class="small-slot <?php if(isset($necklace)){ echo Item::getRarityClass($necklace->rarity()); } ?> mt-3"><?php if(isset($necklace)){ echo $necklace->icon(); } else { echo Item::notEquiped(); } ?></div>
-        </div>
-        <div class="col-12 float-start">
-          <div class="belt item">
-            <?php if(isset($belt)){ ?><div class="stats"><?= $belt->showTooltip(); ?></div><?php } ?>
-            <div class="small-slot <?php if(isset($belt)){ echo Item::getRarityClass($belt->rarity()); } ?> mt-3"><?php if(isset($belt)){ echo $belt->icon(); } else { echo Item::notEquiped(); } ?></div>
-          </div>
-        </div>
-        <div class="col-12 float-start">
-          <div class="boots item">
-            <?php if(isset($boots)){ ?><div class="stats"><?= $boots->showTooltip(); ?></div><?php } ?>
-            <div class="small-slot <?php if(isset($boots)){ echo Item::getRarityClass($boots->rarity()); } ?> mt-3"><?php if(isset($boots)){ echo $boots->icon(); } else { echo Item::notEquiped(); } ?></div>
-          </div>
-        </div>
-        <div class="clearfix"></div>
-
-      <li class="nav-item row mx-0 lh-lg mt-5">
-          <div class="col-6"><?php echo "Health<br><color class='text-success'><strong>".$player->health(); ?></strong></color></div>
-          <div class="col-6"><?php echo "Speed<br><color class='text-info'><strong>".$player->speed(); ?></strong></color></div>
-          <div class="col-6 mt-4"><?php echo "Strenght<br><color class='text-danger'><strong>".$player->strenght(); ?></strong></color></div>
-          <div class="col-6 mt-4"><?php echo "Defense<br><color class='text-warning'><strong>".$player->defense(); ?></strong></color></div>
-        </li>
-        <li class="nav-item row mx-0 mt-5 lh-lg px-3">
-          <div class="col-3 text-start"><?= Core::addImage(IMAGESDIR."/magicule.png", "", "Gold coins"); ?></div>
-          <div class="col-9 fst-italic text-end"><strong><?php echo $player->magicules(); ?></strong></div>
-        </li>
-        <li class="nav-item row mx-0 lh-lg mt-3 px-3">
-          <div class="col-3 text-start"><?= Core::addImage(IMAGESDIR."/money.png", "", "Gold coins"); ?></div>
-          <div class="col-9 fst-italic text-end"><strong><?php echo $player->gold(); ?></strong></div>
-        </li>
-        
-    </ul>
       <div class="mt-5" style="width:100%">
         <a href="?page=free_guild" class="align-center d-block">
             Free Guild

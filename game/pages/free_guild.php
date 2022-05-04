@@ -1,6 +1,6 @@
 
     <div class="col-12">
-        <div class="card bg-dark d-flex flex-row justify-content-center">
+        <div class="card bg-dark text-center d-md-inline-block w-100 px-md-5">
             <span>Filter:</span>
             <a href="<?php echo GAME_URL; ?>?page=free_guild" class="mx-3 <?php if(!isset($_GET["section"])){ echo "active"; } ?>">All</a>
             <a href="<?php echo GAME_URL; ?>?page=free_guild&section=Beginner" class="mx-3 <?php if(isset($_GET["section"]) && $_GET["section"] == "Beginner"){ echo "active"; } ?>">Beginner</a>
@@ -23,9 +23,9 @@ include_once(GAME.DIRECTORY_SEPARATOR."addons".DIRECTORY_SEPARATOR."quest_reward
 if(!isset($_GET["section"])){ 
         
 ?>
-    <div class="col-2">
+    <div class="col-12 col-md-2 mb-3">
         <div class="card bg-dark">
-            <div class="card-header bg-dark">Quests</div>
+            <div class="card-header bg-dark text-start text-sm-center">Quests</div>
             <div class="card-body text-center">
                 <div class="row">
                     <div class="nav flex-column align-items-center nav-pills pe-0 col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -59,9 +59,9 @@ if(!isset($_GET["section"])){
 
 ?>
 
-    <div class="col-2">
+    <div class="col-12 col-md-2">
         <div class="card bg-dark">
-            <div class="card-header bg-dark">Quests</div>
+            <div class="card-header bg-dark text-center text-md-start">Quests</div>
             <div class="card-body text-center">
                 <div class="row">
                     <div class="nav flex-column align-items-center nav-pills pe-0 col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -110,11 +110,11 @@ if(!isset($_GET["section"])){
                     $quest = Quests::getOne($_GET["id"]);
 
                     echo '
-                    <div class="col-7 pe-3 float-start">
+                    <div class="col-12 col-md-7 pe-3 float-start">
                         <div class="card bg-dark">
                             <div class="card-header bg-dark">'.$quest["name"].'</div>
                             <div class="card-body bg-dark">
-                                <div class="col-4 float-start text-center">
+                                <div class="col-12 col-md-4 float-start text-center">
                                     '.Core::addImage(IMAGESDIR."/quests/".str_replace(" ", "_", $quest["name"]).".png", ["width" => "200px", "height" => "115px"], $quest["name"]).'
                                     <div class="col-12 float-start text-center mt-3"><strong>Stats</strong></div>
                                     <div class="col-6 float-start text-start">Health</div>
@@ -134,7 +134,7 @@ if(!isset($_GET["section"])){
                                     <div class="col-6 float-start text-start">Difficulty</div>
                                     <div class="col-6 float-start text-end"><strong><i>'.$quest["section"].'</i></strong></div>
                                 </div>
-                                <div class="col-8 float-start text-center">';
+                                <div class="col-12 col-md-8 float-start text-center">';
 
                                     if(isset($_POST["quest_begin"])){
                     
@@ -261,7 +261,7 @@ if(!isset($_GET["section"])){
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 float-start">
+                    <div class="col-12 col-md-3 float-start mb-5">
                         <div class="card bg-dark">
                             <div class="card-header bg-dark text-center">Rewards</div>
                             <div class="card-body bg-dark text-center">';
@@ -272,7 +272,7 @@ if(!isset($_GET["section"])){
                                     if(isset($battle_status) && $battle_status == "win"){
                                         if(!empty(@$quest_rewards[$quest["name"]])){
                                             $loot = @$quest_rewards[$quest["name"]];
-                                            echo '<div class="equipment">';
+                                            echo '<div class="row">';
                                                 foreach ($loot as $id => $loot_item) {
                                                     if(isset($loot_item["chance"])){
                                                         $loot_chances[$id] = $loot_item["chance"]*LOOT_CHANCE_MULTIPLIER;
@@ -288,7 +288,7 @@ if(!isset($_GET["section"])){
                                                         $selected_item->setQuantity($loot_item["quantity"]);
                                                         $selected_item->setRarity($loot_item["rarity"]);
                                                         echo '
-                                                            <div class="item float-start">
+                                                            <div class="item">
                                                                 <div class="'.$selected_item->sizeText().'-slot '.Item::getRarityClass($selected_item->rarity()).' m-3">
                                                                     '.$selected_item->icon().'
                                                                     <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>
@@ -359,7 +359,7 @@ if(!isset($_GET["section"])){
                                                 $selected_item->setQuantity($litem["quantity"]);
                                                 $selected_item->setRarity($litem["rarity"]);
                                                 echo '
-                                                    <div class="item col-4 m-0 p-0 float-start">
+                                                    <div class="item col-4">
                                                         <div class="'.$selected_item->sizeText().'-slot '.Item::getRarityClass($selected_item->rarity()).' m-3">
                                                             '.$selected_item->icon().'
                                                             <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>

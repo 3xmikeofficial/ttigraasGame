@@ -4,7 +4,7 @@
     session_start();
 
     // Database settings
-    include_once("./db_config.php");
+    include_once("db_config.php");
 
     // Password hash
     $hash = "ttigraasultimatehashbycielsenpai";
@@ -12,9 +12,9 @@
     // Defines
 
     define('ROOT', dirname(dirname(__FILE__)));
-    define('URL', "http://".$_SERVER["SERVER_NAME"].":8848");
+    define('URL', "http://game.ageoflegends.cz");
     define('ACTUAL_URL', URL.$_SERVER["REQUEST_URI"]);
-    define('GAME_URL', URL."/ttigraas/game/game.php");
+    define('GAME_URL', URL."/game/game.php");
     define('SYSTEM', ROOT.DIRECTORY_SEPARATOR."system");
     define('CLASSES', SYSTEM.DIRECTORY_SEPARATOR."classes");
     define('LOCALE', SYSTEM.DIRECTORY_SEPARATOR."locale");

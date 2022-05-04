@@ -31,13 +31,13 @@
                 $item = Database::queryAlone("SELECT * FROM items WHERE id = ?", [$id]);
                 $this->_quantity = $item["quantity"];
                 $this->_equipped = $item["equipped"];
-                if($item["stone0"] != 0){
+                if(isset($item["stone0"]) && $item["stone0"] != 0){
                     $this->_stones[0] = $item["stone0"];
                 }
-                if($item["stone1"] != 0){
+                if(isset($item["stone1"]) && $item["stone1"] != 0){
                     $this->_stones[1] = $item["stone1"];
                 }
-                if($item["stone2"] != 0){
+                if(isset($item["stone2"]) && $item["stone2"] != 0){
                     $this->_stones[2] = $item["stone2"];
                 }
                 $stones = 0;
