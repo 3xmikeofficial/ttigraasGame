@@ -19,7 +19,7 @@
     <?php 
     
         if(User::isLoggedIn()){
-            if(!Player::doExist($_SESSION["user_token"])){
+            if(!Player::doExist($_SESSION["user_id"])){
 
                 ?>
 
@@ -44,14 +44,14 @@
 
                                     if(Core::check($_POST["race"])){
 
-                                        $name = User::getDataAlone("username", $_SESSION["user_token"]);
+                                        $name = User::getDataAlone("username", $_SESSION["user_id"]);
                                         $race = $_POST["race"];
                         
-                                        Player::createChar($name, $race, $_SESSION["user_token"]);
+                                        Player::createChar($name, $race, $_SESSION["user_id"]);
 
                                         echo Core::alert("You are reincarnating...", "success");
 
-                                        $player = new Player($_SESSION["user_token"]);
+                                        $player = new Player($_SESSION["user_id"]);
 
                                         echo Core::refresh(3);
                                         
@@ -72,7 +72,7 @@
 
             } else {
 
-                $player = new Player($_SESSION["user_token"]);
+                $player = new Player($_SESSION["user_id"]);
 
                 include_once("./navbar.php");
 

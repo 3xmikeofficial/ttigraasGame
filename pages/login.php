@@ -21,14 +21,14 @@
                         $username = $_POST["username"];
 
                         $password = $_POST["password"];
-                        $query = Database::queryAlone("SELECT * FROM users WHERE username = ?", [$username]);
+                        $query = Database::queryAlone("SELECT * FROM accounts WHERE username = ?", [$username]);
                         
 
                         if(password_verify($password,$query["password"])){
 
                             echo Core::alert("Login successfull!", "success");
 
-                            $_SESSION["user_token"] = $query["token"];
+                            $_SESSION["user_id"] = $query["id"];
                             echo Core::redirect(GAME_URL);
 
                         } else {

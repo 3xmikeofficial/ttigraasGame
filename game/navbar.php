@@ -12,7 +12,7 @@
   </div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand d-xs-block d-lg-none" href="#">Ttigraas</a>
+    <a class="navbar-brand d-xs-block d-lg-none" href="<?= GAME_URL; ?>">Ttigraas</a>
     <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -37,7 +37,7 @@
           <a class="nav-link" href="?page=guild">Guild</a>
         </li>
         <?php 
-          $user = new User($_SESSION["user_token"]);
+          $user = new User($_SESSION["user_id"]);
           if($user->isAdmin()){ 
         ?>
           <li class="nav-item">
@@ -55,7 +55,7 @@
 </nav>
 <div class="text-center text-white bg-dark " id="sidebar" style="height:100vh">
   <div id="sidebar_full">
-    <a href="<?= URL; ?>" class="text-center text-decoration-none">
+    <a href="<?= GAME_URL; ?>" class="text-center text-decoration-none">
       <div class="fs-4 mb-5">Ttigraas</div>
     </a>
       <?php 
@@ -86,7 +86,7 @@
             Guild
         </a>
         <?php 
-          $user = new User($_SESSION["user_token"]);
+          $user = new User($_SESSION["user_id"]);
         if($user->isAdmin()){ ?>
           <a href="?page=admin" class="align-center d-block">
             Administration

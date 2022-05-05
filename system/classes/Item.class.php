@@ -68,7 +68,6 @@
             $this->_min_value = $tooltip["min_value"];
             $this->_max_value = $tooltip["max_value"];
             $this->_price = $tooltip["price"];
-            $this->_salvage = $tooltip["salvage"];
             $this->_rarity = $rarity;
             $this->_chance = $chance;
 
@@ -158,9 +157,6 @@
         public function chance(){
             return $this->_chance;
         }
-        public function salvage(){
-            return $this->_salvage;
-        }
         public function equipped(){
             return $this->_equipped;
         }
@@ -183,13 +179,13 @@
             return false;
         }
 
-        public static function removeItems($vnum, $token, $quantity, $rarity){
+        public static function removeItems($vnum, $player_id, $quantity, $rarity){
 
             $remaining = $quantity;
 
             while($remaining > 0){
 
-                $find_item = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and token = ? and rarity = ?", [$vnum, $token, $rarity]);
+                $find_item = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and player_id = ? and rarity = ?", [$vnum, $player_id, $rarity]);
                 if($remaining >= $find_item["quantity"]){
                         Database::queryAlone("DELETE FROM items WHERE id = ?", [$find_item["id"]]);
                         $remaining -= $find_item["quantity"];
@@ -223,9 +219,9 @@
             }
         }
 
-        public static function ownQuantity($vnum, $token, $rarity){
+        public static function ownQuantity($vnum, $player_id, $rarity){
 
-            $query = Database::queryAll("SELECT * FROM items WHERE item_vnum = ? and token = ? and rarity = ?", [$vnum, $token,$rarity]);
+            $query = Database::queryAll("SELECT * FROM items WHERE item_vnum = ? and player_id = ? and rarity = ?", [$vnum, $player_id,$rarity]);
 
             $quantity = 0;
             foreach ($query as $item) {
@@ -262,8 +258,8 @@
             return $value;
         }
 
-        public static function stackExist($vnum, $token, $rarity){
-            $query = Database::query("SELECT * FROM items WHERE item_vnum = ? and quantity < ? and token = ? and rarity = ?", [$vnum, STACK_LIMIT, $token, $rarity]);
+        public static function stackExist($vnum, $player_id, $rarity){
+            $query = Database::query("SELECT * FROM items WHERE item_vnum = ? and quantity < ? and player_id = ? and rarity = ?", [$vnum, STACK_LIMIT, $player_id, $rarity]);
             return $query > 0 ? true : false;
         }
 
@@ -273,14 +269,14 @@
 
         }
 
-        public static function addItem($vnum, $token, $quantity, $rarity){
+        public static function addItem($vnum, $player_id, $quantity, $rarity){
             $remaining = $quantity;
 
             while($remaining > 0){
 
-                if(self::stackExist($vnum, $token, $rarity)){
+                if(self::stackExist($vnum, $player_id, $rarity)){
 
-                    $stack_row = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and token = ? and quantity < ? and rarity = ? LIMIT 1", [$vnum, $token, STACK_LIMIT, $rarity]);
+                    $stack_row = Database::queryAlone("SELECT * FROM items WHERE item_vnum = ? and player_id = ? and quantity < ? and rarity = ? LIMIT 1", [$vnum, $player_id, STACK_LIMIT, $rarity]);
                     $update_quantity = $stack_row["quantity"]+$remaining;
                     if($update_quantity >= STACK_LIMIT){
                         $remaining = $update_quantity-STACK_LIMIT;
@@ -297,11 +293,11 @@
 
                     if($remaining > STACK_LIMIT){
 
-                        self::createItem($vnum, $token, STACK_LIMIT, $rarity);
+                        self::createItem($vnum, $player_id, STACK_LIMIT, $rarity);
                         $remaining = $remaining-STACK_LIMIT;
 
                     } else {
-                        self::createItem($vnum, $token, $remaining, $rarity);
+                        self::createItem($vnum, $player_id, $remaining, $rarity);
                         $remaining = 0;
                     }
                 }
@@ -309,12 +305,12 @@
             }
         }
 
-        public static function createItem($vnum, $token, $quantity = 1, $rarity = 1){
+        public static function createItem($vnum, $player_id, $quantity = 1, $rarity = 1){
 
             $type = Item::getType($vnum);
             $subtype = Item::getSubtype($vnum);
 
-            Database::queryAlone("INSERT INTO items SET item_vnum = ?, item_type = ?, item_subtype = ?, token = ?, quantity = ?, rarity = ?", [$vnum, $type, $subtype, $token, self::checkStackLimit($quantity), self::checkMaxRarity($rarity)]);
+            Database::queryAlone("INSERT INTO items SET item_vnum = ?, item_type = ?, item_subtype = ?, player_id = ?, quantity = ?, rarity = ?", [$vnum, $type, $subtype, $player_id, self::checkStackLimit($quantity), self::checkMaxRarity($rarity)]);
 
         }
 
@@ -338,9 +334,9 @@
 
         }
 
-        public static function getItems($token){
+        public static function getItems($player_id){
 
-            $query = Database::queryAll("SELECT * FROM items WHERE token = ?", [$token]);
+            $query = Database::queryAll("SELECT * FROM items WHERE player_id = ?", [$player_id]);
 
             return $query;
 
@@ -414,7 +410,7 @@
                 $query .= "Drop chance: ".$this->_chance."%";
             }
 
-            if(isset($_SESSION["user_token"]) && User::getDataAlone("rank", $_SESSION["user_token"]) == 777){
+            if(isset($_SESSION["user_id"]) && User::getDataAlone("rank", $_SESSION["user_id"]) == 777){
                 $query .= "<hr>ID: ".$this->_vnum;
             }
 
@@ -477,16 +473,16 @@
             return ($min+$max)/2;
         }
 
-        public static function getEquip($token){
+        public static function getEquip($player_id){
 
-            $query = Database::queryAll("SELECT * FROM items WHERE token = ? and equipped=1 ", [$token]);
+            $query = Database::queryAll("SELECT * FROM items WHERE player_id = ? and equipped=1 ", [$player_id]);
 
             return $query;
 
         }
-        public static function getInventory($token){
+        public static function getInventory($player_id){
 
-            $query = Database::queryAll("SELECT * FROM items WHERE token = ?", [$token]);
+            $query = Database::queryAll("SELECT * FROM items WHERE player_id = ?", [$player_id]);
 
             return $query;
 

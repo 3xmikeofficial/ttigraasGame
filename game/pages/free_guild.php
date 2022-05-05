@@ -114,9 +114,9 @@ if(!isset($_GET["section"])){
                         <div class="card bg-dark">
                             <div class="card-header bg-dark">'.$quest["name"].'</div>
                             <div class="card-body bg-dark">
-                                <div class="col-12 col-md-4 float-start text-center">
-                                    '.Core::addImage(IMAGESDIR."/quests/".str_replace(" ", "_", $quest["name"]).".png", ["width" => "200px", "height" => "115px"], $quest["name"]).'
-                                    <div class="col-12 float-start text-center mt-3"><strong>Stats</strong></div>
+                                <div class="col-6 col-md-6 float-start text-center">'.Core::addImage(IMAGESDIR."/quests/".str_replace(" ", "_", $quest["name"]).".png", ["width" => "200px", "height" => "115px"], $quest["name"]).'</div>
+                                <div class="col-6 col-md-6 float-start text-center">
+                                    <div class="col-12 float-start text-center"><strong>Stats</strong></div>
                                     <div class="col-6 float-start text-start">Health</div>
                                     <div class="col-6 float-start text-end"><strong><i>'.$quest["health"].'</i></strong></div>
                                     <div class="col-6 float-start text-start">Speed</div>
@@ -134,7 +134,7 @@ if(!isset($_GET["section"])){
                                     <div class="col-6 float-start text-start">Difficulty</div>
                                     <div class="col-6 float-start text-end"><strong><i>'.$quest["section"].'</i></strong></div>
                                 </div>
-                                <div class="col-12 col-md-8 float-start text-center">';
+                                <div class="col-12 col-md-12 mt-3 float-start text-center">';
 
                                     if(isset($_POST["quest_begin"])){
                     
@@ -241,13 +241,6 @@ if(!isset($_GET["section"])){
                                     } else {
                                 
                                         echo '<form method="post">
-                                            <label for="customRange1" class="form-label">Repeats</label><br>
-                                            <div class="col-10 float-start px-3">
-                                                <input type="range"name="amountRange" value="1" class="form-range mt-2" id="customRange1" min="1" max="'.($player->stamina()/$quest["cost"]).'" oninput="this.form.amountInput.value=this.value">
-                                            </div>
-                                            <div class="col-2 float-start text-center px-3">
-                                                <input type="text" class="form-control" name="amountInput" value="1" min="1" max="'.($player->stamina()/$quest["cost"]).'" oninput="this.form.amountRange.value=this.value" />
-                                            </div>
                                             <div class="col-12 px-3">
                                             <input type="hidden" name="quest" value="'.$quest["id"].'" /> 
                                             <input name="quest_begin" type="submit" class="form-control bg-success mt-5" value="BEGIN">
@@ -273,6 +266,8 @@ if(!isset($_GET["section"])){
                                         if(!empty(@$quest_rewards[$quest["name"]])){
                                             $loot = @$quest_rewards[$quest["name"]];
                                             echo '<div class="row">';
+                                            
+                                                $reward = false;
                                                 foreach ($loot as $id => $loot_item) {
                                                     if(isset($loot_item["chance"])){
                                                         $loot_chances[$id] = $loot_item["chance"]*LOOT_CHANCE_MULTIPLIER;
@@ -280,7 +275,6 @@ if(!isset($_GET["section"])){
                                                         $loot_chances[$id] = 0;
                                                     }
                                                     $random_numbers[$id] = Quests::randomLootNumber();
-                                                    $reward = false;
                                                     if($loot_chances[$id] >= $random_numbers[$id]){
                                                         $reward = true;
                                                         $player->addItem($loot_item["vnum"], $loot_item["quantity"], $loot_item["rarity"]);
@@ -299,10 +293,10 @@ if(!isset($_GET["section"])){
                                                             </div>
                                                         ';
                                                     }
-                                                    if($reward == false){
-                                                        echo "You didn't get reward this time!";
-                                                    }
                                                     
+                                                }
+                                                if($reward == false){
+                                                    echo "<center>You didn't get reward this time!</center>";
                                                 }
                                                 echo "</div>";
                                                 echo '<hr class="col-12 float-start">';

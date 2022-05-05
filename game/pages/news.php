@@ -12,7 +12,6 @@
         <div class="card bg-dark">
             <div class="card-header bg-dark text-center">Ranking</div>
             <div class="card-body bg-dark">
-                
             </div>
         </div>
     </div>

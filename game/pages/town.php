@@ -1,15 +1,15 @@
 <?php 
 
-    if(Town::doExist($player->token())){
+    if(Town::doExist($player->id())){
 
-        $town = new Town($player->token());
+        $town = new Town($player->id());
 
     }
 
 ?>
 
 <div class="card bg-dark">
-    <div class="card-header"><?php if(Town::doExist($player->token())){ echo $town->name(); } else { echo "Town"; } ?></div>
+    <div class="card-header"><?php if(Town::doExist($player->id())){ echo $town->name(); } else { echo "Town"; } ?></div>
     <div class="card-body">
         <?php 
         
@@ -23,7 +23,7 @@
 
             } else {
 
-                if(Town::doExist($player->token())){
+                if(Town::doExist($player->id())){
                     
                     echo Core::openDiv(["class" => "row"]);
 
@@ -136,7 +136,7 @@
 
                                 if(!Town::nameTaken($_POST["town_name"])){
 
-                                    Town::create(Core::secureInput($_POST["town_name"]), $player->token());
+                                    Town::create(Core::secureInput($_POST["town_name"]), $player->id());
                                     
                                     echo Core::alert("Your town is creating...", "success").Core::refresh(3);
 
@@ -166,7 +166,7 @@
 
 <?php 
 
-    if(Town::doExist($player->token())){
+    if(Town::doExist($player->id())){
 
         echo Core::openCard("Buildings");
 
@@ -203,7 +203,7 @@
 
             if(isset($_GET["action"]) && $_GET["action"] == "upgrade_building" && isset($_GET["id"])){
 
-                Town::upgradeBuilding($_GET["id"], $player->token());
+                Town::upgradeBuilding($_GET["id"], $player->id());
 
             }
 

@@ -19,7 +19,7 @@
             include_once(GAME.DIRECTORY_SEPARATOR."addons".DIRECTORY_SEPARATOR."refine_proto.php");
             include_once(GAME.DIRECTORY_SEPARATOR."addons".DIRECTORY_SEPARATOR."salvages.php");
             
-                    $inv = Item::getItems($_SESSION["user_token"]);
+                    $inv = Item::getItems($_SESSION["user_id"]);
                     foreach ($inv as $id => $item) {
                         $item[$id] = new Item($item["item_vnum"], $item["quantity"], $item["rarity"], 0, $item["id"]);
                         if(isset($_GET["section"])){
@@ -103,7 +103,7 @@
 
                                                     $sitem = Item::getItem($_POST["item_id"]);
 
-                                                    if($sitem["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+                                                    if($sitem["player_id"] == $player->id() && $item[$id]->id() == $_POST["item_id"]){
 
                                                         Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
                                                         Database::queryAlone("UPDATE items SET equipped=1 WHERE id = ?", [$item["id"]]);
@@ -115,7 +115,7 @@
 
                                                     $sitem = Item::getItem($_POST["item_id"]);
 
-                                                    if($item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+                                                    if($item["player_id"] == $player->id() && $item[$id]->id() == $_POST["item_id"]){
 
                                                         Database::queryAlone("UPDATE items SET equipped=0 WHERE item_subtype = ?", [$item["item_subtype"]]);
                                                         echo Core::refresh();
@@ -133,7 +133,7 @@
 
                                                         $get_item = Item::getItem($_POST["item_id"]);
 
-                                                        if($get_item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+                                                        if($get_item["player_id"] == $player->id() && $item[$id]->id() == $_POST["item_id"]){
 
                                                             if($get_item["quantity"] == 1){
 
@@ -221,7 +221,7 @@
                                                     echo '<div class="d-flex flex-row flex-wrap justify-content-center">';
                                                     foreach($urefsets as $refine_set){
                                                         echo '<div class="m-1">';
-                                                            echo Item::showItem($refine_set["vnum"], Item::ownQuantity($refine_set["vnum"], $player->token(), $refine_set["rarity"])." / ".$refine_set["quantity"], $refine_set["rarity"]);
+                                                            echo Item::showItem($refine_set["vnum"], Item::ownQuantity($refine_set["vnum"], $player->id(), $refine_set["rarity"])." / ".$refine_set["quantity"], $refine_set["rarity"]);
                                                             ;
                                                         echo '</div>';
                                                     }
@@ -239,13 +239,13 @@
                                                     }
                                                     
                                                     $upgrade = false;
-                                                    if(isset($get_item["token"]) && $get_item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+                                                    if(isset($get_item["player_id"]) && $get_item["player_id"] == $player->id() && $item[$id]->id() == $_POST["item_id"]){
 
                                                         foreach($urefsets as $refine_set){
-                                                            if(Item::ownQuantity($refine_set["vnum"], $player->token(), $refine_set["rarity"]) >= $refine_set["quantity"]){
+                                                            if(Item::ownQuantity($refine_set["vnum"], $player->id(), $refine_set["rarity"]) >= $refine_set["quantity"]){
 
                                                                 $upgrade = true;
-                                                                Item::removeItems($refine_set["vnum"], $player->token(), $refine_set["quantity"], $refine_set["rarity"]);
+                                                                Item::removeItems($refine_set["vnum"], $player->id(), $refine_set["quantity"], $refine_set["rarity"]);
                                                                 
                                                             }
                                                             
@@ -321,7 +321,7 @@
                                                         $get_item = Item::getItem($_POST["item_id"]);
                                                     }
 
-                                                    if(isset($get_item["token"]) && $get_item["token"] == $player->token() && $item[$id]->id() == $_POST["item_id"]){
+                                                    if(isset($get_item["id"]) && $get_item["id"] == $player->id() && $item[$id]->id() == $_POST["item_id"]){
 
                                                         $salvage_result = array();
 
