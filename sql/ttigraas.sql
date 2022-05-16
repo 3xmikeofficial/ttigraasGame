@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 05/05/2022 17:20:14
+ Date: 16/05/2022 13:46:39
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `accounts`  (
   `rank` int NOT NULL DEFAULT 0,
   `blocked` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of accounts
@@ -46,6 +46,7 @@ CREATE TABLE `characters`  (
   `level` int NOT NULL DEFAULT 1,
   `exp` int NOT NULL DEFAULT 0,
   `race` enum('Slime','Human','Demon','Angel','Goblin','Lizardman','Orc') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'Slime',
+  `species` enum('Physical','Spiritual') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'Physical',
   `class` int NOT NULL,
   `health` int NOT NULL DEFAULT 0,
   `stamina` int NOT NULL DEFAULT 100,
@@ -62,7 +63,7 @@ CREATE TABLE `characters`  (
 -- ----------------------------
 -- Records of characters
 -- ----------------------------
-INSERT INTO `characters` VALUES (1, '1', 'testaccount', 1, 0, 'Slime', 0, 100, 100, 100, 10, 20, 0, 0, 0);
+INSERT INTO `characters` VALUES (1, '1', 'testaccount', 19, 19, 'Slime', NULL, 0, 100, 10, 100, 10, 20, 0, 0, 433);
 
 -- ----------------------------
 -- Table structure for item_proto
@@ -205,11 +206,37 @@ CREATE TABLE `items`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `vnum`(`item_vnum`) USING BTREE,
   INDEX `owner`(`player_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of items
 -- ----------------------------
+INSERT INTO `items` VALUES (1, 1, 91, 'ITEM_POTION', 'ITEM_STAMINA', 10, 1, 0);
+INSERT INTO `items` VALUES (2, 1, 31, 'ITEM_ARMOR', 'ITEM_SHIELD', 1, 1, 0);
+INSERT INTO `items` VALUES (3, 1, 71, 'ITEM_ARMOR', 'ITEM_BOOTS', 1, 1, 0);
+INSERT INTO `items` VALUES (4, 1, 31, 'ITEM_ARMOR', 'ITEM_SHIELD', 1, 1, 0);
+INSERT INTO `items` VALUES (5, 1, 11, 'ITEM_ARMOR', 'ITEM_BODY', 1, 8, 1);
+INSERT INTO `items` VALUES (6, 1, 81, 'ITEM_ARMOR', 'ITEM_BELT', 1, 1, 0);
+INSERT INTO `items` VALUES (7, 1, 31, 'ITEM_ARMOR', 'ITEM_SHIELD', 1, 1, 0);
+INSERT INTO `items` VALUES (8, 1, 51, 'ITEM_ARMOR', 'ITEM_BRACELET', 1, 1, 0);
+INSERT INTO `items` VALUES (9, 1, 61, 'ITEM_ARMOR', 'ITEM_NECKLACE', 1, 1, 0);
+INSERT INTO `items` VALUES (10, 1, 81, 'ITEM_ARMOR', 'ITEM_BELT', 1, 1, 0);
+INSERT INTO `items` VALUES (11, 1, 81, 'ITEM_ARMOR', 'ITEM_BELT', 1, 1, 0);
+INSERT INTO `items` VALUES (12, 1, 41, 'ITEM_ARMOR', 'ITEM_EARINGS', 1, 1, 0);
+INSERT INTO `items` VALUES (13, 1, 21, 'ITEM_ARMOR', 'ITEM_HELMET', 1, 1, 0);
+INSERT INTO `items` VALUES (14, 1, 61, 'ITEM_ARMOR', 'ITEM_NECKLACE', 1, 1, 0);
+INSERT INTO `items` VALUES (15, 1, 1, 'ITEM_WEAPON', 'ITEM_SWORD', 1, 1, 0);
+INSERT INTO `items` VALUES (16, 1, 31, 'ITEM_ARMOR', 'ITEM_SHIELD', 1, 1, 0);
+INSERT INTO `items` VALUES (17, 1, 51, 'ITEM_ARMOR', 'ITEM_BRACELET', 1, 1, 0);
+INSERT INTO `items` VALUES (18, 1, 1, 'ITEM_WEAPON', 'ITEM_SWORD', 1, 1, 0);
+INSERT INTO `items` VALUES (20, 1, 51, 'ITEM_ARMOR', 'ITEM_BRACELET', 1, 1, 0);
+INSERT INTO `items` VALUES (21, 1, 95, 'ITEM_MISC', 'ITEM_MATERIAL', 1, 1, 0);
+INSERT INTO `items` VALUES (22, 1, 31, 'ITEM_ARMOR', 'ITEM_SHIELD', 1, 1, 0);
+INSERT INTO `items` VALUES (23, 1, 41, 'ITEM_ARMOR', 'ITEM_EARINGS', 1, 1, 0);
+INSERT INTO `items` VALUES (24, 1, 71, 'ITEM_ARMOR', 'ITEM_BOOTS', 1, 1, 0);
+INSERT INTO `items` VALUES (25, 1, 51, 'ITEM_ARMOR', 'ITEM_BRACELET', 1, 1, 0);
+INSERT INTO `items` VALUES (26, 1, 11, 'ITEM_ARMOR', 'ITEM_BODY', 1, 1, 0);
+INSERT INTO `items` VALUES (27, 1, 71, 'ITEM_ARMOR', 'ITEM_BOOTS', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for labyrinth
@@ -219,7 +246,7 @@ CREATE TABLE `labyrinth`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `quardian` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of labyrinth
@@ -267,13 +294,137 @@ INSERT INTO `quests` VALUES (8, 'Goblin', 5, 100, 5, 5, 0, 5, 10, 10, 20, 0, 0, 
 DROP TABLE IF EXISTS `skill_proto`;
 CREATE TABLE `skill_proto`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `type` enum('PASSIVE','ATTACK','RESISTENCE') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `previous` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `next` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `evolution` enum('INTRINSIC','COMMON','EXTRA','COMPOSITE','UNIQUE','ULTIMATE','ORIGIN','MANAS') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'COMMON',
+  `rank` enum('DEFAULT','DEMON_LORD','TRUE_DEMON_LORD','GREAT_DEMON_LORD','TRUE_DRAGON') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'DEFAULT',
+  `level_limit` int NOT NULL,
+  `max_level` int NOT NULL,
+  `apply_type` enum('NONE') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `apply_value` int NOT NULL,
+  `cooldown` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of skill_proto
 -- ----------------------------
+INSERT INTO `skill_proto` VALUES (1, 'regeneration', 'PASSIVE', '{0}', '{15}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (2, 'absorb', 'PASSIVE', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (3, 'dissolve', 'PASSIVE', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (4, 'poisonous_breath', 'ATTACK', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (5, 'sense_heat_source', 'PASSIVE', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (6, 'paralyzing_breath', 'ATTACK', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (7, 'sticky_thread', 'ATTACK', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (8, 'steel_thread', 'PASSIVE', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (9, 'vampirism', 'ATTACK', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (10, 'ultrasound_waves', 'ATTACK', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (11, 'body_armor', 'PASSIVE', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (12, 'keen_smell', 'PASSIVE', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (13, 'telepathy', 'PASSIVE', '{0}', '{17}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (14, 'coercion', 'ATTACK', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (15, 'ultraspeed_regeneration', 'PASSIVE', '{1}', '{16}', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (16, 'infinite_regeneration', 'PASSIVE', '{15}', '{0}', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (17, 'thought_communication', 'PASSIVE', '{13}', '{0}', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (18, 'hydraulic_propulsion', 'PASSIVE', '{0}', '{21}', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (19, 'water_current_manipulation', 'PASSIVE', '{0}', '{21}', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (20, 'water_blade', 'ATTACK', '{0}', '{21}', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (21, 'water_manipulation', 'PASSIVE', '{18,19,20}', '{25}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (22, 'fire_manipulation', 'PASSIVE', '{0}', '{24,25}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (23, 'combustion', 'PASSIVE', '{0}', '{24,25}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (24, 'black_flame', 'PASSIVE', '{21,22,23}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (25, 'molecular_manipulation', 'PASSIVE', '{21,22,23}', '{27,36}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (26, 'black_lightning', 'ATTACK', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (27, 'black_thunder', 'ATTACK', '{25,26}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (28, 'body_double', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (29, 'enchanced_body_double', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (30, 'haki', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (31, 'earth_manipulation', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (32, 'gravity_manipulation', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (33, 'heroic_haki', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (34, 'demon_lord_haki', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (35, 'magic_jamming', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (36, 'magic_manipulation', 'PASSIVE', '{25,35}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (37, 'magic_sense', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (38, 'universal_sense', 'PASSIVE', '{10,12,37,39}', '{0}', 'INTRINSIC', 'TRUE_DEMON_LORD', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (39, 'sense_soundwaves', 'PASSIVE', '{0}', '{0}', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (40, 'ranged_barrier', 'PASSIVE', '{0}', '{0}', 'INTRINSIC', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (41, 'multilayer_barrier', 'PASSIVE', '{40}', '{42}', 'COMPOSITE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (42, 'multidimensional_barrier', 'PASSIVE', '{41}', '{0}', 'COMMON', 'TRUE_DRAGON', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (43, 'wise_one', 'PASSIVE', '{0}', '{44}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (44, 'sage', 'PASSIVE', '{43}', '{45}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (45, 'great_sage', 'PASSIVE', '{44}', '{46}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (46, 'raphael', 'PASSIVE', '{45,47}', '{0}', 'ULTIMATE', 'TRUE_DEMON_LORD', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (47, 'degenerate', 'PASSIVE', '{0}', '{46}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (48, 'ciel', 'PASSIVE', '{46}', '{0}', 'MANAS', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (49, 'shadow_step', 'PASSIVE', '{0}', '{50}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (50, 'spacial_travel', 'PASSIVE', '{49}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (51, 'unlimited_imprisonment', 'ATTACK', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (52, 'uriel', 'PASSIVE', '{50,51}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (53, 'sticky_steel_thread', 'ATTACK', '{7.8}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (54, 'hell_flare', 'ATTACK', '{22,24,40}', '{0}', 'COMPOSITE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (55, 'wind_manipulation', 'PASSIVE', '{0}', '{0}', 'EXTRA', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (56, 'death_storm', 'ATTACK', '{', '', 'COMMON', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (57, 'death_storm', 'ATTACK', '{26,55}', '{0}', 'COMPOSITE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (58, 'flare_circle', 'ATTACK', '{22,23,40}', '{0}', 'COMPOSITE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (59, 'absolute_severance', 'ATTACK', '{0}', '{59}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (60, 'usurper', 'ATTACK', '{0}', '{60}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (61, 'yog_sothoth', 'ATTACK', '{51,59,60,62}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (62, 'time_travel', 'PASSIVE', '{0}', '{61}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (63, 'analyst', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (64, 'mathematician', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (65, 'berserker', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (66, 'bewilder', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (67, 'chosen_one', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (68, 'king_of_heroes', 'PASSIVE', '{0}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (69, 'cook', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (70, 'creator', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (71, 'generalissimo', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (72, 'predator', 'ATTACK', '{0}', '{74}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (73, 'starved', 'ATTACK', '{0}', '{74}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (74, 'gluttony', 'ATTACK', '{72,73}', '{75}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (75, 'beelzebuth', 'ATTACK', '{75}', '{76}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (76, 'merciless', 'ATTACK', '{0}', '{75}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (77, 'velgrynd', 'ATTACK', '{0}', '{79}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (78, 'veldora', 'ATTACK', '{0}', '{79}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (79, 'azathoth', 'ATTACK', '{46,75,77,78}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (80, 'gourmet', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (81, 'godly_craftsman', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (82, 'researcher', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (83, 'great_wiseman', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (84, 'greed', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (85, 'mammon', 'PASSIVE', '{84}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (86, 'guardian', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (87, 'investigator', 'PASSIVE', '{0}', '{88}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (88, 'faust', 'PASSIVE', '{87}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (89, 'lust', 'PASSIVE', '{0}', '{90}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (90, 'asmodeus', 'PASSIVE', '{89}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (91, 'survivor', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (92, 'tempter', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (93, 'pride', 'PASSIVE', '{0}', '{94}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (94, 'lucifer', 'PASSIVE', '{93}', '{95}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (95, 'nodens', 'PASSIVE', '{94}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (96, 'plunderer', 'PASSIVE', '{0}', '{85,97}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (97, 'azi_dahaka', 'PASSIVE', '{96}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (98, 'unyielding', 'PASSIVE', '{0}', '{99}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (99, 'sariel', 'PASSIVE', '{98}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (100, 'magicule_breeder_reactor', 'PASSIVE', '{0}', '{0}', 'ORIGIN', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (101, 'ahura_mazda', 'PASSIVE', '{70}', '{102}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (102, 'akashic_records', 'PASSIVE', '{101}', '{0}', 'ORIGIN', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (103, 'traveler', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (104, 'assassin', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (105, 'ruler', 'PASSIVE', '{0}', '{85}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (106, 'raguel', 'PASSIVE', '{0}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (107, 'cthugha', 'PASSIVE', '{52,106}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (108, 'shub-niggurath', 'PASSIVE', '{52}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (109, 'azazel', 'PASSIVE', '{83,92}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (110, 'gabriel', 'PASSIVE', '{0}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (111, 'leviathan', 'PASSIVE', '{0}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (112, 'cthulhu', 'PASSIVE', '{110,111}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (113, 'planner', 'PASSIVE', '{0}', '{0}', 'UNIQUE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
+INSERT INTO `skill_proto` VALUES (114, 'melchizedek', 'PASSIVE', '{113}', '{0}', 'ULTIMATE', 'DEFAULT', 0, 0, 'NONE', 0, 0);
 
 -- ----------------------------
 -- Table structure for skills
@@ -301,7 +452,7 @@ CREATE TABLE `town_upgrades`  (
   `tier` int NOT NULL,
   `resources` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of town_upgrades
@@ -333,7 +484,7 @@ CREATE TABLE `towns`  (
   `stone` int NOT NULL DEFAULT 0,
   `iron` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of towns

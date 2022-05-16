@@ -27,28 +27,27 @@ if(!isset($_GET["section"])){
         <div class="card bg-dark">
             <div class="card-header bg-dark text-start text-sm-center">Quests</div>
             <div class="card-body text-center">
-                <div class="row">
-                    <div class="nav flex-column align-items-center nav-pills pe-0 col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <?php 
-                        
-                            $quests = Quests::getAll();
+                <div class="nav flex-column align-items-center nav-pills pe-0 col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <?php 
+                    
+                        $quests = Quests::getAll();
 
-                            foreach ($quests as $quest) {
+                            foreach ($quests as $quest):
 
-                                if(isset($_GET["id"]) && $_GET["id"] == $quest["id"]){
+                                if(isset($_GET["id"]) && $_GET["id"] == $quest["id"]): ?>
                                 
-                                    echo '<a class="nav-link col-12 active" href="'.GAME_URL.'?page=free_guild&id='.$quest["id"].'">'.$quest["name"].'</a>';
+                                    <a class="nav-link col-12 active" href="<?= GAME_URL; ?>?page=free_guild&id=<?= $quest["id"]; ?>"><?= $quest["name"]; ?></a>
                                     
-                                } else {
+                                <?php else: ?>
 
-                                    echo '<a class="nav-link col-12" href="'.GAME_URL.'?page=free_guild&id='.$quest["id"].'">'.$quest["name"].'</a>';
+                                    <a class="nav-link col-12" href="<?= GAME_URL; ?>?page=free_guild&id=<?= $quest["id"]; ?>"><?= $quest["name"]; ?></a>
 
-                                }
-
-                            }
+                        <?php 
+                                endif; 
+                            
+                            endforeach;
                         
                         ?>
-                    </div>
                 </div>
             </div>
         </div>
@@ -63,40 +62,38 @@ if(!isset($_GET["section"])){
         <div class="card bg-dark">
             <div class="card-header bg-dark text-center text-md-start">Quests</div>
             <div class="card-body text-center">
-                <div class="row">
-                    <div class="nav flex-column align-items-center nav-pills pe-0 col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <?php 
-                        
-                            $quests = Quests::getAll($_GET["section"]);
+                <div class="nav flex-column align-items-center nav-pills pe-0 col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <?php 
+                    
+                        $quests = Quests::getAll($_GET["section"]);
 
-                            if(!empty($quests)){
+                        if(!empty($quests)){
 
-                                foreach ($quests as $quest) {
+                            foreach ($quests as $quest) {
 
-                                    if(isset($_GET["id"]) && $_GET["id"] == $quest["id"]){
+                                if(isset($_GET["id"]) && $_GET["id"] == $quest["id"]){
+                                
+                                    echo '<a class="nav-link col-12 active" href="'.GAME_URL.'?page=free_guild&id='.$quest["id"].'">'.$quest["name"].'</a>';
                                     
-                                        echo '<a class="nav-link col-12 active" href="'.GAME_URL.'?page=free_guild&id='.$quest["id"].'">'.$quest["name"].'</a>';
-                                        
-                                    } else {
-    
-                                        echo '<a class="nav-link col-12" href="'.GAME_URL.'?page=free_guild&id='.$quest["id"].'">'.$quest["name"].'</a>';
-    
-                                    }
-    
+                                } else {
+
+                                    echo '<a class="nav-link col-12" href="'.GAME_URL.'?page=free_guild&id='.$quest["id"].'">'.$quest["name"].'</a>';
+
                                 }
 
-                            } else {
-
-                                echo Core::Redirect(GAME_URL."?page=free_guild");
-
                             }
-                        
-                        ?>
-                    </div>
+
+                        } else {
+
+                            echo Core::Redirect(GAME_URL."?page=free_guild");
+
+                        }
+                    
+                    ?>
                 </div>
             </div>
         </div>
-    </div>
+    
 
 <?php
 
@@ -242,8 +239,8 @@ if(!isset($_GET["section"])){
                                 
                                         echo '<form method="post">
                                             <div class="col-12 px-3">
-                                            <input type="hidden" name="quest" value="'.$quest["id"].'" /> 
-                                            <input name="quest_begin" type="submit" class="form-control bg-success mt-5" value="BEGIN">
+                                                <input type="hidden" name="quest" value="'.$quest["id"].'" /> 
+                                                <input name="quest_begin" type="submit" class="form-control bg-success mt-5" value="BEGIN">
                                             </div>
                                         
                                         </form>';
@@ -265,7 +262,6 @@ if(!isset($_GET["section"])){
                                     if(isset($battle_status) && $battle_status == "win"){
                                         if(!empty(@$quest_rewards[$quest["name"]])){
                                             $loot = @$quest_rewards[$quest["name"]];
-                                            echo '<div class="row">';
                                             
                                                 $reward = false;
                                                 foreach ($loot as $id => $loot_item) {
@@ -317,7 +313,7 @@ if(!isset($_GET["section"])){
 
                                 if(!empty(@$quest_rewards[$quest["name"]])){
                                     $loot = @$quest_rewards[$quest["name"]];
-                                    echo '<div class="equipment m-0 p-0 row">';
+                                    echo '<div class="row">';
                                         if(!isset($_GET["drop"])){
                                             $item_vnums = array();
                                             $grouped_items = array();
@@ -336,8 +332,8 @@ if(!isset($_GET["section"])){
                                                 $selected_item->setQuantity($group_item["quantity"]);
                                                 $selected_item->setRarity($group_item["rarity"]);
                                                 echo '
-                                                    <div class="item col-4 m-0 p-0 float-start">
-                                                        <div class="'.$selected_item->sizeText().'-slot m-3">
+                                                    <div class="item col-4 d-flex justify-content-center">
+                                                        <div class="'.$selected_item->sizeText().'-slot mb-3">
                                                             '.$selected_item->icon().'
                                                             <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>
                                                         </div>
@@ -353,8 +349,8 @@ if(!isset($_GET["section"])){
                                                 $selected_item->setQuantity($litem["quantity"]);
                                                 $selected_item->setRarity($litem["rarity"]);
                                                 echo '
-                                                    <div class="item col-4">
-                                                        <div class="'.$selected_item->sizeText().'-slot '.Item::getRarityClass($selected_item->rarity()).' m-3">
+                                                    <div class="item col-4 d-flex justify-content-center">
+                                                        <div class="'.$selected_item->sizeText().'-slot '.Item::getRarityClass($selected_item->rarity()).' mb-3">
                                                             '.$selected_item->icon().'
                                                             <span class="quantity">'.(($selected_item->type() == "ITEM_WEAPON" or $selected_item->type() == "ITEM_ARMOR") ? "" : $selected_item->quantity()).'</span>
                                                         </div>
@@ -365,7 +361,6 @@ if(!isset($_GET["section"])){
                                                 ';
                                             }
                                         }
-                                        echo "</div>";
                                 } else {
                                     echo "There is no reward!";
                                 }
@@ -383,13 +378,9 @@ if(!isset($_GET["section"])){
 
                             echo '</div>
                         </div>
-                    </div>
-                </div>';
-
-                echo '</div>';
+                    </div>';
 
             }
         
         ?>
-    </div>
 </div>

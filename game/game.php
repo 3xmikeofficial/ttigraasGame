@@ -108,7 +108,15 @@
 
                 }
 
-                ?> </div> <?php
+                ?>
+
+                <div class="mb-5 pb-3">
+                    <div class="card bg-dark text-white col-12">
+                        <div class="card-body text-center">© Taiki Kawakami, Fuse, KODANSHA/“Ten-Sura” Project - Code and design by 3xMike</div>
+                    </div>
+                </div>
+
+            </div> <?php
 
             }
 

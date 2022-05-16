@@ -321,7 +321,7 @@
                                                         $get_item = Item::getItem($_POST["item_id"]);
                                                     }
 
-                                                    if(isset($get_item["id"]) && $get_item["id"] == $player->id() && $item[$id]->id() == $_POST["item_id"]){
+                                                    if(isset($get_item["player_id"]) && $get_item["player_id"] == $player->id() && $item[$id]->id() == $_POST["item_id"]){
 
                                                         $salvage_result = array();
 
