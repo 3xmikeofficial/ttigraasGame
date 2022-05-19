@@ -43,7 +43,7 @@
                     if(isset($_POST["item"]) && isset($_POST["character"])){
 
                         foreach ($_POST["item"] as $id => $pitem) {
-                            $item[$id] = new Item($pitem);
+                            $item[$id] = new PItem($pitem);
 
                             $item[$id]->setQuantity($_POST["quantity"]);
                             $item[$id]->setRarity($_POST["rarity"]);
@@ -144,7 +144,7 @@
                     $_SESSION["updated_loot"] = $_SESSION["loot"];
                 }
                 foreach ($_SESSION["updated_loot"] as $item) {
-                    $selected_item = new Item($item["vnum"]);
+                    $selected_item = new PItem($item["vnum"]);
                     echo '<div class="nav-item">';
                         echo '<div class="col-6 ps-3 my-2 float-start">';
                             echo $selected_item->name();
@@ -178,14 +178,14 @@
             if(isset($_POST["serialize_loot"])){
                 echo '<div class="mt-5 mb-3 col-12 float-start">Loot</div><hr class="col-12">';
                 foreach($_SESSION["updated_loot"] as $item){
-                    $sitem = new Item($item["vnum"]);
+                    $sitem = new PItem($item["vnum"]);
                     echo $item["quantity"]."x ".Item::getRarityColorText($item["rarity"], $sitem->name())." ( Tier: ".$item["rarity"]." ) with ".$item["chance"]."% chance to drop<br>";
                 }
                 $serialized_loot = $_SESSION["updated_loot"];
                 echo '<div class="mt-5 col-12">Serialized array</div>';
                 echo '<div class="col-12"><pre class="form-control"><code>';
                 foreach ($serialized_loot as $reward) {
-                    $sreward = new Item($reward["vnum"]);
+                    $sreward = new PItem($reward["vnum"]);
                     echo '            array("vnum" => '.$reward["vnum"].', "quantity" => '.$reward["quantity"].', "rarity" => '.$reward["rarity"].', "chance" => '.$reward["chance"].'), // '.$sreward->name().'<br>';
                 }
                 echo '</code></pre></div>';

@@ -13,31 +13,14 @@
             $this->_level = $query["level"];
             $this->_exp = $query["exp"];
             $this->_race = $query["race"];
-            $this->_class = Character::getClass($this->_race, $query["class"]);
+            $this->_class = $query["class"];
             $this->_health = $query["health"];
             $this->_stamina = $query["stamina"];
             $this->_max_stamina = $query["max_stamina"];
             $this->_speed = $query["speed"];
-            $strenght = 0;
-            $str_item = Database::queryAlone("SELECT * FROM items WHERE item_type = ? and player_id = ? and equipped = 1", ["ITEM_WEAPON", $this->_id]);
-            if(!empty($str_item)){
-            $selected_str_item = new Item($str_item["item_vnum"], $str_item["quantity"], $str_item["rarity"]);
-            $strenght += $selected_str_item->ShowAvarageRarityValue();
-            }
-            $this->_strenght = $query["strenght"]+$strenght;
-            $defense = 0;
-            $defense_items = Database::queryAll("SELECT * FROM items WHERE item_type = ? and player_id = ? and equipped = 1", ["ITEM_ARMOR", $this->_id]);
-            if(!empty($defense_items)){
-                foreach ($defense_items as $id => $def_item) {
-                    $selected_def_item[$id] = new Item($def_item["item_vnum"], $def_item["quantity"], $def_item["rarity"]);
-                    $defense += $selected_def_item[$id]->ShowAvarageRarityValue();
-                }
-            }
-            $this->_defense = $query["defense"]+$defense;
+            $this->_defense = $query["defense"];
             $this->_magicules = $query["magicules"];
             $this->_gold = $query["gold"];
-            $this->_equip = Item::getEquip($this->_id);
-            $this->_inventory = Item::getInventory($this->_id);
 
         }
 

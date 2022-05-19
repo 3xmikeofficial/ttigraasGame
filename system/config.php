@@ -11,7 +11,7 @@
 
     // Defines
 
-    define('ROOT', dirname(dirname(__FILE__)));
+    define('ROOT', $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR."game");
     define('URL', "http://game.ageoflegends.cz");
     define('ACTUAL_URL', URL.$_SERVER["REQUEST_URI"]);
     define('GAME_URL', URL."/game/game.php");
@@ -34,7 +34,6 @@
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 'On');
     ini_set('log_errors', 'On');
-    ini_set('error_log', SYSTEM.'/errors.txt');
 
     spl_autoload_register(
         function ($class)
